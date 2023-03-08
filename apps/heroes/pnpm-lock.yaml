@@ -14,12 +14,14 @@ specifiers:
   vite: ^4.0.4
   vite-plugin-dynamic-base: ^0.4.7
   vite-plugin-externals: ^0.5.1
+  zustand: ^4.3.6
 
 dependencies:
   antd: 5.3.0_sfoxds7t5ydpegc3knd667wn6m
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-router-dom: 6.8.2_sfoxds7t5ydpegc3knd667wn6m
+  zustand: 4.3.6_react@17.0.2
 
 devDependencies:
   '@types/node': 18.14.6
@@ -1932,6 +1934,14 @@ packages:
       picocolors: 1.0.0
     dev: true
 
+  /use-sync-external-store/1.2.0_react@17.0.2:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 17.0.2
+    dev: false
+
   /vite-plugin-dynamic-base/0.4.8:
     resolution: {integrity: sha512-xldt5JlwakC9dg7dQ3dORt9nbUIFdDJII4T5DzdKliWp1UvheqZMA0RMrQ8jkr+mk4w9pp1piER8NMMJuoCU5A==}
     dependencies:
@@ -1989,3 +1999,19 @@ packages:
   /yallist/3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
     dev: true
+
+  /zustand/4.3.6_react@17.0.2:
+    resolution: {integrity: sha512-6J5zDxjxLE+yukC2XZWf/IyWVKnXT9b9HUv09VJ/bwGCpKNcaTqp7Ws28Xr8jnbvnZcdRaidztAPsXFBIqufiw==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      immer: '>=9.0'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      react: 17.0.2
+      use-sync-external-store: 1.2.0_react@17.0.2
+    dev: false

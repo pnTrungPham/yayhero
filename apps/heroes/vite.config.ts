@@ -4,7 +4,10 @@ import { defineConfig, loadEnv } from "vite";
 import { dynamicBase } from "vite-plugin-dynamic-base";
 // import { viteExternalsPlugin } from "vite-plugin-externals";
 
-process.env = { ...process.env, ...loadEnv(process.env.mode, process.cwd()) };
+process.env = {
+  ...process.env,
+  ...loadEnv(process.env.NODE_ENV ?? "development", process.cwd()),
+};
 const rootpath = "./src";
 
 // https://vitejs.dev/config/
