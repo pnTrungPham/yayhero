@@ -1,3 +1,19 @@
 .yayhero-container {
-  padding-right: 40px;
+  padding-right: 20px;
+
+  .level-badge {
+    font-size: 30px;
+    font-weight: 600;
+    color: #0d47a1;
+  }
+
+  .yayhero-table-attribute {
+    margin-bottom: 5px;
+  }
+
+  .yayhero-herolist-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }

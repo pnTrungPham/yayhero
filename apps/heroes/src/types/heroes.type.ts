@@ -1,15 +1,19 @@
 export type HeroClass = "Warrior" | "Paladin" | "Mage" | "Rogue" | "Shaman";
 
+export const HERO_CLASSES = ["Warrior", "Paladin", "Mage", "Rogue", "Shaman"];
+
 export interface Hero {
   name: string;
   class: HeroClass;
   level: number;
-  attributes: {
-    strength: number;
-    dexterity: number;
-    intelligence: number;
-    vitality: number;
-  };
+  attributes: HeroAttributes;
+}
+
+export interface HeroAttributes {
+  strength: number;
+  dexterity: number;
+  intelligence: number;
+  vitality: number;
 }
 
 export type HeroModel = Hero & {
@@ -26,24 +30,24 @@ type HeroClassColors = Record<
 
 export const HERO_CLASS_COLORS: HeroClassColors = {
   Warrior: {
-    color: "",
-    activeColor: "",
+    color: "#FFEBEE",
+    activeColor: "#EF9A9A",
   },
   Paladin: {
-    color: "",
-    activeColor: "",
+    color: "#F3E5F5",
+    activeColor: "#CE93D8",
   },
   Mage: {
-    color: "",
-    activeColor: "",
+    color: "#E8EAF6",
+    activeColor: "#9FA8DA",
   },
   Rogue: {
-    color: "",
-    activeColor: "",
+    color: "#E0F7FA",
+    activeColor: "#80DEEA",
   },
   Shaman: {
-    color: "",
-    activeColor: "",
+    color: "#FFF8E1",
+    activeColor: "#FFE082",
   },
 };
 

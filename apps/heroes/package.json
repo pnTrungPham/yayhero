@@ -9,7 +9,7 @@
     "dev": "vite"
   },
   "dependencies": {
-    "antd": "^5.1.4",
+    "antd": "^5.3.0",
     "immer": "^9.0.19",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
