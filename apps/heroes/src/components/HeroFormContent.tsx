@@ -10,8 +10,7 @@ import {
   Row,
   Slider,
 } from "antd";
-import type { NotificationPlacement } from "antd/es/notification/interface";
-import React, { useMemo } from "react";
+import React, { useContext } from "react";
 interface HeroFormProps {
   onSubmit: (hero: Hero) => void;
   submitButton?: {
@@ -37,25 +36,19 @@ const ATTRIBUTE_LABEL_SPAN = 4;
 const SLIDER_PROPS = {
   min: 1,
   max: 100,
-  tooltip: { open: true },
+  // tooltip: { open: true },
 };
 
-const Context = React.createContext({ name: "Default" });
-
 function HeroFormContent(props: HeroFormProps) {
-  const [api, contextHolder] = notification.useNotification();
-
-  const openNotification = (placement: NotificationPlacement) => {
-    api.info({
-      message: `Notification ${placement}`,
-      description: (
-        <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>
-      ),
-      placement,
+  const openNotification = () => {
+    notification.open({
+      message: "Success",
+      description: "Hero added",
+      onClick: () => {
+        console.log("Notification Clicked!");
+      },
     });
   };
-
-  const contextValue = useMemo(() => ({ name: "Ant Design" }), []);
 
   const [form] = Form.useForm<Hero>();
 
@@ -63,8 +56,7 @@ function HeroFormContent(props: HeroFormProps) {
     props.onSubmit(values);
 
     console.log("Success:", values);
-
-    openNotification("topRight");
+    openNotification();
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -76,92 +68,85 @@ function HeroFormContent(props: HeroFormProps) {
   };
 
   return (
-    <Context.Provider value={contextValue}>
-      {contextHolder}
-      <section>
-        <Form
-          form={form}
-          initialValues={DEFAULT_VALUE}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-            <Col span={12}>
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={[{ required: true, message: "Please input hero name!" }]}
-                labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
-              >
-                <Input />
-              </Form.Item>
+    <section>
+      <Form
+        form={form}
+        initialValues={DEFAULT_VALUE}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
+        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+          <Col span={12}>
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[{ required: true, message: "Please input hero name!" }]}
+              labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
+            >
+              <Input />
+            </Form.Item>
 
-              <Form.Item
-                name="class"
-                label="Class"
-                rules={[
-                  { required: true, message: "Please choose hero class!" },
-                ]}
-                labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
-              >
-                <Radio.Group
-                  options={HERO_CLASSES}
-                  optionType="button"
-                  buttonStyle="solid"
-                />
-              </Form.Item>
+            <Form.Item
+              name="class"
+              label="Class"
+              rules={[{ required: true, message: "Please choose hero class!" }]}
+              labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
+            >
+              <Radio.Group
+                options={HERO_CLASSES}
+                optionType="button"
+                buttonStyle="solid"
+              />
+            </Form.Item>
 
-              <Form.Item
-                name="level"
-                label="Level"
-                rules={[
-                  { required: true, message: "Please input hero level!" },
-                ]}
-                labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
-              >
-                <InputNumber min={1} max={20} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name={["attributes", "strength"]}
-                label="Strength"
-                labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
-              >
-                <Slider {...SLIDER_PROPS} />
-              </Form.Item>
-              <Form.Item
-                name={["attributes", "dexterity"]}
-                label="Dexterity"
-                labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
-              >
-                <Slider {...SLIDER_PROPS} />
-              </Form.Item>
-              <Form.Item
-                name={["attributes", "intelligence"]}
-                label="Intelligence"
-                labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
-              >
-                <Slider {...SLIDER_PROPS} />
-              </Form.Item>
-              <Form.Item
-                name={["attributes", "vitality"]}
-                label="Vitality"
-                labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
-              >
-                <Slider {...SLIDER_PROPS} />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row justify="center">
-            <Button type="primary" htmlType="submit">
-              Create Hero
-            </Button>
-          </Row>
-        </Form>
-      </section>
-    </Context.Provider>
+            <Form.Item
+              name="level"
+              label="Level"
+              rules={[{ required: true, message: "Please input hero level!" }]}
+              labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
+            >
+              <InputNumber min={1} max={20} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name={["attributes", "strength"]}
+              label="Strength"
+              labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
+            >
+              <Slider {...SLIDER_PROPS} />
+            </Form.Item>
+            <Form.Item
+              name={["attributes", "dexterity"]}
+              label="Dexterity"
+              labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
+            >
+              <Slider {...SLIDER_PROPS} />
+            </Form.Item>
+            <Form.Item
+              name={["attributes", "intelligence"]}
+              label="Intelligence"
+              labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
+            >
+              <Slider {...SLIDER_PROPS} />
+            </Form.Item>
+            <Form.Item
+              name={["attributes", "vitality"]}
+              label="Vitality"
+              labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
+            >
+              <Slider {...SLIDER_PROPS} />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row justify="center">
+          <Button type="primary" htmlType="submit">
+            Create Hero
+          </Button>
+        </Row>
+      </Form>
+    </section>
   );
 }
 
