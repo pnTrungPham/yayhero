@@ -1,4 +1,4 @@
-import { create, StateCreator } from "zustand";
+import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
@@ -18,7 +18,14 @@ export const useHeroStore = create<
   immer(
     devtools((set) => ({
       heroes: HERO_LIST,
-      heroAdd: (hero) => {},
+      heroAdd: (hero) =>
+        set((state) => {
+          const heroModel: HeroModel = {
+            ...hero,
+            id: Date.now().toString(),
+          };
+          state.heroes.push(heroModel);
+        }),
       heroEdit: (heroId, hero) => {},
       heroDelete: (heroId) => {},
     }))

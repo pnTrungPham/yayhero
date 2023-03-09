@@ -8,7 +8,7 @@ import {
 } from "@src/types/heroes.type";
 import { Button, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 
 function HeroList() {

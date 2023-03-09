@@ -6,7 +6,7 @@ import router from "./router";
 function App() {
   return (
     <div className="yayhero-container">
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </div>
   );
 }
