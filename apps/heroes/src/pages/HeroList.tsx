@@ -6,13 +6,29 @@ import {
   HeroModel,
   HERO_CLASS_COLORS,
 } from "@src/types/heroes.type";
-import { Button, Table } from "antd";
+import { Button, notification, Popconfirm, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React, { CSSProperties } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function HeroList() {
+  const openNotification = () => {
+    notification.open({
+      message: "Success",
+      description: "Hero deleted!",
+    });
+  };
+
+  const navigate = useNavigate();
+
   const heroes = useHeroStore((s) => s.heroes);
+
+  const deleteHero = useHeroStore((s) => s.heroDelete);
+
+  const onHeroDelete = (id: string) => {
+    deleteHero(id);
+    openNotification();
+  };
 
   const columns: ColumnsType<HeroModel> = [
     {
@@ -47,6 +63,35 @@ function HeroList() {
         <HeroAttribute attributes={attributes} />
       ),
     },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Popconfirm
+          title="Delete the hero"
+          description="Are you sure to delete this hero?"
+          okText="Yes"
+          cancelText="No"
+          okButtonProps={{ type: "primary" }}
+          okType="danger"
+          onConfirm={(e) => {
+            e?.stopPropagation();
+            onHeroDelete(record.id);
+          }}
+        >
+          ß
+          <Button
+            type="primary"
+            danger
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+          >
+            Delete
+          </Button>
+        </Popconfirm>
+      ),
+    },
   ];
 
   const getRowStyle = (record: HeroModel): CSSProperties => {
@@ -54,6 +99,7 @@ function HeroList() {
 
     return {
       background: HERO_CLASS_COLORS[heroClass].color ?? "none",
+      cursor: "pointer",
     };
   };
 
@@ -79,6 +125,9 @@ function HeroList() {
         onRow={(record) => {
           return {
             style: getRowStyle(record),
+            onClick: () => {
+              navigate(`/heroes/edit/${record.id}`);
+            },
           };
         }}
         rowSelection={{
@@ -86,7 +135,6 @@ function HeroList() {
           ...rowSelection,
         }}
       />
-      <Link to="/heroes/edit/123">Edit</Link>
     </div>
   );
 }

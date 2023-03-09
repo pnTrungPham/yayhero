@@ -9,6 +9,7 @@
     "dev": "vite"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
     "antd": "^5.3.0",
     "immer": "^9.0.19",
     "react": "^17.0.2",
