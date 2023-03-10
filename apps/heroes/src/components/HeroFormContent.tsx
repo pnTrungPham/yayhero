@@ -1,15 +1,7 @@
 import { HERO_CLASSES } from "@src/types/heroes.type";
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Radio,
-  Row,
-  Slider,
-} from "antd";
+import { Button, Col, Form, Input, InputNumber, Row, Slider } from "antd";
 import React from "react";
+import HeroClassSelector from "./HeroClassSelector";
 interface HeroFormProps {
   submitButton?: {
     label?: string;
@@ -44,11 +36,12 @@ function HeroFormContent(props: HeroFormProps) {
             rules={[{ required: true, message: "Please choose hero class!" }]}
             labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
           >
-            <Radio.Group
+            {/* <Radio.Group
               options={HERO_CLASSES}
               optionType="button"
               buttonStyle="solid"
-            />
+            /> */}
+            <HeroClassSelector />
           </Form.Item>
 
           <Form.Item

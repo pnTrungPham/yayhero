@@ -4,6 +4,7 @@ import {
   HeroAttributes,
   HeroClass,
   HeroModel,
+  HERO_CLASSES,
   HERO_CLASS_COLORS,
 } from "@src/types/heroes.type";
 import { Button, notification, Popconfirm, Table } from "antd";
@@ -42,12 +43,20 @@ function HeroList() {
       dataIndex: "name",
       key: "name",
       render: (value: string) => <span>{value}</span>,
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: "Class",
       dataIndex: "class",
       key: "class",
       render: (value: string) => <span>{value}</span>,
+      filters: HERO_CLASSES.map((hero) => {
+        return { text: hero, value: hero };
+      }),
+      onFilter: (value: string | number | boolean, record) =>
+        record.class === value,
+      filterMode: "tree",
     },
     {
       title: "Level",
@@ -79,7 +88,6 @@ function HeroList() {
             onHeroDelete(record.id);
           }}
         >
-          ß
           <Button
             type="primary"
             danger
@@ -124,7 +132,6 @@ function HeroList() {
         dataSource={heroes}
         onRow={(record) => {
           return {
-            style: getRowStyle(record),
             onClick: () => {
               navigate(`/heroes/edit/${record.id}`);
             },

@@ -1,6 +1,12 @@
 export type HeroClass = "Warrior" | "Paladin" | "Mage" | "Rogue" | "Shaman";
 
-export const HERO_CLASSES = ["Warrior", "Paladin", "Mage", "Rogue", "Shaman"];
+export const HERO_CLASSES: Array<HeroClass> = [
+  "Warrior",
+  "Paladin",
+  "Mage",
+  "Rogue",
+  "Shaman",
+];
 
 export interface Hero {
   name: string;
