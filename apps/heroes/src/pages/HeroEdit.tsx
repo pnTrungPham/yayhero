@@ -16,7 +16,8 @@ function HeroEdit() {
   };
 
   const editHero = useHeroStore((s) => s.heroEdit);
-  const { heroId } = useParams();
+  const params = useParams();
+  const heroId = params.heroId ? parseInt(params.heroId) : null;
   const hero = useHeroStore((s) => s.heroes.find((hero) => hero.id === heroId));
 
   const [form] = Form.useForm<Hero>();

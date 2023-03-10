@@ -8,8 +8,8 @@ interface HeroState {
   heroes: HeroModel[];
 
   heroAdd: (hero: Hero) => void;
-  heroEdit: (heroId: string, hero: Hero) => void;
-  heroDelete: (heroId: string) => void;
+  heroEdit: (heroId: number, hero: Hero) => void;
+  heroDelete: (heroId: number) => void;
 }
 
 export const useHeroStore = create<
@@ -24,7 +24,8 @@ export const useHeroStore = create<
         set((state) => {
           const heroModel: HeroModel = {
             ...hero,
-            id: Date.now().toString(),
+            id: 1,
+            modified: Date.now().toString(),
           };
           state.heroes.push(heroModel);
         });
@@ -36,7 +37,11 @@ export const useHeroStore = create<
             (hero) => hero.id === heroId
           );
           if (heroIndex >= 0) {
-            state.heroes[heroIndex] = { ...hero, id: heroId };
+            state.heroes[heroIndex] = {
+              ...hero,
+              id: heroId,
+              modified: Date.now().toString(),
+            };
           }
         });
       },

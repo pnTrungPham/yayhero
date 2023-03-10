@@ -26,7 +26,7 @@ function HeroList() {
 
   const deleteHero = useHeroStore((s) => s.heroDelete);
 
-  const onHeroDelete = (id: string) => {
+  const onHeroDelete = (id: number) => {
     deleteHero(id);
     openNotification();
   };

@@ -26,7 +26,9 @@ function yayhero_register_entry()
     wp_register_script("module/yayhero/main.tsx", "http://localhost:3000/main.tsx", ['react', 'react-dom'], null, true); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
     wp_enqueue_script("module/yayhero/main.tsx");
     wp_localize_script("module/yayhero/main.tsx", "yayHeroData", [
-        'isRtl' => is_rtl()
+        'isRtl' => is_rtl(),
+        'restUrl' => esc_url_raw(rest_url()),
+        'restNonce' => wp_create_nonce('wp_rest')
     ]);
 }
 
