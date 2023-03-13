@@ -6,15 +6,6 @@ import { getHeroes } from "./api/heroEndpoint";
 import { useEffect } from "react";
 
 function App() {
-  useEffect(() => {
-    const fetch = async () => {
-      const res = await getHeroes();
-      console.log(res);
-    };
-
-    fetch();
-  });
-
   return (
     <div className="yayhero-container">
       <RouterProvider router={router} />

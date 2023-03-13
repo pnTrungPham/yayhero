@@ -1,15 +1,15 @@
-import { Hero } from "@src/types/heroes.type";
+import { Hero, HeroModel } from "@src/types/heroes.type";
 import wpEndpoint from "./wpRest";
 
-export function getHeroes() {
+export function getHeroes(): Promise<HeroModel[]> {
   return wpEndpoint.get("heroes").json();
 }
 
-export function getHeroById(heroId: number) {
+export function getHeroById(heroId: number): Promise<HeroModel> {
   return wpEndpoint.get(`heroes/${heroId}`).json();
 }
 
-export function postHero(payload: Hero) {
+export function postHero(payload: Hero): Promise<number> {
   return wpEndpoint
     .post("heroes", {
       json: payload,
@@ -17,7 +17,7 @@ export function postHero(payload: Hero) {
     .json();
 }
 
-export function patchHero(heroId: number, payload: Hero) {
+export function patchHero(heroId: number, payload: Hero): Promise<HeroModel> {
   return wpEndpoint
     .patch(`heroes/${heroId}`, {
       json: payload,
@@ -25,6 +25,6 @@ export function patchHero(heroId: number, payload: Hero) {
     .json();
 }
 
-export function delteHero(heroId: number) {
+export function deleteHero(heroId: number): Promise<boolean> {
   return wpEndpoint.delete(`heroes/${heroId}`).json();
 }

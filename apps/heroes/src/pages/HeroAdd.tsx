@@ -16,27 +16,30 @@ const DEFAULT_VALUE: Hero = {
   },
 };
 
-function HeroAdd() {
-  const openNotification = () => {
-    notification.open({
-      message: "Success",
-      description: "Hero added",
-      onClick: () => {
-        console.log("Notification Clicked!");
-      },
-    });
-  };
+type NotificationType = "success" | "info" | "warning" | "error";
 
-  const addHero = useHeroStore((s) => s.heroAdd);
+const openNotification = () => {
+  notification.open({
+    message: "Success",
+    description: "Hero added",
+  });
+};
+
+function HeroAdd() {
+  const refetchHeroes = useHeroStore((store) => store.heroRefetch);
+  const addHero = useHeroStore((store) => store.heroAdd);
+  const isFormLoading = useHeroStore((store) => store.mutation.isLoading);
 
   const [form] = Form.useForm<Hero>();
 
-  const onFinish = (values: Hero) => {
-    addHero(values);
-
-    console.log("Success:", values);
-    openNotification();
-    navigate(-1);
+  const onFinish = async (values: Hero) => {
+    addHero(values, {
+      successCallback: () => {
+        openNotification();
+        navigate(-1);
+        refetchHeroes();
+      },
+    });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -60,6 +63,7 @@ function HeroAdd() {
 
       <section>
         <Form
+          disabled={isFormLoading}
           form={form}
           initialValues={DEFAULT_VALUE}
           onFinish={onFinish}

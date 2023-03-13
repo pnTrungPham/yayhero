@@ -1,5 +1,7 @@
 <?php
 
+
+define('POST_TYPE', 'yayhero');
 function yayhero_has_api_permission()
 {
     return current_user_can('manage_options');
@@ -55,7 +57,25 @@ add_action('rest_api_init', function () {
 
 function yayhero_get_heroes()
 {
-    return ['heroes1', '2'];
+    $posts = get_posts(['post_type' => POST_TYPE]);
+
+    if (empty($posts)) {
+        return null;
+    }
+
+    return array_map(function ($post) {
+
+        $extra_fields_object = json_decode($post->post_content);
+        return [
+            'id' => $post->ID,
+            'name' => $post->post_title,
+            'modified' => $post->post_modified,
+
+            'class' => $extra_fields_object->class,
+            'level' => $extra_fields_object->level,
+            'attributes' => $extra_fields_object->attributes,
+        ];
+    }, $posts);
 }
 
 function yayhero_get_hero_by_id()
@@ -63,9 +83,27 @@ function yayhero_get_hero_by_id()
     return 'one';
 }
 
-function yayhero_post_hero()
+function yayhero_post_hero(WP_REST_Request $request)
 {
-    return 'created';
+    $payload = $request->get_json_params();
+
+    $payload_clone = $payload;
+
+    unset($payload_clone['name']);
+
+    $post_content = json_decode(json_encode($payload_clone), FALSE);
+
+    $post = [
+        'post_title' => $payload['name'],
+        'post_content' => json_encode($post_content),
+        'post_type' => POST_TYPE,
+        'post_status' => 'publish',
+
+    ];
+
+    $result = wp_insert_post($post, true);
+
+    return $result;
 }
 
 function yayhero_patch_hero()

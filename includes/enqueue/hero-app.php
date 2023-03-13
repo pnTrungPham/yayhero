@@ -28,7 +28,8 @@ function yayhero_register_entry()
     wp_localize_script("module/yayhero/main.tsx", "yayHeroData", [
         'isRtl' => is_rtl(),
         'restUrl' => esc_url_raw(rest_url()),
-        'restNonce' => wp_create_nonce('wp_rest')
+        'restNonce' => wp_create_nonce('wp_rest'),
+        'preloadHeroes' => yayhero_get_heroes()
     ]);
 }
 

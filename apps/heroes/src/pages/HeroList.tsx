@@ -22,9 +22,13 @@ function HeroList() {
 
   const navigate = useNavigate();
 
-  const heroes = useHeroStore((s) => s.heroes);
+  const heroes = useHeroStore((s) => s.list.heroes);
 
-  const deleteHero = useHeroStore((s) => s.heroDelete);
+  const isTableLoading = useHeroStore((store) => store.list.isLoading);
+
+  const deleteHero = (id: number) => {}; // TODO
+
+  const refetchHero = useHeroStore((s) => s.heroRefetch);
 
   const onHeroDelete = (id: number) => {
     deleteHero(id);
@@ -119,6 +123,10 @@ function HeroList() {
 
   return (
     <div>
+      {isTableLoading ? "true" : "false"}
+      <Button onClick={refetchHero} loading={isTableLoading}>
+        test
+      </Button>
       <header className="yayhero-herolist-title">
         <h4>Heroes</h4>
         <Link to="/heroes/add">
@@ -127,6 +135,7 @@ function HeroList() {
       </header>
 
       <Table
+        loading={isTableLoading}
         rowKey={(record) => record.id}
         columns={columns}
         dataSource={heroes}

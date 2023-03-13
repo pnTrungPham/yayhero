@@ -1,4 +1,4 @@
-import { HERO_CLASSES } from "@src/types/heroes.type";
+import { useHeroStore } from "@src/store/heroStore";
 import { Button, Col, Form, Input, InputNumber, Row, Slider } from "antd";
 import React from "react";
 import HeroClassSelector from "./HeroClassSelector";
@@ -17,6 +17,8 @@ const SLIDER_PROPS = {
 };
 
 function HeroFormContent(props: HeroFormProps) {
+  const isFormLoading = useHeroStore((store) => store.mutation.isLoading);
+
   return (
     <>
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
@@ -36,11 +38,6 @@ function HeroFormContent(props: HeroFormProps) {
             rules={[{ required: true, message: "Please choose hero class!" }]}
             labelCol={{ span: ATTRIBUTE_LABEL_SPAN }}
           >
-            {/* <Radio.Group
-              options={HERO_CLASSES}
-              optionType="button"
-              buttonStyle="solid"
-            /> */}
             <HeroClassSelector />
           </Form.Item>
 
@@ -86,6 +83,7 @@ function HeroFormContent(props: HeroFormProps) {
       </Row>
       <Row justify="center">
         <Button
+          loading={isFormLoading}
           type="primary"
           htmlType="submit"
           style={props.submitButton?.style}
