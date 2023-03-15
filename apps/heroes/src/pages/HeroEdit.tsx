@@ -1,39 +1,35 @@
-import { useHeroStore } from "@src/store/heroStore";
+import useMutationHeroUpdate from "@src/hooks/useMutationHeroUpdate";
+import useQueryHero from "@src/hooks/useQueryHero";
 import { Hero } from "@src/types/heroes.type";
 import { getErrorMessage } from "@src/utils/common";
 import { notifyError, notifySuccess } from "@src/utils/notification";
-import { Button, Form, notification, Space } from "antd";
+import { Button, Form, Space } from "antd";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import HeroFormContent from "../components/HeroFormContent";
+import { useQueryClient } from "react-query";
 
 function HeroEdit() {
-  const heroBeginEditById = useHeroStore((store) => store.heroBeginEditById);
-  const updateHero = useHeroStore((store) => store.heroSubmitEdit);
-  const { edittingId, edittingHero } = useHeroStore((store) => store.edit);
-  const isFormLoading = useHeroStore((store) => store.mutation.isLoading);
-
   const params = useParams();
   const heroId = params.heroId ? parseInt(params.heroId) : null;
 
   const [form] = Form.useForm<Hero>();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (heroId && heroId !== edittingId) {
-      heroBeginEditById(heroId);
-    }
-  }, [heroId]);
-
-  useEffect(() => {
-    form.resetFields();
-    form.setFieldsValue(edittingHero as Hero);
-  }, [edittingHero]);
+  const { isLoading: isSubmitLoading, mutateAsync } = useMutationHeroUpdate();
 
   if (heroId) {
+    const { data, isLoading: isHeroLoading } = useQueryHero(heroId);
+
+    console.log({ data });
+    // useEffect(() => {
+    //   form.resetFields();
+    //   form.setFieldsValue(data as Hero);
+    // }, [data]);
+
     const onFinish = async (values: Hero) => {
       try {
-        await updateHero(heroId, values);
+        await mutateAsync({ id: heroId, hero: values });
 
         navigate(-1);
 
@@ -70,9 +66,9 @@ function HeroEdit() {
         </Space>
         <section>
           <Form
-            disabled={isFormLoading}
+            disabled={isHeroLoading || isSubmitLoading}
             form={form}
-            initialValues={edittingHero ?? undefined}
+            initialValues={data ?? undefined}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"

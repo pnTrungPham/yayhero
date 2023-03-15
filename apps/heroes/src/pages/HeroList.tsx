@@ -1,5 +1,6 @@
 import HeroAttribute from "@src/components/HeroAttribute";
-import { useHeroStore } from "@src/store/heroStore";
+import useMutationHeroDelete from "@src/hooks/useMutationHeroDelete";
+import useQueryHeroes from "@src/hooks/useQueryHeroes";
 import {
   HeroAttributes,
   HeroModel,
@@ -9,25 +10,23 @@ import { getErrorMessage } from "@src/utils/common";
 import { notifySuccess } from "@src/utils/notification";
 import { Button, Popconfirm, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React, { CSSProperties } from "react";
+import { CSSProperties } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useQueryClient } from "react-query";
 
 function HeroList() {
   const navigate = useNavigate();
 
-  const heroes = useHeroStore((s) => s.list.heroes);
+  const { isLoading, data: heroesData } = useQueryHeroes();
 
-  const isTableLoading = useHeroStore((store) => store.list.isLoading);
+  const { isLoading: isDeleting, mutateAsync: deleteAsync } =
+    useMutationHeroDelete();
 
-  const deleteHero = useHeroStore((store) => store.heroDelete);
-
-  const beginEditHeroByModel = useHeroStore(
-    (store) => store.heroBeginEditByModel
-  );
+  const queryClient = useQueryClient();
 
   const onHeroDelete = async (id: number) => {
     try {
-      await deleteHero(id);
+      await deleteAsync(id);
       notifySuccess({
         message: "Success",
         description: "Hero deleted!",
@@ -113,20 +112,14 @@ function HeroList() {
     },
   ];
 
-  const getRowStyle = (record: HeroModel): CSSProperties => {
+  const getRowStyle = (): CSSProperties => {
     return {
       cursor: "pointer",
     };
   };
 
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: HeroModel[]) => {
-      // TODO: implement onchange event
-    },
-  };
-
   const handleOnRowClick = (record: HeroModel) => {
-    beginEditHeroByModel(record);
+    queryClient.setQueryData(["hero", record.id], record);
     navigate(`/heroes/edit/${record.id}`);
   };
 
@@ -140,19 +133,18 @@ function HeroList() {
       </header>
 
       <Table
-        loading={isTableLoading}
+        loading={isLoading || isDeleting}
         rowKey={(record) => record.id}
         columns={columns}
-        dataSource={heroes}
+        dataSource={heroesData}
         onRow={(record) => {
           return {
             onClick: () => handleOnRowClick(record),
-            style: getRowStyle(record),
+            style: getRowStyle(),
           };
         }}
         rowSelection={{
           type: "checkbox",
-          ...rowSelection,
         }}
         pagination={{
           defaultPageSize: 10,

@@ -1,10 +1,11 @@
-import { useHeroStore } from "@src/store/heroStore";
 import { Hero } from "@src/types/heroes.type";
 import { getErrorMessage } from "@src/utils/common";
 import { notifyError, notifySuccess } from "@src/utils/notification";
-import { Button, Form, notification, Space } from "antd";
+import { Button, Form, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import HeroFormContent from "../components/HeroFormContent";
+
+import useMutationHeroAdd from "@src/hooks/useMutationHeroAdd";
 
 const DEFAULT_VALUE: Hero = {
   name: "default",
@@ -19,21 +20,25 @@ const DEFAULT_VALUE: Hero = {
 };
 
 function HeroAdd() {
-  const refetchHeroes = useHeroStore((store) => store.heroRefetch);
-  const addHero = useHeroStore((store) => store.heroSubmitAdd);
-  const isFormLoading = useHeroStore((store) => store.mutation.isLoading);
+  // const refetchHeroes = useHeroStore((store) => store.heroRefetch);
+  // const addHero = useHeroStore((store) => store.heroSubmitAdd);
+  // const isFormLoading = useHeroStore((store) => store.mutation.isLoading);
+
+  const { mutateAsync, isLoading } = useMutationHeroAdd();
 
   const [form] = Form.useForm<Hero>();
 
   const onFinish = async (values: Hero) => {
     try {
-      await addHero(values);
+      await mutateAsync(values);
       notifySuccess({
         message: "Success",
         description: "Hero created!",
       });
       navigate(-1);
-      await refetchHeroes();
+
+      // queryClient.invalidateQueries("heroes");
+      // await refetchHeroes();
     } catch (e) {
       const msg = await getErrorMessage(e);
 
@@ -65,7 +70,7 @@ function HeroAdd() {
 
       <section>
         <Form
-          disabled={isFormLoading}
+          disabled={isLoading}
           form={form}
           initialValues={DEFAULT_VALUE}
           onFinish={onFinish}
