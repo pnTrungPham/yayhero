@@ -1,5 +1,7 @@
 import { useHeroStore } from "@src/store/heroStore";
 import { Hero } from "@src/types/heroes.type";
+import { getErrorMessage } from "@src/utils/common";
+import { notifyError, notifySuccess } from "@src/utils/notification";
 import { Button, Form, notification, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import HeroFormContent from "../components/HeroFormContent";
@@ -16,30 +18,30 @@ const DEFAULT_VALUE: Hero = {
   },
 };
 
-type NotificationType = "success" | "info" | "warning" | "error";
-
-const openNotification = () => {
-  notification.open({
-    message: "Success",
-    description: "Hero added",
-  });
-};
-
 function HeroAdd() {
   const refetchHeroes = useHeroStore((store) => store.heroRefetch);
-  const addHero = useHeroStore((store) => store.heroAdd);
+  const addHero = useHeroStore((store) => store.heroSubmitAdd);
   const isFormLoading = useHeroStore((store) => store.mutation.isLoading);
 
   const [form] = Form.useForm<Hero>();
 
   const onFinish = async (values: Hero) => {
-    addHero(values, {
-      successCallback: () => {
-        openNotification();
-        navigate(-1);
-        refetchHeroes();
-      },
-    });
+    try {
+      await addHero(values);
+      notifySuccess({
+        message: "Success",
+        description: "Hero created!",
+      });
+      navigate(-1);
+      await refetchHeroes();
+    } catch (e) {
+      const msg = await getErrorMessage(e);
+
+      notifyError({
+        message: "Error",
+        description: msg,
+      });
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {

@@ -1,35 +1,54 @@
 import { useHeroStore } from "@src/store/heroStore";
 import { Hero } from "@src/types/heroes.type";
+import { getErrorMessage } from "@src/utils/common";
+import { notifyError, notifySuccess } from "@src/utils/notification";
 import { Button, Form, notification, Space } from "antd";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import HeroFormContent from "../components/HeroFormContent";
 
 function HeroEdit() {
-  const openNotification = () => {
-    notification.open({
-      message: "Success",
-      description: "Hero updated",
-      onClick: () => {
-        console.log("Notification Clicked!");
-      },
-    });
-  };
+  const heroBeginEditById = useHeroStore((store) => store.heroBeginEditById);
+  const updateHero = useHeroStore((store) => store.heroSubmitEdit);
+  const { edittingId, edittingHero } = useHeroStore((store) => store.edit);
+  const isFormLoading = useHeroStore((store) => store.mutation.isLoading);
 
-  const editHero = useHeroStore((s) => s.heroEdit);
   const params = useParams();
   const heroId = params.heroId ? parseInt(params.heroId) : null;
-  const hero = useHeroStore((s) => s.heroes.find((hero) => hero.id === heroId));
 
   const [form] = Form.useForm<Hero>();
   const navigate = useNavigate();
 
-  if (heroId && hero) {
-    const onFinish = (values: Hero) => {
-      editHero(heroId, values);
+  useEffect(() => {
+    if (heroId && heroId !== edittingId) {
+      heroBeginEditById(heroId);
+    }
+  }, [heroId]);
 
-      console.log("Success:", values);
-      openNotification();
-      navigate(-1);
+  useEffect(() => {
+    form.resetFields();
+    form.setFieldsValue(edittingHero as Hero);
+  }, [edittingHero]);
+
+  if (heroId) {
+    const onFinish = async (values: Hero) => {
+      try {
+        await updateHero(heroId, values);
+
+        navigate(-1);
+
+        notifySuccess({
+          message: "Success",
+          description: "Hero updated!",
+        });
+      } catch (e) {
+        const msg = await getErrorMessage(e);
+
+        notifyError({
+          message: "Error",
+          description: msg,
+        });
+      }
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -51,8 +70,9 @@ function HeroEdit() {
         </Space>
         <section>
           <Form
+            disabled={isFormLoading}
             form={form}
-            initialValues={hero}
+            initialValues={edittingHero ?? undefined}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"

@@ -2,66 +2,15 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
-import { getHeroes, postHero } from "@src/api/heroEndpoint";
+import {
+  deleteHero,
+  getHeroById,
+  getHeroes,
+  patchHero,
+  postHero,
+} from "@src/api/heroEndpoint";
 import { yayHeroData } from "../localize";
-import { Hero, HeroModel, HERO_LIST } from "../types/heroes.type";
-import { HTTPError } from "ky";
-
-// interface HeroState {
-//   heroes: HeroModel[];
-
-//   heroAdd: (hero: Hero) => void;
-//   heroEdit: (heroId: number, hero: Hero) => void;
-//   heroDelete: (heroId: number) => void;
-// }
-
-// export const useHeroStore = create<
-//   HeroState,
-//   [["zustand/immer", never], ["zustand/devtools", never]]
-// >(
-//   immer(
-//     devtools((set) => ({
-//       heroes: HERO_LIST,
-
-//       heroAdd: (hero) => {
-//         set((state) => {
-//           const heroModel: HeroModel = {
-//             ...hero,
-//             id: 1,
-//             modified: Date.now().toString(),
-//           };
-//           state.heroes.push(heroModel);
-//         });
-//       },
-
-//       heroEdit: (heroId, hero) => {
-//         set((state) => {
-//           const heroIndex = state.heroes.findIndex(
-//             (hero) => hero.id === heroId
-//           );
-//           if (heroIndex >= 0) {
-//             state.heroes[heroIndex] = {
-//               ...hero,
-//               id: heroId,
-//               modified: Date.now().toString(),
-//             };
-//           }
-//         });
-//       },
-
-//       heroDelete: (heroId) => {
-//         set((state) => {
-//           const heroIndex = state.heroes.findIndex(
-//             (hero) => hero.id === heroId
-//           );
-//           if (heroIndex >= 0) {
-//             state.heroes.splice(heroIndex, 1);
-//           }
-//         });
-//       },
-//     }))
-//   )
-// );
+import { Hero, HeroModel } from "../types/heroes.type";
 
 interface HeroState {
   list: {
@@ -70,18 +19,19 @@ interface HeroState {
   };
   mutation: {
     isLoading: boolean;
-
-    edittingHero: HeroModel;
+  };
+  edit: {
+    edittingId: number | null;
+    edittingHero: HeroModel | null;
   };
 
-  heroRefetch: () => void;
-  heroAdd: (
-    hero: Hero,
-    callbacks?: {
-      successCallback?: () => void;
-      failureCallback?: () => void;
-    }
-  ) => void;
+  heroRefetch: () => Promise<void>;
+  heroSubmitAdd: (hero: Hero) => Promise<number>;
+  heroBeginEditById: (id: number) => Promise<void>;
+  heroBeginEditByModel: (hero: HeroModel) => Promise<void>;
+  heroRevalidateEditModel: (id: number) => Promise<void>;
+  heroSubmitEdit: (id: number, payload: Hero) => Promise<number>;
+  heroDelete: (id: number) => Promise<boolean>;
 }
 
 export const useHeroStore = create<
@@ -89,24 +39,24 @@ export const useHeroStore = create<
   [["zustand/immer", never], ["zustand/devtools", never]]
 >(
   immer(
-    devtools((set) => ({
+    devtools((set, get) => ({
       list: {
         isLoading: false,
         heroes: yayHeroData.preloadHeroes,
       },
       mutation: {
         isLoading: false,
-        edittingHero: HERO_LIST[0],
       },
+      edit: {
+        edittingId: null,
+        edittingHero: null,
+      },
+
       heroRefetch: async () => {
-        function timeout(ms: number) {
-          return new Promise((resolve) => setTimeout(resolve, ms));
-        }
+        console.log("refetch");
         set((state) => {
           state.list.isLoading = true;
         });
-
-        await timeout(1000);
 
         try {
           const heroes = await getHeroes();
@@ -114,35 +64,156 @@ export const useHeroStore = create<
             state.list.heroes = heroes;
           });
         } catch (error) {
-          console.error(error);
+          throw error;
         } finally {
           set((state) => {
             state.list.isLoading = false;
           });
         }
       },
-      heroAdd: async (hero, callbacks) => {
+
+      heroSubmitAdd: async (hero) => {
         set((state) => {
           state.mutation.isLoading = true;
         });
 
         try {
-          await postHero(hero);
-          callbacks?.successCallback?.();
+          const id = await postHero(hero);
+          get().heroRefetch();
+          return id;
         } catch (error) {
-          if (error instanceof HTTPError) {
-            const body = await error.response.json();
-            console.log(body);
-          } else {
-            console.log("error", error);
-          }
+          throw error;
+        } finally {
+          set((state) => {
+            state.mutation.isLoading = false;
+          });
+        }
+      },
 
-          callbacks?.failureCallback?.();
+      heroBeginEditById: async (id: number) => {
+        set((state) => {
+          state.mutation.isLoading = true;
+        });
+
+        // Todo
+        // gan id
+        set((state) => {
+          state.edit.edittingId = id;
+        });
+
+        // tim trong list co model chua
+        const heroInListState = get().list.heroes.find(
+          (hero) => hero.id === id
+        );
+
+        // co thi gan, khong thi null
+        set((state) => {
+          state.edit.edittingHero = heroInListState ?? null;
+        });
+
+        // call heroRevalidateEditModel
+
+        await get().heroRevalidateEditModel(id);
+
+        set((state) => {
+          state.mutation.isLoading = false;
+        });
+      },
+
+      heroBeginEditByModel: async (hero: HeroModel) => {
+        // TODO gan id vs model
+        set((state) => {
+          state.edit.edittingHero = hero;
+          state.edit.edittingId = hero.id;
+        });
+        // load lai tu api
+        // call heroRevalidateEditModel
+        await get().heroRevalidateEditModel(hero.id);
+      },
+
+      heroRevalidateEditModel: async (id: number) => {
+        // check xem id con giong ma modified khac
+        set((state) => {
+          state.mutation.isLoading = true;
+        });
+        try {
+          const heroFromDb = await getHeroById(id);
+          const edittingHero = get().edit.edittingHero;
+          // set model moi
+
+          if (
+            !edittingHero ||
+            heroFromDb.id !== edittingHero.id ||
+            (heroFromDb.id === edittingHero.id &&
+              heroFromDb.modified !== edittingHero.modified)
+          ) {
+            set((state) => {
+              state.edit.edittingHero = heroFromDb;
+            });
+          }
+        } catch (e) {
+          throw e;
         }
 
         set((state) => {
           state.mutation.isLoading = false;
         });
+
+        // ko thi thoi
+      },
+
+      heroSubmitEdit: async (id, payload) => {
+        //TODO lam giong ham add
+        set((state) => {
+          state.mutation.isLoading = true;
+        });
+
+        try {
+          const result = await patchHero(id, payload);
+
+          await get().heroRefetch();
+
+          set((state) => {
+            state.edit.edittingHero =
+              state.list.heroes.find((hero) => hero.id === id) ?? null;
+          });
+
+          return result;
+        } catch (e) {
+          throw e;
+        } finally {
+          set((state) => {
+            state.mutation.isLoading = false;
+          });
+        }
+      },
+      heroDelete: async (id: number) => {
+        set((state) => {
+          state.list.isLoading = true;
+        });
+
+        try {
+          const result = await deleteHero(id);
+          if (result) {
+            const deletedIndex = get().list.heroes.findIndex(
+              (hero) => hero.id === id
+            );
+            set((state) => {
+              if (deletedIndex > -1) {
+                state.list.heroes.splice(deletedIndex, 1);
+              }
+            });
+            return result;
+          } else {
+            throw new Error("Failed to delete hero!");
+          }
+        } catch (e) {
+          throw e;
+        } finally {
+          set((state) => {
+            state.list.isLoading = false;
+          });
+        }
       },
     }))
   )

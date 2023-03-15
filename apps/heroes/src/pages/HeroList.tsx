@@ -2,37 +2,44 @@ import HeroAttribute from "@src/components/HeroAttribute";
 import { useHeroStore } from "@src/store/heroStore";
 import {
   HeroAttributes,
-  HeroClass,
   HeroModel,
   HERO_CLASSES,
-  HERO_CLASS_COLORS,
 } from "@src/types/heroes.type";
-import { Button, notification, Popconfirm, Table } from "antd";
+import { getErrorMessage } from "@src/utils/common";
+import { notifySuccess } from "@src/utils/notification";
+import { Button, Popconfirm, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React, { CSSProperties } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function HeroList() {
-  const openNotification = () => {
-    notification.open({
-      message: "Success",
-      description: "Hero deleted!",
-    });
-  };
-
   const navigate = useNavigate();
 
   const heroes = useHeroStore((s) => s.list.heroes);
 
   const isTableLoading = useHeroStore((store) => store.list.isLoading);
 
-  const deleteHero = (id: number) => {}; // TODO
+  const deleteHero = useHeroStore((store) => store.heroDelete);
 
-  const refetchHero = useHeroStore((s) => s.heroRefetch);
+  const beginEditHeroByModel = useHeroStore(
+    (store) => store.heroBeginEditByModel
+  );
 
-  const onHeroDelete = (id: number) => {
-    deleteHero(id);
-    openNotification();
+  const onHeroDelete = async (id: number) => {
+    try {
+      await deleteHero(id);
+      notifySuccess({
+        message: "Success",
+        description: "Hero deleted!",
+      });
+    } catch (e) {
+      const msg = await getErrorMessage(e);
+
+      notifySuccess({
+        message: "Error",
+        description: msg,
+      });
+    }
   };
 
   const columns: ColumnsType<HeroModel> = [
@@ -107,10 +114,7 @@ function HeroList() {
   ];
 
   const getRowStyle = (record: HeroModel): CSSProperties => {
-    let heroClass: HeroClass = record.class;
-
     return {
-      background: HERO_CLASS_COLORS[heroClass].color ?? "none",
       cursor: "pointer",
     };
   };
@@ -121,12 +125,13 @@ function HeroList() {
     },
   };
 
+  const handleOnRowClick = (record: HeroModel) => {
+    beginEditHeroByModel(record);
+    navigate(`/heroes/edit/${record.id}`);
+  };
+
   return (
     <div>
-      {isTableLoading ? "true" : "false"}
-      <Button onClick={refetchHero} loading={isTableLoading}>
-        test
-      </Button>
       <header className="yayhero-herolist-title">
         <h4>Heroes</h4>
         <Link to="/heroes/add">
@@ -141,14 +146,18 @@ function HeroList() {
         dataSource={heroes}
         onRow={(record) => {
           return {
-            onClick: () => {
-              navigate(`/heroes/edit/${record.id}`);
-            },
+            onClick: () => handleOnRowClick(record),
+            style: getRowStyle(record),
           };
         }}
         rowSelection={{
           type: "checkbox",
           ...rowSelection,
+        }}
+        pagination={{
+          defaultPageSize: 10,
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "20", "30"],
         }}
       />
     </div>

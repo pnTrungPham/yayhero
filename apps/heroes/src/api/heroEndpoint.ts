@@ -17,7 +17,7 @@ export function postHero(payload: Hero): Promise<number> {
     .json();
 }
 
-export function patchHero(heroId: number, payload: Hero): Promise<HeroModel> {
+export function patchHero(heroId: number, payload: Hero): Promise<any> {
   return wpEndpoint
     .patch(`heroes/${heroId}`, {
       json: payload,

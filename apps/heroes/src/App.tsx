@@ -2,13 +2,18 @@ import "./App.scss";
 
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
-import { getHeroes } from "./api/heroEndpoint";
-import { useEffect } from "react";
+
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <div className="yayhero-container">
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </div>
   );
 }

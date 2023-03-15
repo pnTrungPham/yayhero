@@ -35,6 +35,7 @@ type HeroClassColors = Record<
   }
 >;
 
+
 export const HERO_CLASS_COLORS: HeroClassColors = {
   Warrior: {
     color: "#FFEBEE",
