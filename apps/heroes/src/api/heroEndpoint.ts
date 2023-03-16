@@ -6,6 +6,7 @@ export function getHeroes(): Promise<HeroModel[]> {
 }
 
 export function getHeroById(heroId: number): Promise<HeroModel> {
+  console.log("hello");
   return wpEndpoint.get(`heroes/${heroId}`).json();
 }
 

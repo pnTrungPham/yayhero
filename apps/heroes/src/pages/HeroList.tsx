@@ -11,8 +11,8 @@ import { notifySuccess } from "@src/utils/notification";
 import { Button, Popconfirm, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { CSSProperties } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "react-query";
+import { Link, useNavigate } from "react-router-dom";
 
 function HeroList() {
   const navigate = useNavigate();
@@ -97,6 +97,9 @@ function HeroList() {
             e?.stopPropagation();
             onHeroDelete(record.id);
           }}
+          onCancel={(e) => {
+            e?.stopPropagation();
+          }}
         >
           <Button
             type="primary"
@@ -118,8 +121,10 @@ function HeroList() {
     };
   };
 
-  const handleOnRowClick = (record: HeroModel) => {
+  const handleOnRowClick = async (record: HeroModel) => {
     queryClient.setQueryData(["hero", record.id], record);
+    queryClient.invalidateQueries(["hero", record.id]);
+
     navigate(`/heroes/edit/${record.id}`);
   };
 

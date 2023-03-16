@@ -22,10 +22,11 @@ function HeroEdit() {
     const { data, isLoading: isHeroLoading } = useQueryHero(heroId);
 
     console.log({ data });
-    // useEffect(() => {
-    //   form.resetFields();
-    //   form.setFieldsValue(data as Hero);
-    // }, [data]);
+    useEffect(() => {
+      console.log("useEffect");
+      form.resetFields();
+      form.setFieldsValue(data as Hero);
+    }, [data]);
 
     const onFinish = async (values: Hero) => {
       try {
