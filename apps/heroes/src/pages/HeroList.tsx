@@ -1,3 +1,4 @@
+import { PageOptions } from "@src/api/heroEndpoint";
 import HeroAttribute from "@src/components/HeroAttribute";
 import useMutationHeroDelete from "@src/hooks/useMutationHeroDelete";
 import useQueryHeroes from "@src/hooks/useQueryHeroes";
@@ -8,16 +9,21 @@ import {
 } from "@src/types/heroes.type";
 import { getErrorMessage } from "@src/utils/common";
 import { notifySuccess } from "@src/utils/notification";
-import { Button, Popconfirm, Table } from "antd";
+import { Button, Pagination, Popconfirm, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { CSSProperties } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 
 function HeroList() {
   const navigate = useNavigate();
 
-  const { isLoading, data: heroesData } = useQueryHeroes();
+  const [pagingOptions, setPagingOptions] = useState<PageOptions>({
+    page: 1,
+    size: 5,
+  });
+
+  const { isLoading, data: heroesData } = useQueryHeroes(pagingOptions);
 
   const { isLoading: isDeleting, mutateAsync: deleteAsync } =
     useMutationHeroDelete();
@@ -41,6 +47,10 @@ function HeroList() {
     }
   };
 
+  const handlePaginationChange = (page: number, pageSize: number) => {
+    setPagingOptions({ page, size: pageSize });
+  };
+
   const columns: ColumnsType<HeroModel> = [
     {
       title: "ID",
@@ -53,7 +63,6 @@ function HeroList() {
       dataIndex: "name",
       key: "name",
       render: (value: string) => <span>{value}</span>,
-      defaultSortOrder: "descend",
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
@@ -141,7 +150,7 @@ function HeroList() {
         loading={isLoading || isDeleting}
         rowKey={(record) => record.id}
         columns={columns}
-        dataSource={heroesData}
+        dataSource={heroesData?.content}
         onRow={(record) => {
           return {
             onClick: () => handleOnRowClick(record),
@@ -151,11 +160,18 @@ function HeroList() {
         rowSelection={{
           type: "checkbox",
         }}
-        pagination={{
-          defaultPageSize: 10,
-          showSizeChanger: true,
-          pageSizeOptions: ["10", "20", "30"],
-        }}
+        pagination={false}
+      />
+
+      <Pagination
+        defaultCurrent={1}
+        current={pagingOptions.page}
+        defaultPageSize={pagingOptions.size}
+        pageSize={pagingOptions.size}
+        pageSizeOptions={[5, 10]}
+        total={heroesData?.totalItems}
+        showSizeChanger={true}
+        onChange={handlePaginationChange}
       />
     </div>
   );

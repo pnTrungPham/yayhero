@@ -22,6 +22,13 @@ export interface HeroAttributes {
   vitality: number;
 }
 
+export interface Page<T> {
+  content: Array<T>;
+  page: number;
+  size: number;
+  totalItems: number;
+}
+
 export type HeroModel = Hero & {
   id: number;
   modified: string;
@@ -34,7 +41,6 @@ type HeroClassColors = Record<
     activeColor: string;
   }
 >;
-
 
 export const HERO_CLASS_COLORS: HeroClassColors = {
   Warrior: {

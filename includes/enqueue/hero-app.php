@@ -29,7 +29,7 @@ function yayhero_register_entry()
         'isRtl' => is_rtl(),
         'restUrl' => esc_url_raw(rest_url()),
         'restNonce' => wp_create_nonce('wp_rest'),
-        'preloadHeroes' => yayhero_get_heroes()
+        'preloadHeroes' => yayhero_get_heroes(1, 5),
     ]);
 }
 

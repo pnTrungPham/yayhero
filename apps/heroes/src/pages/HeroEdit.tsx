@@ -7,7 +7,6 @@ import { Button, Form, Space } from "antd";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import HeroFormContent from "../components/HeroFormContent";
-import { useQueryClient } from "react-query";
 
 function HeroEdit() {
   const params = useParams();

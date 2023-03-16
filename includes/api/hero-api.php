@@ -1,6 +1,10 @@
 <?php
 
 define('POST_TYPE', 'yayhero');
+
+define('DEFAULT_PAGE_SIZE', 5);
+
+
 function yayhero_has_api_permission()
 {
     return current_user_can('manage_options');
@@ -10,8 +14,20 @@ add_action('rest_api_init', function () {
     register_rest_route('yayhero/v1', '/heroes', [
         [
             'methods' => 'GET',
-            'callback' => 'yayhero_get_heroes',
-            'permission_callback' => 'yayhero_has_api_permission'
+            'callback' => 'yayhero_get_heroes_with_pagination',
+            'permission_callback' => 'yayhero_has_api_permission',
+            'args' => [
+                'page' => [
+                    'required' => true,
+                    'default' => 1,
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+                'size' => [
+                    'required' => true,
+                    'default' => DEFAULT_PAGE_SIZE,
+                    'sanitize_callback' => 'sanitize_text_field',
+                ]
+            ]
         ],
         [
             'methods' => 'POST',
@@ -86,18 +102,45 @@ function get_post_from_hero($payload)
     return $post;
 }
 
-function yayhero_get_heroes()
+function yayhero_get_heroes($page = 1, $size)
 {
-    $posts = get_posts(['post_type' => POST_TYPE, 'numberposts' => -1]);
+    $offset = ($page - 1) * $size;
+
+    $posts = get_posts([
+        'post_type' => POST_TYPE,
+        'numberposts' => $size,
+        'offset' => $offset
+    ]);
 
     if (empty($posts)) {
-        return [];
+        $content = [];
+    } else {
+        $content = array_map(function ($post) {
+            return get_hero_from_post($post);
+        }, $posts);
     }
 
-    return array_map(function ($post) {
+    // TODO
+    $post_counts = wp_count_posts('yayhero')->publish;
 
-        return get_hero_from_post($post);
-    }, $posts);
+
+    return [
+        'content' => $content,
+        'page' => $page,
+        'size' => $size,
+        'totalItems' => $post_counts,
+    ];
+}
+
+function yayhero_get_heroes_with_pagination(WP_REST_Request $request)
+{
+    $page = $request->get_params()['page'];
+
+    $size = $request->get_params()['size'];
+
+    $result = yayhero_get_heroes($page, $size);
+
+    return $result;
 }
 
 function yayhero_get_hero_by_id(WP_REST_Request $request)

@@ -1,12 +1,20 @@
-import { Hero, HeroModel } from "@src/types/heroes.type";
+import { Hero, HeroModel, Page } from "@src/types/heroes.type";
 import wpEndpoint from "./wpRest";
 
-export function getHeroes(): Promise<HeroModel[]> {
-  return wpEndpoint.get("heroes").json();
+export interface PageOptions {
+  page: number;
+  size: number;
+}
+
+export function getHeroes({
+  page = 1,
+  size = 5,
+}: PageOptions): Promise<Page<HeroModel>> {
+  console.log("getHeroes");
+  return wpEndpoint.get(`heroes?page=${page}&size=${size}`).json();
 }
 
 export function getHeroById(heroId: number): Promise<HeroModel> {
-  console.log("hello");
   return wpEndpoint.get(`heroes/${heroId}`).json();
 }
 

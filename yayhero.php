@@ -32,4 +32,8 @@ if (!wp_installing()) {
             include YAY_HERO_PLUGIN_PATH . 'includes/api/hero-api.php';
         }
     );
+
+    add_action('init', function () {
+        register_post_type('yayhero');
+    });
 }
