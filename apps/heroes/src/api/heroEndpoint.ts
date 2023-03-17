@@ -34,6 +34,10 @@ export function patchHero(heroId: number, payload: Hero): Promise<any> {
     .json();
 }
 
+export function levelupHero(heroId: number): Promise<any> {
+  return wpEndpoint.put(`heroes/${heroId}`);
+}
+
 export function deleteHero(heroId: number): Promise<boolean> {
   return wpEndpoint.delete(`heroes/${heroId}`).json();
 }

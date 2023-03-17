@@ -1,7 +1,9 @@
 import { PageOptions } from "@src/api/heroEndpoint";
 import HeroAttribute from "@src/components/HeroAttribute";
+import HeroLevelCell from "@src/components/HeroLevelCell";
 import useMutationHeroDelete from "@src/hooks/useMutationHeroDelete";
 import useQueryHeroes from "@src/hooks/useQueryHeroes";
+import { yayHeroData } from "@src/localize";
 import {
   HeroAttributes,
   HeroModel,
@@ -11,7 +13,7 @@ import { getErrorMessage } from "@src/utils/common";
 import { notifySuccess } from "@src/utils/notification";
 import { Button, Pagination, Popconfirm, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useState } from "react";
 import { useQueryClient } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -51,7 +53,7 @@ function HeroList() {
     setPagingOptions({ page, size: pageSize });
   };
 
-  const columns: ColumnsType<HeroModel> = [
+  let columns: ColumnsType<HeroModel> = [
     {
       title: "ID",
       dataIndex: "id",
@@ -81,7 +83,9 @@ function HeroList() {
       title: "Level",
       dataIndex: "level",
       key: "level",
-      render: (value: number) => <span className="level-badge">{value}</span>,
+      render: (value: number, record) => (
+        <HeroLevelCell level={value} id={record.id} />
+      ),
     },
     {
       title: "Attributes",
@@ -124,6 +128,10 @@ function HeroList() {
     },
   ];
 
+  if (!yayHeroData.auth.canWrite) {
+    columns = columns.filter((col) => col.key !== "action");
+  }
+
   const getRowStyle = (): CSSProperties => {
     return {
       cursor: "pointer",
@@ -141,9 +149,11 @@ function HeroList() {
     <div>
       <header className="yayhero-herolist-title">
         <h4>Heroes</h4>
-        <Link to="/heroes/add">
-          <Button type="primary">Add Heroes</Button>
-        </Link>
+        {yayHeroData.auth.canWrite && (
+          <Link to="/heroes/add">
+            <Button type="primary">Add Heroes</Button>
+          </Link>
+        )}
       </header>
 
       <Table

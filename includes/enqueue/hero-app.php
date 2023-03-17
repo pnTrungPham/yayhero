@@ -30,6 +30,11 @@ function yayhero_register_entry()
         'restUrl' => esc_url_raw(rest_url()),
         'restNonce' => wp_create_nonce('wp_rest'),
         'preloadHeroes' => yayhero_get_heroes(1, 5),
+        'auth' => [
+            'canWrite' => current_user_can('manage_options'),
+            'canRead' => current_user_can('read')
+        ]
+
     ]);
 }
 

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import HeroFormContent from "../components/HeroFormContent";
 
 import useMutationHeroAdd from "@src/hooks/useMutationHeroAdd";
+import { yayHeroData } from "@src/localize";
 
 const DEFAULT_VALUE: Hero = {
   name: "default",
@@ -20,10 +21,6 @@ const DEFAULT_VALUE: Hero = {
 };
 
 function HeroAdd() {
-  // const refetchHeroes = useHeroStore((store) => store.heroRefetch);
-  // const addHero = useHeroStore((store) => store.heroSubmitAdd);
-  // const isFormLoading = useHeroStore((store) => store.mutation.isLoading);
-
   const { mutateAsync, isLoading } = useMutationHeroAdd();
 
   const [form] = Form.useForm<Hero>();
@@ -36,9 +33,6 @@ function HeroAdd() {
         description: "Hero created!",
       });
       navigate(-1);
-
-      // queryClient.invalidateQueries("heroes");
-      // await refetchHeroes();
     } catch (e) {
       const msg = await getErrorMessage(e);
 
@@ -70,7 +64,7 @@ function HeroAdd() {
 
       <section>
         <Form
-          disabled={isLoading}
+          disabled={isLoading || !yayHeroData.auth.canWrite}
           form={form}
           initialValues={DEFAULT_VALUE}
           onFinish={onFinish}

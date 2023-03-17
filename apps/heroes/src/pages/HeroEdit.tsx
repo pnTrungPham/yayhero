@@ -1,5 +1,6 @@
 import useMutationHeroUpdate from "@src/hooks/useMutationHeroUpdate";
 import useQueryHero from "@src/hooks/useQueryHero";
+import { yayHeroData } from "@src/localize";
 import { Hero } from "@src/types/heroes.type";
 import { getErrorMessage } from "@src/utils/common";
 import { notifyError, notifySuccess } from "@src/utils/notification";
@@ -66,7 +67,9 @@ function HeroEdit() {
         </Space>
         <section>
           <Form
-            disabled={isHeroLoading || isSubmitLoading}
+            disabled={
+              isHeroLoading || isSubmitLoading || !yayHeroData.auth.canWrite
+            }
             form={form}
             initialValues={data ?? undefined}
             onFinish={onFinish}
