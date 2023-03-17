@@ -3,7 +3,15 @@ import { Button, Space, Tooltip } from "antd";
 import { UpOutlined } from "@ant-design/icons";
 import { yayHeroData } from "@src/localize";
 
-function HeroLevelCell({ level, id }: { level: number; id: number }) {
+function HeroLevelCell({
+  level,
+  id,
+  onClick,
+}: {
+  level: number;
+  id: number;
+  onClick?: Function;
+}) {
   const { isLoading, mutateAsync } = useMutationHeroLevelUp();
 
   const performLevelUp = async () => {

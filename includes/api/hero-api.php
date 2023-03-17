@@ -97,10 +97,6 @@ function get_hero_from_post(WP_Post $post)
 
 function get_post_from_hero($payload)
 {
-
-
-
-
     $payload_clone = $payload;
 
     unset($payload_clone['name']);

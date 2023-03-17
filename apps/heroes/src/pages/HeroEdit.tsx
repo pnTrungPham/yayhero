@@ -21,9 +21,7 @@ function HeroEdit() {
   if (heroId) {
     const { data, isLoading: isHeroLoading } = useQueryHero(heroId);
 
-    console.log({ data });
     useEffect(() => {
-      console.log("useEffect");
       form.resetFields();
       form.setFieldsValue(data as Hero);
     }, [data]);
