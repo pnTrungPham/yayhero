@@ -9,7 +9,9 @@
     "dev": "vite"
   },
   "dependencies": {
-    "antd": "^5.1.4",
+    "@ant-design/icons": "^5.1.4",
+    "antd": "^5.3.0",
+    "axios": "^1.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.14.0"
@@ -18,11 +20,16 @@
     "@types/node": "^18.14.6",
     "@types/react": "^17.0.52",
     "@types/react-dom": "^17.0.18",
+    "@types/react-query": "^1.2.9",
+    "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^3.0.1",
+    "devtools": "link:/react-query/devtools",
+    "react-query": "^3.39.3",
     "sass": "^1.58.3",
     "typescript": "^4.9.5",
     "vite": "^4.0.4",
     "vite-plugin-dynamic-base": "^0.4.7",
-    "vite-plugin-externals": "^0.5.1"
+    "vite-plugin-externals": "^0.5.1",
+    "zustand": "^4.3.8"
   }
 }
