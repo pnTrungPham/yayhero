@@ -1,31 +1,33 @@
+import { StateCreator } from "zustand";
 
-const themeState = {
+interface ThemeState {
+    dark: boolean;
+    bgColor: string;
+    txtColor: string
+}
+
+const initialState:ThemeState = {
     dark: false,
     bgColor: '#fff',
     txtColor: '#111'
 }
 
-let themeStore = (set: any, get: any) => {
+export const themeStore:StateCreator<ThemeState> = (set) => {
     return {
-      themeState: themeState,
-      toggleDarkMode: (isDarkMode: any) => {
-        set((state: any) => {
-          return {
-            ...state,
-            themeState: {
-              ...state.themeState,
-              dark: isDarkMode,
-              bgColor: isDarkMode ? '#111' : '#fff',
-              txtColor: isDarkMode ? '#fff' : '#111'
+        dark: initialState.dark,
+        bgColor: initialState.bgColor,
+        txtColor: initialState.txtColor,
+        toggleDarkMode: (isDarkMode: boolean) => {
+            set((state) => {
+            return {
+                dark: isDarkMode,
+                bgColor: isDarkMode ? '#111' : '#fff',
+                txtColor: isDarkMode ? '#fff' : '#111'
             }
-          }
-        },
-        false,
-        `theme/toggle_${isDarkMode ? 'dark' : 'light'}`
-        )
-      }
+            },
+            false,
+            `theme/toggle_${isDarkMode ? 'dark' : 'light'}`
+            )
+        }
     };
   };
-  
-
-export default themeStore;

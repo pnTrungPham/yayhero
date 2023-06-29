@@ -1,121 +1,110 @@
 import axios from "axios";
+import { StateCreator } from "zustand";
 
-// export interface userState {
-//     data: Array<any>
-//     loading: boolean
-//     error: any
-// }
+export interface User {
+    id: number | null;
+    firstName: string;
+    image: string;
+}
 
-const userState = {
+interface UserState {
+    data: User[];
+    loading: boolean;
+    error?: any;
+}
+const initialState: UserState = {
     data: [
         {
-            id: 200, 
-            firstName: 'Terry 1', 
-            lastName: 'Medhurst',
+            id: 200,
+            firstName: 'Terry 1',
             image: "https://robohash.org/hicveldicta.png"
         }
     ],
     loading: false,
-    error: undefined
-}
+};
 
-let userStore = (set:any, get:any) => {
+export const userStore: StateCreator<UserState> = (set) => {
     return {
-        userState,
+        data: initialState.data,
+        loading: initialState.loading,
+        error: initialState.error,
         getUsers: async () => {
-
-            set(
-                (state:any) => {
-                    return {
-                        ...state,
-                        userState:{
-                            ...state.userState,
-                            loading: true
-                        }
-                    }
-                },
-                false,
-                `users/fetch_request`
-            )
-
             try {
-                const res = await axios.get(`https://dummyjson.com/users?limit=10`)
-                set(
-                    (state:any) => {
-                        return {
-                            ...state,
-                            userState:{
-                                ...state.userState,
-                                loading: false,
-                                data: [...res.data.users, ...state.userState.data]  
-                            }
-                        }
-                    },
-                    false,
-                    `users/fetch_success`
-                  )
-            }catch (err) {
-                set(
-                    (state:any) => {
-                        return {
-                            ...state,
-                            userState:{
-                                ...state.userState,
-                                loading: false,
-                                error: err
-                            }
-                        }
-                    },
-                    false,
-                    `users/fetch_error`
-                  )
+                const res = await axios.get(`https://dummyjson.com/users?limit=10`);
+                set((state) => ({
+                    data: [...res.data.users, ...state.data],
+                    loading: false,
+                    error: undefined
+                }));
+            } catch (err) {
+                set({ loading: false, error: err });
             }
         },
-        createUsers: async (newUser:any) => {
-            set(
-                (state:any) => {
-                    return {
-                        ...state,
-                        userState:{
-                            ...state.userState,
-                            loading: true
-                        }
-                    }
-                },
-                false,
-                `users/create_request`
-            )
-
+        createUsers: async (newUser: User) => {
             try {
                 const res = await axios.post(`https://dummyjson.com/users/add`, newUser);
-
                 set(
-                    (state:any) => {
-                        console.log(state.userState);
-                        return {
-                            ...state,
-                            userState:{
-                                ...state.userState,
-                                loading: false,
-                                data: [res.data, ...state.userState.data] 
-                            }
-                        }
+                    (state) => {
+                        state.loading = false;
+                        state.data = [res.data, ...state.data]
                     },
                     false,
-                    `users/fetch_success`
+                    `users/create_success`
                 )
             } catch (err) {
                 set(
-                    (state:any) => {
-                      state.userState.loading = false;
-                      state.userState.error = err;
-                    },
+                    (state) => ({
+                        loading: false,
+                        error: err
+                    }),
                     false,
                     "users/create_error"
                 )
             }
-        }
-    }
-}
-
-export default userStore
+        },
+        updateUsers: async (updateUser: User) => {
+            try {
+              set(
+                (state) => {
+                  state.loading = false;
+                  state.data = state.data?.map(item => 
+                    item.id === updateUser.id ? updateUser: item
+                  )
+                },
+                false,
+                "users/update_success"
+              )
+            } catch (err) {
+              set(
+                (state) => {
+                  state.loading = false;
+                  state.error = err;
+                },
+                false,
+                "users/update_error"
+              )
+            }
+        },
+        deleteUsers: async (id:Number) => {
+            try {
+              set(
+                (state) => {
+                  state.loading = false;
+                  state.data = state.data?.filter(item => item.id !== id)
+                },
+                false,
+                "users/delete_success"
+              )
+            } catch (err) {
+              set(
+                (state) => {
+                  state.loading = false;
+                  state.error = err;
+                },
+                false,
+                "users/delete_error"
+              )
+            }
+          }
+    };
+};
