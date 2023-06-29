@@ -15,9 +15,10 @@ function HeroList() {
   useEffect(() => {
     getUsers();
   }, [getUsers]);
+  console.log(users);
 
   const handleToggleDarkMode = () => {
-    toggleDarkMode(!dark);
+   toggleDarkMode(!dark);
   };
 
   return (

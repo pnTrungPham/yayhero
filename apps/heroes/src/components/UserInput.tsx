@@ -18,7 +18,7 @@ const UserInput: React.FC<UserInputProps> = ({ edit, setUserEdit }) => {
 
     const onFinish = (values: User) => {
         if (edit) {
-            createUsers({edit, ...values})
+            updateUsers({...edit, ...values})
         } else {
             createUsers(values)
         }

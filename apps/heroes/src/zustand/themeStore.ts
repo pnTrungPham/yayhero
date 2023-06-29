@@ -1,18 +1,19 @@
 import { StateCreator } from "zustand";
 
-interface ThemeState {
+export interface ThemeState {
     dark: boolean;
     bgColor: string;
     txtColor: string
+    toggleDarkMode: (isDarkMode: boolean) => void;
 }
 
-const initialState:ThemeState = {
+const initialState = {
     dark: false,
     bgColor: '#fff',
     txtColor: '#111'
 }
 
-export const themeStore:StateCreator<ThemeState> = (set) => {
+export const useThemeStore:StateCreator<ThemeState> = (set) => {
     return {
         dark: initialState.dark,
         bgColor: initialState.bgColor,

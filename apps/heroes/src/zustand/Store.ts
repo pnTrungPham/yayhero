@@ -1,19 +1,16 @@
 
 import { create } from "zustand";
 import { devtools } from 'zustand/middleware'
-import {themeStore} from "./themeStore";
-import {userStore} from "./userStore";
+import {useThemeStore} from "./themeStore";
+import {useUserStore, UserState} from "./userStore";
+import {ThemeState} from "./themeStore"
 
-const useBoundStore = create(
-  
-    devtools( (...set) => {
-      return {
-        ...themeStore((set) => themeStore),
-        ...userStore(...set),
-      }
-    },
-  )
-  
-    
-)
-export default useBoundStore;
+type Store = UserState & ThemeState
+
+
+const useStore = create<Store, [["zustand/devtools", never]]>( devtools((...set) => ({
+  ...useUserStore(...set),
+  ...useThemeStore(...set)
+})))
+
+export default useStore

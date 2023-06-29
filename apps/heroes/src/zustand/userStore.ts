@@ -7,12 +7,16 @@ export interface User {
     image: string;
 }
 
-interface UserState {
+export interface UserState {
     data: User[];
-    loading: boolean;
+    loading?: boolean;
     error?: any;
+    getUsers: () => void;
+    createUsers: (newUser: User) => void;
+    updateUsers: (updateUser: User) => void;
+    deleteUsers: (id:Number) => void;
 }
-const initialState: UserState = {
+const initialState = {
     data: [
         {
             id: 200,
@@ -23,19 +27,23 @@ const initialState: UserState = {
     loading: false,
 };
 
-export const userStore: StateCreator<UserState> = (set) => {
+export const useUserStore: StateCreator<UserState> = (set) => {
     return {
         data: initialState.data,
         loading: initialState.loading,
-        error: initialState.error,
         getUsers: async () => {
             try {
                 const res = await axios.get(`https://dummyjson.com/users?limit=10`);
-                set((state) => ({
-                    data: [...res.data.users, ...state.data],
-                    loading: false,
-                    error: undefined
-                }));
+                set(
+                    (state) => {
+                        console.log(state);
+                        state.data = [...res.data.users, ...state.data],
+                        state.loading = false,
+                        state.error = undefined
+                    },
+                    false,
+                    `users/get_success`
+                );
             } catch (err) {
                 set({ loading: false, error: err });
             }
