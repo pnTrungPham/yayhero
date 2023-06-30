@@ -1,16 +1,17 @@
-
 import { create } from "zustand";
-import { devtools } from 'zustand/middleware'
-import {useThemeStore} from "./themeStore";
-import {useUserStore, UserState} from "./userStore";
-import {ThemeState} from "./themeStore"
+import { devtools } from "zustand/middleware";
+import { useThemeStore, ThemeState } from "./themeStore";
+import { useUserStore, UserState } from "./userStore";
+import { useCounterStore, CounterState } from "./counterStore";
 
-type Store = UserState & ThemeState
+type Store = UserState & ThemeState & CounterState;
 
+const useStore = create<Store, [["zustand/devtools", never]]>(
+  devtools((...set) => ({
+    ...useUserStore(...set),
+    ...useThemeStore(...set),
+    ...useCounterStore(...set),
+  }))
+);
 
-const useStore = create<Store, [["zustand/devtools", never]]>( devtools((...set) => ({
-  ...useUserStore(...set),
-  ...useThemeStore(...set)
-})))
-
-export default useStore
+export default useStore;

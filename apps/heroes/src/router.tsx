@@ -4,13 +4,13 @@ import BigManList from "./pages/BigManList";
 
 const router = createHashRouter([
     {
-      path: "/HeroList",
+      path: "/heroes",
       element: <HeroList />,
     },
     {
-        path: "/",
-        element: <BigManList />,
-      },
+      path: "/",
+      element: <BigManList />,
+    },
   ]);
   
   export default router;

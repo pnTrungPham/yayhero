@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import useStore from '../zustand/Store';
-import  { User } from '../zustand/userStore'
-import Card from '../components/Card';
-import UserInput from '../components/UserInput';
+import React, { useEffect, useState } from "react";
+import useStore from "../zustand/Store";
+import { User } from "../zustand/userStore";
+import Card from "../components/Card";
+import UserInput from "../components/UserInput";
+import { Link } from "react-router-dom";
 
 function HeroList() {
   const [edit, setEdit] = useState<User>({
     id: null,
-    firstName: '',
-    image: '',
+    firstName: "",
+    image: "",
   });
   const { dark, toggleDarkMode, getUsers, data: users } = useStore();
 
@@ -18,18 +19,21 @@ function HeroList() {
   console.log(users);
 
   const handleToggleDarkMode = () => {
-   toggleDarkMode(!dark);
+    toggleDarkMode(!dark);
   };
 
   return (
     <div>
+      <Link to="/">
+        <button> Big Man List</button>
+      </Link>
       <header className="yayhero-herolist-title">
         <h4>Heroes</h4>
       </header>
       <div>
         <UserInput edit={edit} setUserEdit={setEdit} />
       </div>
-      <div style={{ cursor: 'pointer', padding: '15px' }}>
+      <div style={{ cursor: "pointer", padding: "15px" }}>
         {dark ? (
           <img
             src="https://yay-wp.test/wp-content/plugins/yayhero/apps/heroes/src/images/dark.png"

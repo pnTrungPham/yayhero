@@ -1,11 +1,11 @@
-import {create} from 'zustand';
+import { StateCreator } from "zustand";
 
-type CounterStore = {
+export interface CounterState {
   count: number;
   increment: () => void;
-};
+}
 
-export const useCounterStore = create<CounterStore>((set) => ({
+export const useCounterStore: StateCreator<CounterState> = (set) => ({
   count: 0,
   increment: () => set((state) => ({ count: state.count + 1 })),
-}));
+});
