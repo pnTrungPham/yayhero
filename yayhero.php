@@ -29,6 +29,7 @@ if (!wp_installing()) {
         function () {
             include YAY_HERO_PLUGIN_PATH . 'includes/pages/hero-admin.php';
             include YAY_HERO_PLUGIN_PATH . 'includes/enqueue/hero-app.php';
+            include YAY_HERO_PLUGIN_PATH . 'includes/api/hero-api.php';
         }
     );
 }
