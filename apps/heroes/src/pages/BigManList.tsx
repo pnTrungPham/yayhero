@@ -1,34 +1,32 @@
-import axios from "axios";
-import { useQuery } from "react-query";
 import AddBigManForm from "../components/AddBigManForm";
 import useStore from "../zustand/Store";
 import { Link } from "react-router-dom";
-import { yayHeroData } from "../localize";
-
-type User = {
-  id: number;
-  username: string;
-};
-
-const fetchUsers = async (): Promise<User[]> => {
-  const res = await axios({
-    method: "get",
-    url: `${yayHeroData.restUrl}yayhero/v1/heroes`,
-    headers: {
-      "X-WP-Nonce": yayHeroData.restNonce,
-    },
-  });
-  return res.data.data;
-};
+import { useQueryBigMans } from "../hooks/useQueryBigMan";
+import { useMutationBigMansDelete } from "../hooks/useMutationBigMan";
+import { useState } from "react";
+import { BigMan } from "../types/bigMan.type";
 
 const BigManList = () => {
-  const {
-    data: users,
-    isLoading,
-    isError,
-    error,
-  } = useQuery<User[]>("users", fetchUsers, { staleTime: 30 * 1000 });
+  const [editBigMan, setEditBigMan] = useState<BigMan>({
+    id: 0,
+    username: "",
+    age: undefined,
+  });
+
+  const { data: users, isLoading, isError, error } = useQueryBigMans();
+
   const { count, increment } = useStore();
+  const deleteUserMutation = useMutationBigMansDelete();
+
+  const handleUserDelete = (event: React.FormEvent, id: number) => {
+    event.preventDefault();
+    deleteUserMutation.mutate(id);
+  };
+
+  const handleUserEdit = (event: React.FormEvent, bigMan: BigMan) => {
+    event.preventDefault();
+    setEditBigMan(bigMan);
+  };
 
   if (isLoading) {
     return <div>Loading users...</div>;
@@ -47,10 +45,21 @@ const BigManList = () => {
       <button onClick={increment}>Increment</button>
       <ul>
         {users?.map((user) => (
-          <li key={user.id}>{`name: ${user.username}`}</li>
+          <li key={user.id}>
+            {`name: ${user.username} - age: ${user.age}`}
+            <span style={{ marginLeft: "10px" }}>
+              <button onClick={(e) => handleUserDelete(e, user.id)}>
+                {" "}
+                Delete{" "}
+              </button>
+            </span>
+            <span style={{ marginLeft: "10px" }}>
+              <button onClick={(e) => handleUserEdit(e, user)}> Edit </button>
+            </span>
+          </li>
         ))}
       </ul>
-      <AddBigManForm />
+      <AddBigManForm editBigMan={editBigMan} setEditBigMan={setEditBigMan} />
     </div>
   );
 };

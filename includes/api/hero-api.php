@@ -13,6 +13,33 @@ function yayhero_api() {
             'permission_callback' => '__return_true'
         ]
     ]);
+
+    $yayhero_hero_id_api_args = array(
+        'hero_id' => array(
+            'validate_callback' => function ($param, $request, $key) {
+                return is_numeric($param);
+            }
+        ),
+    );
+
+    register_rest_route(
+        'yayhero/v1',
+        '/heroes/(?P<hero_id>\d+)',
+        [
+            [
+                'methods' => 'PATCH',
+                'callback' => 'yayhero_patch_hero',
+                'args' => $yayhero_hero_id_api_args,
+                'permission_callback' => '__return_true'
+            ],
+            [
+                'methods' => 'DELETE',
+                'callback' => 'yayhero_delete_hero',
+                'args' => $yayhero_hero_id_api_args,
+                'permission_callback' => '__return_true'
+            ]
+        ]
+    );
 }
 
 function get_hero_from_post(WP_Post $post) {
@@ -50,7 +77,7 @@ function get_post_from_hero($payload) {
     $post_content = json_decode(json_encode($payload_clone), FALSE);
 
     $post = [
-        'post_title' => $payload['name'],
+        'post_title' => $post_content->data->username,
         'post_content' => json_encode($post_content),
         'post_type' => POST_TYPE,
         'post_status' => 'publish',
@@ -68,5 +95,21 @@ function yayhero_post_hero(WP_REST_Request $request) {
 
     return $result;
 }
+
+function yayhero_delete_hero(WP_REST_Request $request) {
+
+    $hero_id = $request->get_url_params()['hero_id'];
+
+    if (!$hero_id) {
+
+        return new WP_Error('no_id', 'Please provide hero ID', ['status' => 404]);
+    }
+
+    $result = wp_delete_post($hero_id);
+
+    return $result;
+}
+
+
 
 add_action('rest_api_init', 'yayhero_api');
