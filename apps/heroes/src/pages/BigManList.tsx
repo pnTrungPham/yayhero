@@ -49,8 +49,7 @@ const BigManList = () => {
             {`name: ${user.username} - age: ${user.age}`}
             <span style={{ marginLeft: "10px" }}>
               <button onClick={(e) => handleUserDelete(e, user.id)}>
-                {" "}
-                Delete{" "}
+                Delete
               </button>
             </span>
             <span style={{ marginLeft: "10px" }}>

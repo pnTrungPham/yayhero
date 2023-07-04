@@ -110,6 +110,22 @@ function yayhero_delete_hero(WP_REST_Request $request) {
     return $result;
 }
 
+function yayhero_patch_hero(WP_REST_Request $request) {
+    $hero_id = $request->get_url_params()['hero_id'];
 
+    if (!$hero_id) {
+        return new WP_Error('no_id', 'Please provide hero ID', ['status' => 404]);
+    }
+
+    $payload = $request->get_json_params();
+
+    $post = get_post_from_hero($payload);
+
+    $post['ID'] = $hero_id;
+
+    $result = wp_update_post($post, true);
+
+    return $result;
+}
 
 add_action('rest_api_init', 'yayhero_api');
