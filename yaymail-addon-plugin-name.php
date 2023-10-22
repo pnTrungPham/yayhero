@@ -75,22 +75,8 @@ spl_autoload_register(
 );
 
 function init() {
-	if ( ! defined( 'YAYMAIL_THIRD_PARTY_PLUGIN_NAME_IS_ACTIVE' ) ) {
-		$is_active = class_exists( 'WC_Subscription' );
-		define( 'YAYMAIL_THIRD_PARTY_PLUGIN_NAME_IS_ACTIVE', $is_active );
-	}
-
-	if ( ! YAYMAIL_THIRD_PARTY_PLUGIN_NAME_IS_ACTIVE || ! function_exists( 'YayMail\\init' ) ) {
-		Backend\Notices::initialize();
-	}
-
-	if ( YAYMAIL_THIRD_PARTY_PLUGIN_NAME_IS_ACTIVE && function_exists( 'YayMail\\init' ) ) {
-		Core\YayMailAddonLicense::initialize();
-		Backend\Enqueue::initialize();
-		Backend\Actions::initialize();
-		Core\YayMailAddonController::get_instance();
-		Core\YayMailAddonShortcodeHandle::get_instance();
-	}
+	Backend\Enqueue::get_instance();
+	Core\YayMailAddonController::get_instance();
 }
 
 add_action( 'plugins_loaded', 'YayMailAddon\\init' );

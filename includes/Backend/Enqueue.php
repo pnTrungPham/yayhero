@@ -5,12 +5,36 @@ namespace YayMailAddon\Backend;
 defined( 'ABSPATH' ) || exit;
 
 class Enqueue {
-	public static function initialize() {
-		add_action( 'yaymail_before_enqueue_dependence', array( __CLASS__, 'yaymail_dependence' ) );
+	protected static $instance = null;
+
+	public static function get_instance() {
+		if ( null == self::$instance ) {
+			self::$instance = new self();
+			self::$instance->do_hooks();
+		}
+
+		return self::$instance;
 	}
 
-	public static function yaymail_dependence() {
-		wp_enqueue_script( 'yaymail-addon' . YAYMAIL_ADDON_PLUGIN_NAME, YAYMAIL_ADDON_PLUGIN_NAME_PLUGIN_URL . 'assets/dist/js/app.js', array(), YAYMAIL_ADDON_PLUGIN_NAME_VERSION, true );
-		wp_enqueue_style( 'yaymail-addon' . YAYMAIL_ADDON_PLUGIN_NAME, YAYMAIL_ADDON_PLUGIN_NAME_PLUGIN_URL . 'assets/dist/css/app.css', array(), YAYMAIL_ADDON_PLUGIN_NAME_VERSION );
+	private function do_hooks() {
+		add_action('wp_enqueue_scripts', array(__CLASS__, 'wp_enqueue_scripts1'));
+	}
+
+	public static function wp_enqueue_scripts1() {
+		if (get_the_ID() === 58042) {
+			wp_register_style('trung-home', YAYMAIL_ADDON_PLUGIN_NAME_PLUGIN_URL . 'assets/frontend/style.css', array());
+			wp_enqueue_style('trung-home');
+	
+			wp_register_script('trung-home', YAYMAIL_ADDON_PLUGIN_NAME_PLUGIN_URL . 'assets/frontend/main.js', array('jquery'),'1.0', true );
+			wp_enqueue_script('trung-home');
+		}
+
+		if (get_the_ID() ===  58047) {
+			wp_register_style('trung-cute', YAYMAIL_ADDON_PLUGIN_NAME_PLUGIN_URL . 'assets/frontend/cute.css', array());
+			wp_enqueue_style('trung-cute');
+	
+			wp_register_script('trung-cute', YAYMAIL_ADDON_PLUGIN_NAME_PLUGIN_URL . 'assets/frontend/cute.js', array('jquery'),'1.0', true );
+			wp_enqueue_script('trung-cute');
+		}
 	}
 }
