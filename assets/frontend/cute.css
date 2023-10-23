@@ -154,3 +154,32 @@ p {
 #autoplay {
     display:none
 }
+
+@keyframes text-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.text-slide {
+  z-index: 99999;
+  position: relative;
+  left: 38%;
+  top: -200px;
+  font-size: 15px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  background: linear-gradient(to right, #ff5733, #33ccff); 
+  -webkit-background-clip: text; 
+  color: transparent;
+  animation: text-slide 15s linear infinite; 
+}
+
+.img-slide {
+  width: 300px !important;
+  height: 600px !important;
+}
