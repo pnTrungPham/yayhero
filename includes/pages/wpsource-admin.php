@@ -3,10 +3,10 @@
 function yayhero_add_admin_page()
 {
     add_menu_page(
-        __('Heroes', 'yayhero'),
-        __('Heroes', 'yayhero'),
+        __('WP Source', 'wpsource'),
+        __('WP Source', 'wpsource'),
         'manage_options',
-        'yayhero/yayhero-admin.php',
+        'wpsource/wpsource-admin.php',
         'yayhero_render_admin_page',
         'dashicons-shield',
         30
@@ -15,12 +15,12 @@ function yayhero_add_admin_page()
 
 function yayhero_render_admin_page()
 {
-    include YAY_HERO_PLUGIN_PATH . 'templates/pages/hero-admin.php';
+    include YAY_HERO_PLUGIN_PATH . 'templates/pages/wpsource-admin.php';
 }
 
 function yayhero_enqueue_admin_page($hook_suffix)
 {
-    if ('toplevel_page_yayhero/yayhero-admin' !== $hook_suffix) {
+    if ('toplevel_page_wpsource/wpsource-admin' !== $hook_suffix) {
         return;
     }
 

@@ -7,5 +7,5 @@ ReactDOM.render(
     <App />
   </React.StrictMode>,
 
-  document.getElementById("hero-app") as HTMLElement
+  document.getElementById("wpsource-app") as HTMLElement
 );

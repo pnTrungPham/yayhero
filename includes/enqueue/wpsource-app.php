@@ -12,7 +12,7 @@ function yayhero_register_entry()
     add_filter(
         'script_loader_tag',
         function ($tag, $handle, $src) {
-            if (strpos($handle, 'module/yayhero/') !== false) {
+            if (strpos($handle, 'module/wpsource/') !== false) {
                 $str  = "type='module'";
                 $str .= YAY_HERO_IS_DEVELOPMENT ? ' crossorigin' : '';
                 $tag  = '<script ' . $str . ' src="' . $src . '" id="' . $handle . '-js"></script>';
@@ -23,9 +23,9 @@ function yayhero_register_entry()
         3
     );
 
-    wp_register_script("module/yayhero/main.tsx", "http://localhost:3000/main.tsx", ['react', 'react-dom'], null, true); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-    wp_enqueue_script("module/yayhero/main.tsx");
-    wp_localize_script("module/yayhero/main.tsx", "yayHeroData", [
+    wp_register_script("module/wpsource/main.tsx", "http://localhost:3000/main.tsx", ['react', 'react-dom'], null, true); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+    wp_enqueue_script("module/wpsource/main.tsx");
+    wp_localize_script("module/wpsource/main.tsx", "wpsourceData", [
         'isRtl' => is_rtl(),
         'restUrl' => esc_url_raw(rest_url()),
         'restNonce' => wp_create_nonce('wp_rest'),
