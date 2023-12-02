@@ -1,20 +1,20 @@
 <?php
 
-function yayhero_api() {
+function wpsource_api() {
     register_rest_route('yayhero/v1', '/heroes', [
         [
             'methods' => 'GET',
-            'callback' => 'yayhero_get_heroes',
+            'callback' => 'wpsource_get_heroes',
             'permission_callback' => '__return_true',
         ],
         [
             'methods' => 'POST',
-            'callback' => 'yayhero_post_hero',
+            'callback' => 'wpsource_post_hero',
             'permission_callback' => '__return_true'
         ]
     ]);
 
-    $yayhero_hero_id_api_args = array(
+    $wpsource_hero_id_api_args = array(
         'hero_id' => array(
             'validate_callback' => function ($param, $request, $key) {
                 return is_numeric($param);
@@ -28,14 +28,14 @@ function yayhero_api() {
         [
             [
                 'methods' => 'PATCH',
-                'callback' => 'yayhero_patch_hero',
-                'args' => $yayhero_hero_id_api_args,
+                'callback' => 'wpsource_patch_hero',
+                'args' => $wpsource_hero_id_api_args,
                 'permission_callback' => '__return_true'
             ],
             [
                 'methods' => 'DELETE',
-                'callback' => 'yayhero_delete_hero',
-                'args' => $yayhero_hero_id_api_args,
+                'callback' => 'wpsource_delete_hero',
+                'args' => $wpsource_hero_id_api_args,
                 'permission_callback' => '__return_true'
             ]
         ]
@@ -51,7 +51,7 @@ function get_hero_from_post(WP_Post $post) {
     ];
 }
 
-function yayhero_get_heroes() {
+function wpsource_get_heroes() {
     $posts = get_posts([
         'post_type' => POST_TYPE,
         'posts_per_page' => -1, 
@@ -86,7 +86,7 @@ function get_post_from_hero($payload) {
     return $post;
 }
 
-function yayhero_post_hero(WP_REST_Request $request) {
+function wpsource_post_hero(WP_REST_Request $request) {
     $payload = $request->get_json_params();
 
     $post = get_post_from_hero($payload);
@@ -96,7 +96,7 @@ function yayhero_post_hero(WP_REST_Request $request) {
     return $result;
 }
 
-function yayhero_delete_hero(WP_REST_Request $request) {
+function wpsource_delete_hero(WP_REST_Request $request) {
 
     $hero_id = $request->get_url_params()['hero_id'];
 
@@ -110,7 +110,7 @@ function yayhero_delete_hero(WP_REST_Request $request) {
     return $result;
 }
 
-function yayhero_patch_hero(WP_REST_Request $request) {
+function wpsource_patch_hero(WP_REST_Request $request) {
     $hero_id = $request->get_url_params()['hero_id'];
 
     if (!$hero_id) {
@@ -128,4 +128,4 @@ function yayhero_patch_hero(WP_REST_Request $request) {
     return $result;
 }
 
-add_action('rest_api_init', 'yayhero_api');
+add_action('rest_api_init', 'wpsource_api');

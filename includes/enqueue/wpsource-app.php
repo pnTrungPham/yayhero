@@ -1,13 +1,16 @@
 <?php
 
-function yayhero_enqueue_hero_app()
+function wpsource_enqueue_hero_app()
 {
-    yayhero_register_entry();
+    wpsource_register_entry();
 
-    add_action('admin_head', 'yayhero_register_preload_modules');
+    add_action('admin_head', 'wpsource_register_preload_modules');
+
+
 }
 
-function yayhero_register_entry()
+
+function wpsource_register_entry()
 {
     add_filter(
         'script_loader_tag',
@@ -32,7 +35,7 @@ function yayhero_register_entry()
     ]);
 }
 
-function yayhero_register_preload_modules()
+function wpsource_register_preload_modules()
 {
     echo '<script type="module">
         import RefreshRuntime from "http://localhost:3000/@react-refresh"
