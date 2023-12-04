@@ -16,7 +16,7 @@ function wpsource_add_admin_page()
 
 function wpsource_render_admin_page()
 {
-    include YAY_HERO_PLUGIN_PATH . 'templates/pages/wpsource-admin.php';
+    include WP_SOURCE_PLUGIN_PATH . 'templates/pages/wpsource-admin.php';
 }
 
 function wpsource_enqueue_admin_page($hook_suffix)

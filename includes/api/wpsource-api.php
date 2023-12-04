@@ -1,131 +1,140 @@
 <?php
 
 function wpsource_api() {
-    register_rest_route('yayhero/v1', '/heroes', [
+    register_rest_route(
+        'yayhero/v1',
+        '/heroes',
         [
-            'methods' => 'GET',
-            'callback' => 'wpsource_get_heroes',
-            'permission_callback' => '__return_true',
-        ],
-        [
-            'methods' => 'POST',
-            'callback' => 'wpsource_post_hero',
-            'permission_callback' => '__return_true'
+            [
+                'methods'             => 'GET',
+                'callback'            => 'wpsource_get_heroes',
+                'permission_callback' => '__return_true',
+            ],
+            [
+                'methods'             => 'POST',
+                'callback'            => 'wpsource_post_hero',
+                'permission_callback' => '__return_true',
+            ],
         ]
-    ]);
-
-    $wpsource_hero_id_api_args = array(
-        'hero_id' => array(
-            'validate_callback' => function ($param, $request, $key) {
-                return is_numeric($param);
-            }
-        ),
     );
+
+    $wpsource_hero_id_api_args = [
+        'hero_id' => [
+            'validate_callback' => function ( $param, $request, $key ) {
+                return is_numeric( $param );
+            },
+        ],
+    ];
 
     register_rest_route(
         'yayhero/v1',
         '/heroes/(?P<hero_id>\d+)',
         [
             [
-                'methods' => 'PATCH',
-                'callback' => 'wpsource_patch_hero',
-                'args' => $wpsource_hero_id_api_args,
-                'permission_callback' => '__return_true'
+                'methods'             => 'PATCH',
+                'callback'            => 'wpsource_patch_hero',
+                'args'                => $wpsource_hero_id_api_args,
+                'permission_callback' => '__return_true',
             ],
             [
-                'methods' => 'DELETE',
-                'callback' => 'wpsource_delete_hero',
-                'args' => $wpsource_hero_id_api_args,
-                'permission_callback' => '__return_true'
-            ]
+                'methods'             => 'DELETE',
+                'callback'            => 'wpsource_delete_hero',
+                'args'                => $wpsource_hero_id_api_args,
+                'permission_callback' => '__return_true',
+            ],
         ]
     );
 }
 
-function get_hero_from_post(WP_Post $post) {
-    $extra_fields_object = json_decode($post->post_content);
+function get_hero_from_post( WP_Post $post ) {
+    $extra_fields_object = json_decode( $post->post_content );
     return [
-        'id' => $post->ID,
+        'id'       => $post->ID,
         'username' => $extra_fields_object->username,
-        'age' => $extra_fields_object->age
+        'age'      => $extra_fields_object->age,
     ];
 }
 
 function wpsource_get_heroes() {
-    $posts = get_posts([
-        'post_type' => POST_TYPE,
-        'posts_per_page' => -1, 
-    ]);
+    $posts = get_posts(
+        [
+            'post_type'      => POST_TYPE,
+            'posts_per_page' => -1,
+        ]
+    );
 
-    if (empty($posts)) {
+    if ( empty( $posts ) ) {
         $content = [];
     } else {
-        $content = array_map(function ($post) {
-            return get_hero_from_post($post);
-        }, $posts);
+        $content = array_map(
+            function ( $post ) {
+                return get_hero_from_post( $post );
+            },
+            $posts
+        );
     }
 
-    return array(
-        'data' => $content
-    );
- 
+    return [
+        'data' => $content,
+    ];
+
 }
 
-function get_post_from_hero($payload) {
+function get_post_from_hero( $payload ) {
     $payload_clone = $payload;
 
-    $post_content = json_decode(json_encode($payload_clone), FALSE);
+    $post_content = json_decode( json_encode( $payload_clone ), false );
 
     $post = [
-        'post_title' => $post_content->data->username,
-        'post_content' => json_encode($post_content),
-        'post_type' => POST_TYPE,
-        'post_status' => 'publish',
+        'post_title'   => $post_content->data->username,
+        'post_content' => json_encode( $post_content ),
+        'post_type'    => POST_TYPE,
+        'post_status'  => 'publish',
     ];
 
     return $post;
 }
 
-function wpsource_post_hero(WP_REST_Request $request) {
+function wpsource_post_hero( WP_REST_Request $request ) {
     $payload = $request->get_json_params();
 
-    $post = get_post_from_hero($payload);
+    $post = get_post_from_hero( $payload );
 
-    $result = wp_insert_post($post, true);
+    $result = wp_insert_post( $post, true );
 
     return $result;
 }
 
-function wpsource_delete_hero(WP_REST_Request $request) {
+function wpsource_delete_hero( WP_REST_Request $request ) {
 
     $hero_id = $request->get_url_params()['hero_id'];
 
-    if (!$hero_id) {
+    if ( ! $hero_id ) {
 
-        return new WP_Error('no_id', 'Please provide hero ID', ['status' => 404]);
+        return new WP_Error( 'no_id', 'Please provide hero ID', [ 'status' => 404 ] );
     }
 
-    $result = wp_delete_post($hero_id);
+    $result = wp_delete_post( $hero_id );
 
     return $result;
 }
 
-function wpsource_patch_hero(WP_REST_Request $request) {
+function wpsource_patch_hero( WP_REST_Request $request ) {
     $hero_id = $request->get_url_params()['hero_id'];
 
-    if (!$hero_id) {
-        return new WP_Error('no_id', 'Please provide hero ID', ['status' => 404]);
+    if ( ! $hero_id ) {
+        return new WP_Error( 'no_id', 'Please provide hero ID', [ 'status' => 404 ] );
     }
 
     $payload = $request->get_json_params();
 
-    $post = get_post_from_hero($payload);
+    $post = get_post_from_hero( $payload );
 
     $post['ID'] = $hero_id;
 
-    $result = wp_update_post($post, true);
+    $result = wp_update_post( $post, true );
 
     return $result;
 }
 
-add_action('rest_api_init', 'wpsource_api');
+add_action( 'rest_api_init', 'wpsource_api' );

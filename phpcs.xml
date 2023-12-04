@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<ruleset name="PHP_CodeSniffer">
+	<description>PHP CodeSniffer Configuration</description>
+
+	<!-- https://github.com/PHPCompatibility/PHPCompatibilityWP -->
+	<config name="testVersion" value="7.2-"/>
+	<rule ref="PHPCompatibilityWP"/>
+
+	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
+	<config name="minimum_supported_wp_version" value="5.2"/>
+
+	<rule ref="WordPress-Core">
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
+		<exclude name="WordPress.DB.PreparedSQL.NotPrepared" />
+		<exclude name="WordPress.DB.PreparedSQL.InterpolatedNotPrepared" />
+	</rule>
+	<rule ref="WordPress-Extra" />
+
+	<rule ref="Squiz.Classes.ClassFileName" />
+	<rule ref="Squiz.Commenting.ClassComment.Missing"/>
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+	<!-- https://www.php-fig.org/psr/psr-12/ -->
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<properties>
+			<property name="indent" value="4"/>
+			<property name="tabIndent" value="false"/>
+		</properties>
+	</rule>
+	<rule ref="Generic.WhiteSpace.DisallowTabIndent" />
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="wpsource"/>
+				<element value="woocommerce"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Files and directories to check -->
+	<file>includes</file>
+    <file>templates</file>
+	<file>views</file>
+	<file>uninstall.php</file>
+	<file>wpsource.php</file>
+	<!-- Do not fail on warnings -->
+	<config name="ignore_warnings_on_exit" value="1" />
+
+	<!-- Assume UTF-8 -->
+	<config name="encoding" value="UTF-8" />
+
+	<!-- Use colors -->
+	<arg name="colors" />
+
+	<!-- Show progress -->
+	<arg value="p" />
+</ruleset>

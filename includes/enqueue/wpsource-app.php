@@ -17,7 +17,7 @@ function wpsource_register_entry()
         function ($tag, $handle, $src) {
             if (strpos($handle, 'module/wpsource/') !== false) {
                 $str  = "type='module'";
-                $str .= YAY_HERO_IS_DEVELOPMENT ? ' crossorigin' : '';
+                $str .= WP_SOURCE_IS_DEVELOPMENT ? ' crossorigin' : '';
                 $tag  = '<script ' . $str . ' src="' . $src . '" id="' . $handle . '-js"></script>';
             }
             return $tag;
