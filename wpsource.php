@@ -16,7 +16,7 @@
 namespace WPSource;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'We\'re sorry, but you can not directly access this file.' );
+    die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
 define( 'WP_SOURCE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
@@ -26,12 +26,14 @@ define( 'WP_SOURCE_IS_DEVELOPMENT', true );
 require_once WP_SOURCE_PLUGIN_PATH . 'vendor/autoload.php';
 
 if ( ! wp_installing() ) {
-	if ( ! function_exists( 'WPSource\\init' ) ) {
-		function init() {
-			include WP_SOURCE_PLUGIN_PATH . 'includes/pages/wpsource-admin.php';
-			include WP_SOURCE_PLUGIN_PATH . 'includes/enqueue/wpsource-app.php';
-			include WP_SOURCE_PLUGIN_PATH . 'includes/api/wpsource-api.php';
-		}
-	}
-	add_action( 'plugins_loaded', 'WPSource\\init' );
+    if ( ! function_exists( 'WPSource\\init' ) ) {
+        function init() {
+            // include WP_SOURCE_PLUGIN_PATH . 'includes/Pages/wpsource-admin.php';
+            // include WP_SOURCE_PLUGIN_PATH . 'includes/Enqueue/wpsource-app.php';
+            // include WP_SOURCE_PLUGIN_PATH . 'includes/API/wpsource-api.php';
+
+            //\WPSource\MenuPages\Settings::get_instance();
+        }
+    }
+    add_action( 'plugins_loaded', 'WPSource\\init' );
 }
