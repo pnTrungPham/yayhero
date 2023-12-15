@@ -18,7 +18,7 @@ class Settings {
     }
 
     private function do_hooks() {
-        add_action( 'admin_menu', [$this,'wpsource_add_admin_page'] );
+        add_action( 'admin_menu', [ $this, 'wpsource_add_admin_page' ] );
     }
 
     public function wpsource_add_admin_page() {
@@ -27,15 +27,15 @@ class Settings {
             __( 'WP Source', 'wpsource' ),
             'manage_options',
             'wpsource/wpsource-admin.php',
-            'wpsource_render_admin_page',
+            [ $this, 'wpsource_render_admin_page' ],
             'dashicons-shield',
             30
         );
-    
+
     }
 
-    function wpsource_render_admin_page() {
-        include WP_SOURCE_PLUGIN_PATH . 'templates/pages/wpsource-admin.php';
+    public function wpsource_render_admin_page() {
+        include WP_SOURCE_PLUGIN_PATH . 'templates/Pages/wpsource-admin.php';
     }
 
 }
