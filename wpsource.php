@@ -48,11 +48,7 @@ spl_autoload_register(
 if ( ! wp_installing() ) {
     if ( ! function_exists( 'WPSource\\init' ) ) {
         function init() {
-            include WP_SOURCE_PLUGIN_PATH . 'includes/MenuPages/wpsource-admin.php';
-            include WP_SOURCE_PLUGIN_PATH . 'includes/Enqueue/wpsource-app.php';
-            include WP_SOURCE_PLUGIN_PATH . 'includes/API/wpsource-api.php';
-
-            \WPSource\MenuPages\Settings::get_instance();
+            \WPSource\Initialize::get_instance();
         }
     }
     add_action( 'plugins_loaded', 'WPSource\\init' );

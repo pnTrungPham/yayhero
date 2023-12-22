@@ -2,22 +2,21 @@
 
 namespace WPSource\MenuPages;
 
+use WPSource\Utils\SingletonTrait;
+
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Settings Classes
+ */
 class Settings {
+    use SingletonTrait;
 
-    protected static $instance = null;
-
-    public static function get_instance() {
-        if ( null == self::$instance ) {
-            self::$instance = new self();
-            self::$instance->do_hooks();
-        }
-
-        return self::$instance;
+    protected function __construct() {
+        $this->init_hooks();
     }
 
-    private function do_hooks() {
+    private function init_hooks() {
         add_action( 'admin_menu', [ $this, 'wpsource_add_admin_page' ] );
     }
 
@@ -35,7 +34,7 @@ class Settings {
     }
 
     public function wpsource_render_admin_page() {
-        include WP_SOURCE_PLUGIN_PATH . 'templates/Pages/wpsource-admin.php';
+        include WP_SOURCE_PLUGIN_PATH . 'views/Template/wpsource-admin.php';
     }
 
 }

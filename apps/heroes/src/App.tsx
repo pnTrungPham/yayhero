@@ -1,10 +1,11 @@
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
 
 function App() {
   const queryClient = new QueryClient();
+  console.log(11111);
   return (
     <div className="yayhero-container">
       <QueryClientProvider client={queryClient}>
@@ -16,4 +17,3 @@ function App() {
 }
 
 export default App;
-
