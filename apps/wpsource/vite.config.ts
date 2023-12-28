@@ -12,7 +12,7 @@ export default defineConfig({
   root: rootpath,
   base:
     process.env.NODE_ENV === "production"
-      ? "window.yayheroMeta.viteDynamicBase"
+      ? "window.wpsourceMeta.viteDynamicBase"
       : "/",
 
   plugins: [
@@ -25,7 +25,7 @@ export default defineConfig({
     //   { disableInServe: true }
     // ),
     dynamicBase({
-      publicPath: "window.yayheroMeta.viteDynamicBase",
+      publicPath: "window.wpsourceMeta.viteDynamicBase",
     }),
     // visualizer({ template: "treemap", emitFile: true, filename: "stats.html" }),
   ],
@@ -40,7 +40,7 @@ export default defineConfig({
   build: {
     manifest: true,
     emptyOutDir: true,
-    outDir: path.resolve("../../assets", "dist/hero"),
+    outDir: path.resolve("../../assets", "dist/wpsource"),
     assetsDir: "",
     rollupOptions: {
       input: {
@@ -51,10 +51,10 @@ export default defineConfig({
   server: {
     cors: true,
     strictPort: true,
-    port: 3000,
+    port: 3001,
     origin: `${process.env.VITE_SERVER_ORIGIN}`,
     hmr: {
-      port: 3000,
+      port: 3001,
       host: "localhost",
       protocol: "ws",
     },

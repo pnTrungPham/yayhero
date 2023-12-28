@@ -23,7 +23,7 @@ class WPSourceViteApp {
 
     public function wpsource_register_preload_modules() {
         echo '<script type="module">
-           import RefreshRuntime from "http://localhost:3000/@react-refresh"
+           import RefreshRuntime from "http://localhost:3001/@react-refresh"
            RefreshRuntime.injectIntoGlobalHook(window)
            window.$RefreshReg$ = () => {}
            window.$RefreshSig$ = () => (type) => type
@@ -46,7 +46,7 @@ class WPSourceViteApp {
             3
         );
 
-        wp_register_script( 'module/wpsource/main.tsx', 'http://localhost:3000/main.tsx', [ 'react', 'react-dom' ], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+        wp_register_script( 'module/wpsource/main.tsx', 'http://localhost:3001/main.tsx', [ 'react', 'react-dom' ], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
         wp_enqueue_script( 'module/wpsource/main.tsx' );
         wp_localize_script(
             'module/wpsource/main.tsx',
