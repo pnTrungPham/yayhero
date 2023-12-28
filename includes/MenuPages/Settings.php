@@ -34,7 +34,7 @@ class Settings {
     }
 
     public function wpsource_render_admin_page() {
-        include WP_SOURCE_PLUGIN_PATH . 'views/Template/wpsource-admin.php';
+        include WP_SOURCE_PLUGIN_PATH . 'views/Template/Page/wpsource-admin.php';
     }
 
 }

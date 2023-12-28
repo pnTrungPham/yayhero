@@ -52,9 +52,19 @@ class WPSourceViteApp {
             'module/wpsource/main.tsx',
             'wpsourceData',
             [
-                'isRtl'     => is_rtl(),
-                'restUrl'   => esc_url_raw( rest_url() ),
-                'restNonce' => wp_create_nonce( 'wp_rest' ),
+                'is_rtl'     => is_rtl(),
+                'urls'       => [
+                    'home_url'  => home_url(),
+                    'admin_url' => get_admin_url(),
+                ],
+                'admin_ajax' => [
+                    'url'   => admin_url( 'admin-ajax.php' ),
+                    'nonce' => wp_create_nonce( 'yaymail_frontend_nonce' ),
+                ],
+                'rest_path'  => [
+                    'root'  => esc_url_raw( rest_url() ),
+                    'nonce' => wp_create_nonce( 'wp_rest' ),
+                ],
             ]
         );
     }

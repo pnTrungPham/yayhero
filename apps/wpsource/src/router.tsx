@@ -1,10 +1,10 @@
 import { createHashRouter } from "react-router-dom";
-import HeroList from "./pages/HeroList";
+import HomePage from "./pages/HomePage";
 
 const router = createHashRouter([
   {
     path: "/",
-    element: <HeroList />,
+    element: <HomePage />,
   },
   {},
 ]);
