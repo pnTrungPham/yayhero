@@ -11,8 +11,10 @@
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
     "antd": "^5.3.0",
+    "autoprefixer": "^10.4.16",
     "axios": "^1.4.0",
     "immer": "^10.0.2",
+    "postcss": "^8.4.32",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.14.0"
@@ -27,6 +29,7 @@
     "devtools": "link:/react-query/devtools",
     "react-query": "^3.39.3",
     "sass": "^1.58.3",
+    "tailwindcss": "^3.4.0",
     "typescript": "^4.9.5",
     "vite": "^4.0.4",
     "vite-plugin-dynamic-base": "^0.4.7",

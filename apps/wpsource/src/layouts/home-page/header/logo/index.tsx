@@ -1,7 +1,7 @@
 function Logo() {
   return (
     <>
-      <h2>Home</h2>
+      <h2 className="text-[30px]">Home</h2>
     </>
   );
 }

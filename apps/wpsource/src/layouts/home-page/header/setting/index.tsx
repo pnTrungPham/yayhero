@@ -1,10 +1,12 @@
 import { SettingOutlined } from "@ant-design/icons";
-import "./index.scss";
 
 function Setting() {
   return (
     <>
-      <SettingOutlined className="ws-setting" rev={undefined} />
+      <SettingOutlined
+        className="text-[30px] cursor-pointer hover:text-[#135e96]"
+        rev={undefined}
+      />
     </>
   );
 }

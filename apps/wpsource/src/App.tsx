@@ -5,7 +5,6 @@ import router from "./router";
 
 function App() {
   const queryClient = new QueryClient();
-  console.log(11111);
   return (
     <div className="wp-source-container">
       <QueryClientProvider client={queryClient}>

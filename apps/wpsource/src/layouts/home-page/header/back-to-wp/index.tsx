@@ -5,7 +5,8 @@ function BackToWP() {
   return (
     <>
       <a href={adminURL}>
-        <ArrowLeftOutlined rev={undefined} /> BACK TO DASHBOARD
+        <ArrowLeftOutlined className="align-[1px]" rev={undefined} />
+        <span> Back To Dashboard </span>
       </a>
     </>
   );
