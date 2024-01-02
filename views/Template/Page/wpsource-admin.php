@@ -3,7 +3,8 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <style>
-    #wpcontent #wpbody .notice {
+    #wpcontent #wpbody .notice,
+    #wpcontent #wpbody .updated {
         display: none;
     }
     #wpfooter {
