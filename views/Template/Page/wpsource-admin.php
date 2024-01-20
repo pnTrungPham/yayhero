@@ -14,8 +14,26 @@ defined( 'ABSPATH' ) || exit;
         display: none;
     }
     #wpcontent {
-        margin: 0;
-        padding: 0;
+        margin: 0!important;
+        padding: 0!important;
+    }
+    #wpadminbar {
+        display: none!important;
+    }
+    html.wp-toolbar {
+        padding-top: 0!important;
+    }
+    @media screen and (max-width: 782px) {
+        #wpcontent {
+            margin: 0!important;
+            padding: 0!important;
+        }
+    }
+    @media screen and (max-width: 600px) {
+        #wpbody {
+            margin: 0!important;
+            padding: 0!important;
+        }
     }
 </style>
 

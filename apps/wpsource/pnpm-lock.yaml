@@ -2,13 +2,14 @@ lockfileVersion: 5.4
 
 specifiers:
   '@ant-design/icons': ^5.1.4
+  '@tanstack/react-query': ^5.17.15
   '@types/node': ^18.14.6
   '@types/react': ^17.0.52
   '@types/react-dom': ^17.0.18
   '@types/react-query': ^1.2.9
   '@types/react-router-dom': ^5.3.3
   '@vitejs/plugin-react': ^3.0.1
-  antd: ^5.3.0
+  antd: ^5.12.6
   autoprefixer: ^10.4.16
   axios: ^1.4.0
   devtools: link:/react-query/devtools
@@ -28,6 +29,7 @@ specifiers:
 
 dependencies:
   '@ant-design/icons': 5.2.6_sfoxds7t5ydpegc3knd667wn6m
+  '@tanstack/react-query': 5.17.15_react@17.0.2
   antd: 5.12.6_sfoxds7t5ydpegc3knd667wn6m
   autoprefixer: 10.4.16_postcss@8.4.32
   axios: 1.6.3
@@ -725,6 +727,19 @@ packages:
   /@remix-run/router/1.14.1:
     resolution: {integrity: sha512-Qg4DMQsfPNAs88rb2xkdk03N3bjK4jgX5fR24eHCTR9q6PrhZQZ4UJBPzCHJkIpTRN1UKxx2DzjZmnC+7Lj0Ow==}
     engines: {node: '>=14.0.0'}
+    dev: false
+
+  /@tanstack/query-core/5.17.15:
+    resolution: {integrity: sha512-QURxpu77/ICA4d61aPvV7EcJ2MwmksxUejKBaq/xLcO2TUJAlXf4PFKHC/WxnVFI/7F1jeLx85AO3Vpk0+uBXw==}
+    dev: false
+
+  /@tanstack/react-query/5.17.15_react@17.0.2:
+    resolution: {integrity: sha512-9qur91mOihaUN7pXm6ioDtS+4qgkBcCiIaZyvi3lZNcQZsrMGCYZ+eP3hiFrV4khoJyJrFUX1W0NcCVlgwNZxQ==}
+    peerDependencies:
+      react: ^18.0.0
+    dependencies:
+      '@tanstack/query-core': 5.17.15
+      react: 17.0.2
     dev: false
 
   /@types/history/4.7.11:
