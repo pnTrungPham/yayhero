@@ -7,8 +7,6 @@ import ContentLayout from "./content";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-type MenuItem = Required<MenuProps>["items"][number];
-
 const AppManagerLayout: React.FC = () => {
   const {
     token: { colorBgContainer },

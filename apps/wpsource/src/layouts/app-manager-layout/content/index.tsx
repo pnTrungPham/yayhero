@@ -1,6 +1,7 @@
 import React from "react";
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, theme } from "antd";
+import { Outlet } from "react-router-dom";
 
 const { Content } = Layout;
 
@@ -39,7 +40,7 @@ const ContentLayout: React.FC = () => {
           borderRadius: borderRadiusLG,
         }}
       >
-        Bill is a cat.
+        <Outlet />
       </div>
     </Content>
   );

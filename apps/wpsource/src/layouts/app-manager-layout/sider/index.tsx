@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const { Sider } = Layout;
 
@@ -44,7 +45,7 @@ const items: MenuItem[] = [
 
 const SlideLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <Sider
       collapsible
@@ -58,6 +59,10 @@ const SlideLayout: React.FC = () => {
           textAlign: "center",
           background: "#646970",
           padding: "17px",
+        }}
+        onClick={() => {
+          console.log("11111");
+          navigate("dashboard");
         }}
       >
         Logo
