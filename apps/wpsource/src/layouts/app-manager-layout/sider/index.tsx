@@ -1,49 +1,12 @@
 import React, { useState } from "react";
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
+import ManagerMenuItems from "./menu-items";
 
 const { Sider } = Layout;
 
-type MenuItem = Required<MenuProps>["items"][number];
-
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-}
-
-const items: MenuItem[] = [
-  getItem("Option 1", "1", <PieChartOutlined />),
-  getItem("Option 2", "2", <DesktopOutlined />),
-  getItem("User", "sub1", <UserOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
-  ]),
-  getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
-  getItem("Files", "9", <FileOutlined />),
-];
-
 const SlideLayout: React.FC = () => {
+  const managerItems = ManagerMenuItems();
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   return (
@@ -60,10 +23,6 @@ const SlideLayout: React.FC = () => {
           background: "#646970",
           padding: "17px",
         }}
-        onClick={() => {
-          console.log("11111");
-          navigate("dashboard");
-        }}
       >
         Logo
       </div>
@@ -71,7 +30,7 @@ const SlideLayout: React.FC = () => {
         theme="dark"
         defaultSelectedKeys={["1"]}
         mode="inline"
-        items={items}
+        items={managerItems}
       />
     </Sider>
   );

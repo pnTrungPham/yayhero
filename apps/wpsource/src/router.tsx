@@ -1,7 +1,7 @@
 import { createHashRouter } from "react-router-dom";
 import AppManagerLayout from "./layouts/app-manager-layout";
 import DashboardPage from "./modules/dashboard";
-import StaffInfoPage from "./modules/staff-info";
+import { Order } from "./modules/services";
 
 const router = createHashRouter([
   {
@@ -10,11 +10,15 @@ const router = createHashRouter([
     children: [
       {
         index: true,
-        element: <StaffInfoPage />,
+        element: <DashboardPage />,
       },
       {
-        path: "dashboard",
+        path: "*",
         element: <DashboardPage />,
+      },
+      {
+        path: "order",
+        element: <Order />,
       },
     ],
   },
