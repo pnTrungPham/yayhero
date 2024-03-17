@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name:     WPSource - Alan Project
+ * Plugin Name:     File Manager Plus - WPSource
  * Plugin URI:      https://wpsource.tech/
  * Description:     Starter plugin.Basic WordPress plugin development.
  * Author:          Alan Project
