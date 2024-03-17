@@ -19,11 +19,33 @@ class Connector {
     }
 
     private function init_hooks() {
-        add_action( 'wp_ajax_fs_connector', [ $this, 'fsConnector' ] );
+        add_action( 'wp_ajax_wps_fm_connector', [ $this, 'wps_fm_connector' ] );
     }
 
-    public function wpsource_add_admin_page() {
+    public function wps_fm_connector() {
+        $opts = [
+            'bind'  => [],
+            'debug' => false,
+            'roots' => [
+                [
+                    'driver'       => 'LocalFileSystem',
+                    'path'         => ABSPATH,
+                    'URL'          => site_url(),
+                    'trashHash'    => '', // default is empty, when not enable trash
+                    'winHashFix'   => DIRECTORY_SEPARATOR !== '/',
+                    'uploadDeny'   => [],
+                    'uploadAllow'  => [ 'all' ],
+                    'uploadOrder'  => [ 'deny', 'allow' ],
+                    'disabled'     => [ '' ],
+                    'acceptedName' => 'validName',
+                    'attributes'   => [], // default is empty
+                ],
+            ],
+        ];
 
+        $connector = new \elFinderConnector( new \elFinder( $opts ) );
+        $connector->run();
+        wp_die();
     }
 
 }

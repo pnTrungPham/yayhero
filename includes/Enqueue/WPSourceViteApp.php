@@ -18,7 +18,7 @@ class WPSourceViteApp {
 
     private function init_hooks() {
         add_action( 'admin_head', [ $this, 'wpsource_register_preload_modules' ] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'wpsource_register_entry' ] );
+        //add_action( 'admin_enqueue_scripts', [ $this, 'wpsource_register_entry' ] );
     }
 
     public function wpsource_register_preload_modules() {
@@ -37,7 +37,7 @@ class WPSourceViteApp {
             function ( $tag, $handle, $src ) {
                 if ( strpos( $handle, 'module/wpsource/' ) !== false ) {
                     $str  = "type='module'";
-                    $str .= WP_SOURCE_IS_DEVELOPMENT ? ' crossorigin' : '';
+                    $str .= WP_SOURCE_FM_IS_DEVELOPMENT ? ' crossorigin' : '';
                     $tag  = '<script ' . $str . ' src="' . $src . '" id="' . $handle . '-js"></script>';
                 }
                 return $tag;

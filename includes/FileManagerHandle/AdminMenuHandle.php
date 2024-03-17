@@ -49,11 +49,11 @@ class AdminMenuHandle {
     }
 
     public function wpsource_render_file_manager() {
-        include WP_SOURCE_PLUGIN_PATH . 'views/Admin/file-manager.php';
+        include WP_SOURCE_FM_PLUGIN_PATH . 'views/Admin/file-manager.php';
     }
 
     public function settings_page() {
-        include WP_SOURCE_PLUGIN_PATH . 'views/Admin/setting.php';
+        include WP_SOURCE_FM_PLUGIN_PATH . 'views/Admin/setting.php';
     }
 
 }

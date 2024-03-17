@@ -20,8 +20,10 @@ class Initialize {
     }
 
     public static function wpsource_init() {
+        \WPSource\Enqueue\Admin::get_instance();
         \WPSource\Enqueue\WPSourceViteApp::get_instance();
         \WPSource\Engine\RestAPI::get_instance();
         \WPSource\FileManagerHandle\AdminMenuHandle::get_instance();
+        \WPSource\FileManagerHandle\Connector::get_instance();
     }
 }
