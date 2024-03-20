@@ -18,7 +18,7 @@ class WPSourceViteApp {
 
     private function init_hooks() {
         add_action( 'admin_head', [ $this, 'wpsource_register_preload_modules' ] );
-        //add_action( 'admin_enqueue_scripts', [ $this, 'wpsource_register_entry' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'wpsource_register_entry' ] );
     }
 
     public function wpsource_register_preload_modules() {
