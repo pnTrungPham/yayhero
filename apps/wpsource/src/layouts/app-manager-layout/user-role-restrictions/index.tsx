@@ -1,8 +1,31 @@
-function userRoleRestrictionsTab() {
+import { Form } from "antd";
+import {
+  UserRoleSelected,
+  RootPathForUser,
+  FileUrlForUser,
+  FileExtensionToLock,
+  FileExtensionToUpload,
+  FolderFileToHide,
+  DisableCommand,
+} from "../../../modules/user-role-restrictions";
+
+function UserRoleRestrictions() {
   return (
-    <>
-      <p> user Role Restrictions Tab</p>
-    </>
+    <Form
+      labelCol={{ span: 4 }}
+      wrapperCol={{ span: 14 }}
+      layout="horizontal"
+      size="large"
+    >
+      <UserRoleSelected />
+      <DisableCommand />
+      <RootPathForUser />
+      <FileUrlForUser />
+      <FolderFileToHide />
+      <FileExtensionToLock />
+      <FileExtensionToUpload />
+    </Form>
   );
 }
-export default userRoleRestrictionsTab;
+
+export default UserRoleRestrictions;
