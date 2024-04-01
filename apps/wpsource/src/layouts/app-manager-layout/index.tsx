@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Layout, Tabs, theme } from "antd";
 import SettingsTab from "./settings";
 import UserRoleRestrictionsTab from "./user-role-restrictions";
+import "./index.scss";
 
 const AppManagerLayout: React.FC = () => {
   const [items, setItems] = useState([
@@ -27,7 +28,12 @@ const AppManagerLayout: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Tabs onChange={onChange} type="card" items={items} />
+      <Tabs
+        onChange={onChange}
+        type="card"
+        items={items}
+        className="wps-tab-container"
+      />
     </Layout>
   );
 };

@@ -1,6 +1,6 @@
 import { Button, Form } from "antd";
 
-function SaveSettings() {
+function SaveUserRole() {
   return (
     <Form.Item label="">
       <Button type="primary" htmlType="submit" className="bg-[#1677ff]">
@@ -10,4 +10,4 @@ function SaveSettings() {
   );
 }
 
-export default SaveSettings;
+export default SaveUserRole;

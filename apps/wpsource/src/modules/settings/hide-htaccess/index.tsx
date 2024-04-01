@@ -15,7 +15,7 @@ function HideHtaccess() {
       name="hide-htaccess"
       extra={<ExtraText />}
     >
-      <Switch />
+      <Switch className="wps-hide-htaccess__switch bg-[#bfbfbf]" />
     </Form.Item>
   );
 }

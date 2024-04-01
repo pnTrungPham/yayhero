@@ -13,7 +13,7 @@ const ExtraText = () => {
 function EnableTrash() {
   return (
     <Form.Item label="Enable Trash?" name="enable-trash" extra={<ExtraText />}>
-      <Switch />
+      <Switch className="bg-[#bfbfbf]" />
     </Form.Item>
   );
 }
