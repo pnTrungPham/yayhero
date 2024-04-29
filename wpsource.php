@@ -29,6 +29,11 @@ define( 'WP_SOURCE_FM_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WP_SOURCE_FM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WP_SOURCE_FM_IS_DEVELOPMENT', true );
 
+
+if ( ! defined( 'WP_SOURCE_FM_REST_NAMESPACE' ) ) {
+    define( 'WP_SOURCE_FM_REST_NAMESPACE', 'wp_source/v1' );
+}
+
 spl_autoload_register(
     function ( $class ) {
         $prefix   = __NAMESPACE__;
