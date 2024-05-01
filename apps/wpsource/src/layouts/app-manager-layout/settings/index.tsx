@@ -9,8 +9,19 @@ import {
   EnableTrash,
   SaveSettings,
 } from "../../../modules/settings";
+import { useWPSourceStore } from "../../../store/wpSourceStore";
+import useSettingsQueries from "../../../hooks/queries/useSettingsQueries";
+import { useEffect, useMemo } from "react";
 
 function SettingsTab() {
+  useSettingsQueries({
+    fetch: true,
+  });
+
+  const settings = useWPSourceStore((state) => state.settings);
+
+  console.log(settings);
+
   return (
     <Form
       labelCol={{ span: 4 }}

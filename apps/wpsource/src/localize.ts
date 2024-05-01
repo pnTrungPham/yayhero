@@ -1,7 +1,9 @@
 
 export type Data = {
-  restUrl: string;
-  restNonce: string;
+  api: {
+    url: string,
+    nonce: string
+  }
 };
 
-export const yayHeroData = (window as any).yayHeroData as Data;
+export const wpsourceData = (window as any).wpsourceData as Data;

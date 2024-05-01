@@ -1,10 +1,10 @@
 import axios from "axios";
-import { yayHeroData } from "../localize";
+import { wpsourceData } from "../localize";
 
-const wpEndpoint = axios.create({
-  baseURL: `${yayHeroData.restUrl}yayhero/v1`,
+const wpRes = axios.create({
+  baseURL: `${wpsourceData.api.url}wp_source/v1`,
   timeout: 5000,
-  headers: { "X-WP-Nonce": yayHeroData.restNonce },
+  headers: { "X-WP-Nonce": wpsourceData.api.nonce },
 });
 
-export default wpEndpoint;
+export default wpRes;

@@ -52,6 +52,10 @@ class WPSourceViteApp {
             'module/wpsource/main.tsx',
             'wpsourceData',
             [
+                'api'        => [
+                    'url'   => esc_url_raw( rest_url() ),
+                    'nonce' => wp_create_nonce( 'wp_rest' ),
+                ],
                 'is_rtl'     => is_rtl(),
                 'urls'       => [
                     'home_url'  => home_url(),

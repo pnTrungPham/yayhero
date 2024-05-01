@@ -1,4 +1,5 @@
 import { Form, Input } from "antd";
+import { useWPSourceStore } from "../../../store/wpSourceStore";
 
 const ExtraText = () => {
   return (
@@ -17,9 +18,25 @@ const ExtraText = () => {
 };
 
 function RootPath() {
+  const setSettingsRootPath = useWPSourceStore(
+    (state) => state.setSettingsRootPath
+  );
+
+  const settingsRootPath = useWPSourceStore(
+    (state) => state.settings.root_path
+  );
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSettingsRootPath(e.target.value);
+  };
+
   return (
     <Form.Item label="Root Path" name="root-path" extra={<ExtraText />}>
-      <Input placeholder="ex:..." />
+      <Input
+        placeholder="ex:..."
+        onChange={handleChange}
+        value={settingsRootPath}
+      />
     </Form.Item>
   );
 }

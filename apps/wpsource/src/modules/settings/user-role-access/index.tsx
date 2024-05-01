@@ -1,12 +1,7 @@
 import React from "react";
 import { Checkbox, Form } from "antd";
 import type { GetProp } from "antd";
-
-const onChange: GetProp<typeof Checkbox.Group, "onChange"> = (
-  checkedValues
-) => {
-  console.log("checked = ", checkedValues);
-};
+import { useWPSourceStore } from "../../../store/wpSourceStore";
 
 const options = [
   { label: "Apple", value: "Apple" },
@@ -15,10 +10,24 @@ const options = [
 ];
 
 function UserRoleAccess() {
+  const setSettingsUserRoleAccess = useWPSourceStore(
+    (state) => state.setSettingsUserRoleAccess
+  );
+
+  const settingsUserRoleAccess = useWPSourceStore(
+    (state) => state.settings.user_role_access
+  );
+
+  const onChange: GetProp<typeof Checkbox.Group, "onChange"> = (
+    checkedValues
+  ) => {
+    console.log("checked = ", checkedValues);
+  };
+
   return (
     <Form.Item
       label="User Roles to access"
-      name="disabled"
+      name="user-roles-to-access"
       valuePropName="checked"
     >
       <Checkbox.Group

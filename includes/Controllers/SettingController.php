@@ -20,7 +20,6 @@ class SettingController extends BaseController {
     protected function __construct() {
         $this->model = SettingModel::get_instance();
         $this->init_hooks();
-
     }
 
     protected function init_hooks() {

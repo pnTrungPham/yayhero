@@ -12,7 +12,7 @@ abstract class BaseController {
      * @return bool
      */
     public function permission_callback() {
-        return current_user_can( 'manage_woocommerce' );
+        return current_user_can( 'manage_options' );
     }
 
     /**
