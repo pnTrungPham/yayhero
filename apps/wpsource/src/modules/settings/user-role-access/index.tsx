@@ -27,14 +27,10 @@ function UserRoleAccess() {
   return (
     <Form.Item
       label="User Roles to access"
-      name="user-roles-to-access"
+      name="user_roles_to_access"
       valuePropName="checked"
     >
-      <Checkbox.Group
-        options={options}
-        defaultValue={["Pear"]}
-        onChange={onChange}
-      />
+      <Checkbox.Group options={options} onChange={onChange} />
     </Form.Item>
   );
 }

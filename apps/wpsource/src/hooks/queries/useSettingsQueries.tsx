@@ -13,11 +13,15 @@ function useSettingsQueries(props?: IHookProps) {
     queryKey: ["settings"],
     queryFn: async () => {
       const response = await getSettings();
+      useWPSourceStore.setState((state) => {
+        state.isLoading = true;
+      });
       if (response.data && response.data.isError) {
         throw new Error(response.data.message ?? "Unknown error");
       }
       useWPSourceStore.setState((state) => {
         state.settings = response.data;
+        state.isLoading = false;
       });
       return response.data;
     },
@@ -31,17 +35,17 @@ function useSettingsQueries(props?: IHookProps) {
     mutationFn: updateSettings,
     onMutate: () => {
       useWPSourceStore.setState((state) => {
-        state.settings.isLoading = true;
+        state.isLoading = true;
       });
     },
     onSettled: () => {
       useWPSourceStore.setState((state) => {
-        state.settings.isLoading = false;
+        state.isLoading = false;
       });
     },
     onSuccess: () => {
       useWPSourceStore.setState((state) => {
-        state.settings.isLoading = false;
+        state.isLoading = false;
       });
       return queryClient.invalidateQueries({ queryKey: ["settings"] });
     },

@@ -25,12 +25,8 @@ function EnableTrash() {
   };
 
   return (
-    <Form.Item label="Enable Trash?" name="enable-trash" extra={<ExtraText />}>
-      <Switch
-        className="bg-[#bfbfbf]"
-        onChange={handleChange}
-        checked={Boolean(settingsEnableTrash)}
-      />
+    <Form.Item label="Enable Trash?" name="enable_trash" extra={<ExtraText />}>
+      <Switch className="bg-[#bfbfbf]" onChange={handleChange} />
     </Form.Item>
   );
 }

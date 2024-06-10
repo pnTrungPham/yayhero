@@ -6,6 +6,7 @@ export async function getSettings() {
 }
 
 export async function updateSettings(settings: object) {
+  console.log(settings);
   const response = await restApi.patch("/settings", {
     settings: settings,
   });

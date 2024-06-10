@@ -7,15 +7,15 @@ import useSettingsQueries from "../hooks/queries/useSettingsQueries";
 
 interface IWPSourceState {
   settings: {
-    isLoading: boolean;
     user_roles_to_access: string[];
-    enable_trash: boolean;
+    enable_trash: string;
     file_url: string;
-    hide_htaccess: boolean;
+    hide_htaccess: string;
     language: string;
     max_upload_file: string;
     root_path: string;
   };
+  isLoading: boolean;
   setSettings: (newSettings: any) => void;
   setSettingsLoading: (isLoading: boolean) => void;
   setSettingsUserRolesToAccess: (userRolesToAccess: []) => void;
@@ -34,16 +34,15 @@ export const useWPSourceStore = create<
   immer(
     devtools((set, get) => ({
       settings: {
-        isLoading: false,
         user_roles_to_access: [],
-        enable_trash: false,
+        enable_trash: "0",
         file_url: "",
-        hide_htaccess: false,
+        hide_htaccess: "0",
         language: "",
         max_upload_file: "",
         root_path: "",
       },
-
+      isLoading: true,
       setSettings: (newSettings: any) => {
         console.log(newSettings);
         set((state) => {

@@ -9,19 +9,18 @@ import {
   EnableTrash,
   SaveSettings,
 } from "../../../modules/settings";
-import { useWPSourceStore } from "../../../store/wpSourceStore";
 import useSettingsQueries from "../../../hooks/queries/useSettingsQueries";
-import { useEffect, useMemo } from "react";
+import { useWPSourceStore } from "../../../store/wpSourceStore";
+import { useMemo } from "react";
 
 function SettingsTab() {
-  useSettingsQueries({
-    fetch: true,
-  });
-
+  useSettingsQueries({ fetch: true });
   const settings = useWPSourceStore((state) => state.settings);
-
-  console.log(settings);
-
+  const isLoading = useWPSourceStore((state) => state.isLoading);
+  console.log(isLoading);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Form
       labelCol={{ span: 4 }}
@@ -31,6 +30,7 @@ function SettingsTab() {
       className="wps-form-settings bg-[#ffffff] pt-[20px] px-[20px]"
       labelAlign="left"
       labelWrap
+      initialValues={settings}
     >
       <UserRoleAccess />
       <RootPath />

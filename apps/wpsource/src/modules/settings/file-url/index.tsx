@@ -23,12 +23,8 @@ function FileUrl() {
   };
 
   return (
-    <Form.Item label="File Url" name="file-url" extra={<ExtraText />}>
-      <Input
-        placeholder="ex:..."
-        onChange={handleChange}
-        value={settingsFileUrl}
-      />
+    <Form.Item label="File Url" name="file_url" extra={<ExtraText />}>
+      <Input placeholder="ex:..." onChange={handleChange} />
     </Form.Item>
   );
 }

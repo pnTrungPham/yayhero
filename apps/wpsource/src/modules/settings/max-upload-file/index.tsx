@@ -27,15 +27,10 @@ function MaxUploadFile() {
   return (
     <Form.Item
       label="Max Upload File"
-      name="max-upload-file"
+      name="max_upload_file"
       extra={<ExtraText />}
     >
-      <Input
-        type="number"
-        placeholder="ex:..."
-        onChange={handleChange}
-        value={settingsMaxUploadFile}
-      />
+      <Input type="number" placeholder="ex:..." onChange={handleChange} />
     </Form.Item>
   );
 }

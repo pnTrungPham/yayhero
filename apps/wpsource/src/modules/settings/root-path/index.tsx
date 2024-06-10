@@ -31,12 +31,8 @@ function RootPath() {
   };
 
   return (
-    <Form.Item label="Root Path" name="root-path" extra={<ExtraText />}>
-      <Input
-        placeholder="ex:..."
-        onChange={handleChange}
-        value={settingsRootPath}
-      />
+    <Form.Item label="Root Path" name="root_path" extra={<ExtraText />}>
+      <Input placeholder="ex:..." onChange={handleChange} />
     </Form.Item>
   );
 }

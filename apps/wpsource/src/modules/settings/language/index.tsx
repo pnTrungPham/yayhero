@@ -13,7 +13,7 @@ function Language() {
   };
   return (
     <Form.Item label="Language" name="language">
-      <Select onChange={handleChange} value={settingsLanguage}>
+      <Select onChange={handleChange}>
         <Select.Option value="demo">Demo</Select.Option>
       </Select>
     </Form.Item>

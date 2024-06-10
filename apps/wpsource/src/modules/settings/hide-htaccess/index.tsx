@@ -25,13 +25,12 @@ function HideHtaccess() {
   return (
     <Form.Item
       label="Hide .htaccess?"
-      name="hide-htaccess"
+      name="hide_htaccess"
       extra={<ExtraText />}
     >
       <Switch
         className="wps-hide-htaccess__switch bg-[#bfbfbf]"
         onChange={handleChange}
-        checked={Boolean(settingsHideHtaccess)}
       />
     </Form.Item>
   );
