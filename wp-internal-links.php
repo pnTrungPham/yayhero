@@ -46,10 +46,11 @@ spl_autoload_register(
 );
 
 if ( ! wp_installing() ) {
-    if ( ! function_exists( 'WPSource\\init' ) ) {
+    if ( ! function_exists( 'WPInternalLinks\\init' ) ) {
         function init() {
-            \WPSource\Initialize::get_instance();
+            \WPInternalLinks\Initialize::get_instance();
         }
     }
-    add_action( 'plugins_loaded', 'WPSource\\init' );
+
+    add_action( 'plugins_loaded', 'WPInternalLinks\\init' );
 }

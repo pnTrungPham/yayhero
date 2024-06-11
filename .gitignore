@@ -1,8 +1,4 @@
 *.DS_Store
-/assets/dist/*
-vendor
-log.xml
+tools/vendor
 /release
 .vscode/launch.json
-node_modules/
-html/

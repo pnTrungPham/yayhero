@@ -44,9 +44,8 @@
 	<!-- Files and directories to check -->
 	<file>includes</file>
     <file>templates</file>
-	<file>views</file>
 	<file>uninstall.php</file>
-	<file>wpsource.php</file>
+	<file>wp-internal-links.php</file>
 	<!-- Do not fail on warnings -->
 	<config name="ignore_warnings_on_exit" value="1" />
 

@@ -1,5 +1,5 @@
 <?php
-namespace WPSource\Utils;
+namespace WPInternalLinks\Utils;
 
 trait SingletonTrait {
     private static $instance;

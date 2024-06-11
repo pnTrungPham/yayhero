@@ -1,10 +1,10 @@
 <?php
-namespace WPSource;
+namespace WPInternalLinks;
 
-use WPSource\Utils\SingletonTrait;
+use WPInternalLinks\Utils\SingletonTrait;
 
 /**
- * WPSource Plugin Initializer
+ * WPInternalLinks Plugin Initializer
  *
  * @method static Initialize get_instance()
  */
@@ -16,10 +16,10 @@ class Initialize {
      * The Constructor that load the engine classes
      */
     protected function __construct() {
-        add_action( 'init', [ $this, 'wpsource_init' ] );
+        add_action( 'init', [ $this, 'wp_internal_links_init' ] );
     }
 
-    public static function wpsource_init() {
-
+    public static function wp_internal_links_init() {
+        echo 'Hello World';
     }
 }
