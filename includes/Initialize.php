@@ -4,6 +4,7 @@ namespace WPInternalLinks;
 use WPInternalLinks\Utils\SingletonTrait;
 use WPInternalLinks\Controllers\AdminMenuController;
 use WPInternalLinks\Enqueue\AdminEnqueue;
+use WPInternalLinks\Shortcode\AddShortcode;
 
 /**
  * WPInternalLinks Plugin Initializer
@@ -23,6 +24,7 @@ class Initialize {
 
     public static function wp_internal_links_init() {
         AdminEnqueue::get_instance();
+        AddShortcode::get_instance();
         AdminMenuController::get_instance();
     }
 }
