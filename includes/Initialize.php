@@ -2,6 +2,8 @@
 namespace WPInternalLinks;
 
 use WPInternalLinks\Utils\SingletonTrait;
+use WPInternalLinks\Controllers\AdminMenuController;
+use WPInternalLinks\Enqueue\AdminEnqueue;
 
 /**
  * WPInternalLinks Plugin Initializer
@@ -20,6 +22,7 @@ class Initialize {
     }
 
     public static function wp_internal_links_init() {
-        echo 'Hello World';
+        AdminEnqueue::get_instance();
+        AdminMenuController::get_instance();
     }
 }

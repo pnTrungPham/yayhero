@@ -1,0 +1,8 @@
+.vscode
+.DS_Store
+.git/
+.gitignore
+.distignore
+phpcs.xml
+release.sh
+/release

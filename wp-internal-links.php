@@ -19,11 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
     die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
-define( 'WP_SOURCE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'WP_SOURCE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'WP_SOURCE_IS_DEVELOPMENT', true );
-
-//require_once WP_SOURCE_PLUGIN_PATH . 'vendor/autoload.php';
+define( 'WP_INTERNAL_LINKS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'WP_INTERNAL_LINKS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'WP_INTERNAL_LINKS_IS_DEVELOPMENT', true );
 
 spl_autoload_register(
     function ( $class ) {
