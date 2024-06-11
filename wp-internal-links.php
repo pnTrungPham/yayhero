@@ -1,19 +1,19 @@
 <?php
 
 /**
- * Plugin Name:     WPSource - Alan Project
- * Plugin URI:      https://wpsource.tech/
- * Description:     Starter plugin.Basic WordPress plugin development.
+ * Plugin Name:     WP - Internal Links
+ * Plugin URI:      https://example.com
+ * Description:     A simple plugin to manage internal links
  * Author:          Alan Project
- * Author URI:      https://wpsource.tech/
- * Text Domain:     wpsource
- * Domain Path:     /languages
+ * Author URI:      https://example.com
+ * Text Domain:     wpinternallinks
+ * Domain Path:     /languages/i18n
  * Version:         1.0
  *
- * @package WPSource
+ * @package WPInternalLinks
  */
 
-namespace WPSource;
+namespace WPInternalLinks;
 
 if ( ! defined( 'ABSPATH' ) ) {
     die( 'We\'re sorry, but you can not directly access this file.' );

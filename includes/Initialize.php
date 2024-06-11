@@ -20,8 +20,6 @@ class Initialize {
     }
 
     public static function wpsource_init() {
-        \WPSource\Enqueue\WPSourceViteApp::get_instance();
-        \WPSource\Engine\RestAPI::get_instance();
-        \WPSource\MenuPages\Settings::get_instance();
+
     }
 }
