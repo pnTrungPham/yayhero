@@ -96,21 +96,21 @@ class CreatePostListTableController extends \WP_List_Table {
     }
 
     private function sort_items( $a, $b ) {
-        $orderby = ( ! empty( $_REQUEST['orderby'] ) ) ? $_REQUEST['orderby'] : 'title';
-        $order   = ( ! empty( $_REQUEST['order'] ) ) ? $_REQUEST['order'] : 'asc';
+        $orderby = filter_input( INPUT_GET, 'orderby', FILTER_SANITIZE_STRING ) ?? 'title';
+        $order   = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_STRING ) ?? 'asc';
 
         switch ( $orderby ) {
             case 'title':
                 $result = strcmp( $a->post_title, $b->post_title );
                 break;
             case 'inbound_links':
-                $a_count = count( explode( ', ', $this->get_inbound_internal_links( $a->ID ) ) );
-                $b_count = count( explode( ', ', $this->get_inbound_internal_links( $b->ID ) ) );
+                $a_count = count( explode( ', ', InternalLinksController::get_inbound_internal_links( $a->ID ) ) );
+                $b_count = count( explode( ', ', InternalLinksController::get_inbound_internal_links( $b->ID ) ) );
                 $result  = $a_count - $b_count;
                 break;
             case 'outbound_links':
-                $a_count = count( explode( ', ', $this->get_outbound_internal_links( $a ) ) );
-                $b_count = count( explode( ', ', $this->get_outbound_internal_links( $b ) ) );
+                $a_count = count( explode( ', ', InternalLinksController::get_outbound_internal_links( $a ) ) );
+                $b_count = count( explode( ', ', InternalLinksController::get_outbound_internal_links( $b ) ) );
                 $result  = $a_count - $b_count;
                 break;
             default:
