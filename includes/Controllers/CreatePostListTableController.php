@@ -87,9 +87,11 @@ class CreatePostListTableController extends \WP_List_Table {
             case 'type':
                 return ucfirst( $item->post_type );
             case 'inbound_links':
-                return InternalLinksController::get_inbound_internal_links( $item->ID );
+                $count = count( InternalLinksController::get_inbound_internal_links( $item->ID ) );
+                return '<a href="#" class="inbound-links-count" data-post-id="' . $item->ID . '">' . $count . '</a>';
             case 'outbound_links':
-                return InternalLinksController::get_outbound_internal_links( $item );
+                $count = count( InternalLinksController::get_outbound_internal_links( $item->ID ) );
+                return '<a href="#" class="outbound-links-count" data-post-id="' . $item->ID . '">' . $count . '</a>';
             default:
                 return print_r( $item, true );
         }
@@ -104,13 +106,13 @@ class CreatePostListTableController extends \WP_List_Table {
                 $result = strcmp( $a->post_title, $b->post_title );
                 break;
             case 'inbound_links':
-                $a_count = count( explode( ', ', InternalLinksController::get_inbound_internal_links( $a->ID ) ) );
-                $b_count = count( explode( ', ', InternalLinksController::get_inbound_internal_links( $b->ID ) ) );
+                $a_count = count( InternalLinksController::get_inbound_internal_links( $a->ID ) );
+                $b_count = count( InternalLinksController::get_inbound_internal_links( $b->ID ) );
                 $result  = $a_count - $b_count;
                 break;
             case 'outbound_links':
-                $a_count = count( explode( ', ', InternalLinksController::get_outbound_internal_links( $a ) ) );
-                $b_count = count( explode( ', ', InternalLinksController::get_outbound_internal_links( $b ) ) );
+                $a_count = count( InternalLinksController::get_outbound_internal_links( $a->ID ) );
+                $b_count = count( InternalLinksController::get_outbound_internal_links( $a->ID ) );
                 $result  = $a_count - $b_count;
                 break;
             default:

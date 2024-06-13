@@ -1,3 +1,24 @@
 #toplevel_page_wp-internal-links .wp-first-item {
   display: none;
 }
+
+.wp-internal-links-popup {
+  background: #fff;
+  padding: 20px;
+}
+
+.wp-internal-links-popup table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wp-internal-links-popup th,
+.wp-internal-links-popup td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.wp-internal-links-popup th {
+  background: #f1f1f1;
+  text-align: left;
+}
