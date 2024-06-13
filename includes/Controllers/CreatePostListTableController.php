@@ -2,7 +2,7 @@
 namespace WPInternalLinks\Controllers;
 
 use WPInternalLinks\Utils\SingletonTrait;
-
+use WPInternalLinks\Controllers\InternalLinksController;
 
 // Include the WP_List_Table class
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -19,7 +19,6 @@ class CreatePostListTableController extends \WP_List_Table {
     /**
      * The Constructor that load the engine classes
      */
-
     protected function __construct() {
         parent::__construct(
             [
@@ -32,48 +31,92 @@ class CreatePostListTableController extends \WP_List_Table {
 
     public function get_columns() {
         $columns = [
-            'title'      => 'Title',
-            'author'     => 'Author',
-            'categories' => 'Categories',
-            'tags'       => 'Tags',
-            'date'       => 'Date',
+            'title'          => 'Title',
+            'categories'     => 'Categories',
+            'type'           => 'Type',
+            'inbound_links'  => 'Inbound Internal Links',
+            'outbound_links' => 'Outbound Internal Links',
         ];
         return $columns;
     }
 
+    public function get_sortable_columns() {
+        $sortable_columns = [
+            'title'          => [ 'title', true ],
+            'inbound_links'  => [ 'inbound_links', false ],
+            'outbound_links' => [ 'outbound_links', false ],
+        ];
+        return $sortable_columns;
+    }
+
     public function prepare_items() {
-        $query = new \WP_Query(
-            [
-                'post_type'      => 'post',
-                'posts_per_page' => -1,
-            ]
-        );
-        $posts = $query->posts;
+        // Query posts and pages that contain internal links
+        $args = [
+            'post_type'      => [ 'post', 'page' ],
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+        ];
+
+        $query = new \WP_Query( $args );
+        $posts = [];
+
+        foreach ( $query->posts as $post ) {
+            $content = $post->post_content;
+            if ( InternalLinksController::has_internal_links( $content ) ) {
+                $posts[] = $post;
+            }
+        }
+
+        // Handle sorting
+        usort( $posts, [ $this, 'sort_items' ] );
 
         $this->items = $posts;
 
         $columns               = $this->get_columns();
         $hidden                = [];
-        $sortable              = [];
+        $sortable              = $this->get_sortable_columns();
         $this->_column_headers = [ $columns, $hidden, $sortable ];
     }
 
     public function column_default( $item, $column_name ) {
         switch ( $column_name ) {
             case 'title':
-                return '<a href="' . get_permalink( $item->ID ) . '">' . $item->post_title . '</a>';
-            case 'author':
-                return get_the_author_meta( 'display_name', $item->post_author );
+                return '<a href="' . get_edit_post_link( $item->ID ) . '">' . $item->post_title . '</a>';
             case 'categories':
                 return get_the_category_list( ', ', '', $item->ID );
-            case 'tags':
-                return get_the_tag_list( '', ', ', '', $item->ID );
-            case 'date':
-                return get_the_date( '', $item->ID );
+            case 'type':
+                return ucfirst( $item->post_type );
+            case 'inbound_links':
+                return InternalLinksController::get_inbound_internal_links( $item->ID );
+            case 'outbound_links':
+                return InternalLinksController::get_outbound_internal_links( $item );
             default:
-                return print_r( $item, true ); // Debugging output
+                return print_r( $item, true );
         }
     }
 
+    private function sort_items( $a, $b ) {
+        $orderby = ( ! empty( $_REQUEST['orderby'] ) ) ? $_REQUEST['orderby'] : 'title';
+        $order   = ( ! empty( $_REQUEST['order'] ) ) ? $_REQUEST['order'] : 'asc';
 
+        switch ( $orderby ) {
+            case 'title':
+                $result = strcmp( $a->post_title, $b->post_title );
+                break;
+            case 'inbound_links':
+                $a_count = count( explode( ', ', $this->get_inbound_internal_links( $a->ID ) ) );
+                $b_count = count( explode( ', ', $this->get_inbound_internal_links( $b->ID ) ) );
+                $result  = $a_count - $b_count;
+                break;
+            case 'outbound_links':
+                $a_count = count( explode( ', ', $this->get_outbound_internal_links( $a ) ) );
+                $b_count = count( explode( ', ', $this->get_outbound_internal_links( $b ) ) );
+                $result  = $a_count - $b_count;
+                break;
+            default:
+                $result = 0;
+        }
+
+        return ( 'asc' === $order ) ? $result : -$result;
+    }
 }
