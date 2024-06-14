@@ -20,7 +20,7 @@ class AdminEnqueue {
     public function enqueue_scripts() {
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'jquery-ui-dialog' );
-        wp_enqueue_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
+        wp_enqueue_style( 'jquery-ui-css', WP_INTERNAL_LINKS_PLUGIN_URL . 'assets/lib/css/jquery-ui.css', [], WP_INTERNAL_LINKS_VERSION );
 
         wp_enqueue_style( 'wp-internal-links-admin', WP_INTERNAL_LINKS_PLUGIN_URL . 'assets/admin/css/admin.css', [], WP_INTERNAL_LINKS_VERSION );
         wp_enqueue_script( 'wp-internal-links-admin', WP_INTERNAL_LINKS_PLUGIN_URL . 'assets/admin/js/admin.js', [ 'jquery', 'jquery-ui-dialog' ], WP_INTERNAL_LINKS_VERSION, true );

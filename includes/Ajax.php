@@ -44,33 +44,21 @@ class Ajax {
 
     public function get_inbound_links_html( $post_id ) {
         $links = InternalLinksController::get_inbound_internal_links( $post_id );
-        $html  = '<table>';
-        $html .= '<thead><tr><th>Title</th><th>Type</th><th>Categories</th></tr></thead>';
-        $html .= '<tbody>';
-        foreach ( $links as $link ) {
-            $html .= '<tr>';
-            $html .= '<td><a href="' . get_edit_post_link( $link['ID'] ) . '">' . $link['title'] . '</a></td>';
-            $html .= '<td>' . ucfirst( $link['type'] ) . '</td>';
-            $html .= '<td>' . $link['categories'] . '</td>';
-            $html .= '</tr>';
-        }
-        $html .= '</tbody></table>';
+
+        ob_start();
+        include WP_INTERNAL_LINKS_PLUGIN_PATH . 'templates/dashboard/popup-info.php';
+        $html = ob_get_contents();
+        ob_end_clean();
         return $html;
     }
 
     public function get_outbound_links_html( $post_id ) {
         $links = InternalLinksController::get_outbound_internal_links( $post_id );
-        $html  = '<table>';
-        $html .= '<thead><tr><th>Title</th><th>Type</th><th>Categories</th></tr></thead>';
-        $html .= '<tbody>';
-        foreach ( $links as $link ) {
-            $html .= '<tr>';
-            $html .= '<td><a href="' . get_edit_post_link( $link['ID'] ) . '">' . $link['title'] . '</a></td>';
-            $html .= '<td>' . ucfirst( $link['type'] ) . '</td>';
-            $html .= '<td>' . $link['categories'] . '</td>';
-            $html .= '</tr>';
-        }
-        $html .= '</tbody></table>';
+
+        ob_start();
+        include WP_INTERNAL_LINKS_PLUGIN_PATH . 'templates/dashboard/popup-info.php';
+        $html = ob_get_contents();
+        ob_end_clean();
         return $html;
     }
 
