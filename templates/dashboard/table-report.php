@@ -45,6 +45,7 @@ $orphan_count = $post_list_table->get_post_count_by_type( [ 'page' ], true );
                     ]
                 )
             );
+            $href  = remove_query_arg( [ 'category', 's' ], $href );
             echo '<li><a href="' . esc_url( $href ) . '" ' . wp_kses_post( $class ) . '>' . esc_attr( $label_count[0] ) . ' <span class="count">(' . esc_attr( $label_count[1] ) . ')</span></a> | </li>';
         }
         ?>
