@@ -20,13 +20,9 @@ class AddShortcode {
 
     public function custom_post_list_shortcode() {
         ob_start();
-        $post_list_table = CreatePostListTableController::get_instance();
-
-        $post_list_table->prepare_items();
-
-        echo '<div class="wrap"><h1 class="wp-heading-inline">All Posts </h1>';
-        $post_list_table->display();
-        echo '</div>';
-        return ob_get_clean();
+        include WP_INTERNAL_LINKS_PLUGIN_PATH . 'templates/dashboard/table-report.php';
+        $html = ob_get_contents();
+        ob_end_clean();
+        return $html;
     }
 }

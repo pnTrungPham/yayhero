@@ -50,12 +50,28 @@ class CreatePostListTableController extends \WP_List_Table {
     }
 
     public function prepare_items() {
-        // Query posts and pages that contain internal links
+        $post_type    = filter_input( INPUT_GET, 'get_post_type', FILTER_SANITIZE_STRING ) ?? '';
+        $category     = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_STRING ) ?? '';
+        $search_value = filter_input( INPUT_GET, 's', FILTER_SANITIZE_STRING ) ?? '';
+        $only_orphan  = filter_input( INPUT_GET, 'only_orphan', FILTER_SANITIZE_STRING ) === '1';
+
         $args = [
             'post_type'      => [ 'post', 'page' ],
             'post_status'    => 'publish',
             'posts_per_page' => -1,
         ];
+
+        if ( ! empty( $post_type ) && in_array( $post_type, [ 'post', 'page' ] ) ) {
+            $args['post_type'] = $post_type;
+        }
+
+        if ( ! empty( $category ) ) {
+            $args['cat'] = $category;
+        }
+
+        if ( ! empty( $search_value ) ) {
+            $args['s'] = $search_value;
+        }
 
         $query = new \WP_Query( $args );
         $posts = [];
@@ -65,6 +81,17 @@ class CreatePostListTableController extends \WP_List_Table {
             if ( InternalLinksController::has_internal_links( $content ) ) {
                 $posts[] = $post;
             }
+        }
+
+        // Fillter orphan posts outbound internal links
+        if ( $only_orphan ) {
+            $posts = array_filter(
+                $posts,
+                function( $post ) {
+                    $inbound_links = InternalLinksController::get_inbound_internal_links( $post->ID );
+                    return empty( $inbound_links );
+                }
+            );
         }
 
         // Handle sorting
@@ -120,5 +147,26 @@ class CreatePostListTableController extends \WP_List_Table {
         }
 
         return ( 'asc' === $order ) ? $result : -$result;
+    }
+
+    public function get_post_count_by_type( $post_type = '', $only_orphan = false ) {
+        $args = [
+            'post_type'      => $post_type ? $post_type : [ 'post', 'page' ],
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+        ];
+
+        if ( $only_orphan ) {
+            $args['meta_query'] = [
+                [
+                    'key'     => '_wp_page_template',
+                    'value'   => 'default',
+                    'compare' => 'NOT EXISTS',
+                ],
+            ];
+        }
+
+        $query = new \WP_Query( $args );
+        return $query->found_posts;
     }
 }

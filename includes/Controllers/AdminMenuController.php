@@ -18,11 +18,11 @@ class AdminMenuController {
 
     public function add_admin_menu() {
         add_menu_page(
-            __( 'Internal Link', 'wpinternallinks' ),
+            'wp-internal-links',
             __( 'Internal Link', 'wpinternallinks' ),
             'manage_options',
             'wp-internal-links',
-            [ $this, 'menu_dashboard' ],
+            null,
             'dashicons-admin-links',
             10
         );
@@ -32,7 +32,7 @@ class AdminMenuController {
             __( 'Dashboard', 'wpinternallinks' ),
             __( 'Dashboard', 'wpinternallinks' ),
             'manage_options',
-            'wp-internal-links-dashboard',
+            'wp_internal_links_dashboard',
             [ $this, 'menu_dashboard' ]
         );
 
@@ -62,6 +62,8 @@ class AdminMenuController {
             'wp-internal-links-go-to-pro',
             [ $this, 'menu_go_to_pro' ]
         );
+
+        remove_submenu_page( 'wp-internal-links', 'wp-internal-links' );
     }
 
     public static function menu_dashboard() {
