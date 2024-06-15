@@ -105,10 +105,29 @@ class CreatePostListTableController extends \WP_List_Table {
         $this->_column_headers = [ $columns, $hidden, $sortable ];
     }
 
+    protected function column_title( $item ) {
+        $title = '<a class="row-title" href="' . get_edit_post_link( $item->ID ) . '">' . $item->post_title . '</a>';
+
+        $edit_link = get_edit_post_link( $item->ID );
+
+        $actions = [
+            'edit'                            => sprintf( '<a href="%s">%s</a>', $edit_link, __( 'Edit', 'wpinternallinks' ) ),
+            'find_inbound_link_opportunities' => sprintf( '<a href="%s">%s</a>', '#', __( 'Find Inbound Link Opportunities', 'wpinternallinks' ) ),
+        ];
+
+        return sprintf( '%1$s %2$s', $title, $this->row_actions( $actions ) );
+    }
+
     public function column_default( $item, $column_name ) {
         switch ( $column_name ) {
-            case 'title':
-                return '<a href="' . get_edit_post_link( $item->ID ) . '">' . $item->post_title . '</a>';
+            // case 'title':
+            //     $edit_link = get_edit_post_link( $item->ID );
+            //     $title     = '<strong>' . $item->post_title . '</strong>';
+            //     $actions   = [
+            //         'edit' => sprintf( '<a href="%s">%s</a>', $edit_link, __( 'Edit', 'wpinternallinks' ) ),
+            //     ];
+            //     return sprintf( '%1$s %2$s', $title, $this->row_actions( $actions ) );
+
             case 'categories':
                 return get_the_category_list( ', ', '', $item->ID );
             case 'type':
@@ -139,7 +158,7 @@ class CreatePostListTableController extends \WP_List_Table {
                 break;
             case 'outbound_links':
                 $a_count = count( InternalLinksController::get_outbound_internal_links( $a->ID ) );
-                $b_count = count( InternalLinksController::get_outbound_internal_links( $a->ID ) );
+                $b_count = count( InternalLinksController::get_outbound_internal_links( $b->ID ) );
                 $result  = $a_count - $b_count;
                 break;
             default:
