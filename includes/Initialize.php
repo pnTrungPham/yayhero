@@ -3,6 +3,7 @@ namespace WPInternalLinks;
 
 use WPInternalLinks\Utils\SingletonTrait;
 use WPInternalLinks\Controllers\AdminMenuController;
+use WPInternalLinks\Controllers\AddCustomMetaBox;
 use WPInternalLinks\Enqueue\AdminEnqueue;
 use WPInternalLinks\Shortcode\AddShortcode;
 
@@ -27,5 +28,6 @@ class Initialize {
         Ajax::get_instance();
         AddShortcode::get_instance();
         AdminMenuController::get_instance();
+        AddCustomMetaBox::get_instance();
     }
 }
