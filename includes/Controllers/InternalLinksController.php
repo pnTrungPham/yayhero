@@ -29,29 +29,49 @@ class InternalLinksController {
 
         foreach ( $query->posts as $post ) {
             if ( $post->ID !== $post_id && stripos( $post->post_content, get_permalink( $post_id ) ) !== false ) {
-                $links[] = '<a href="' . get_edit_post_link( $post->ID ) . '">' . $post->post_title . '</a>';
-            }
-        }
-
-        return implode( ', ', $links );
-    }
-
-    public static function get_outbound_internal_links( $post ) {
-        $home_url = home_url();
-        $content  = $post->post_content;
-        $links    = [];
-
-        if ( preg_match_all( '/<a\s[^>]*href=["\']([^"\']+)["\'][^>]*>/i', $content, $matches ) ) {
-            foreach ( $matches[1] as $url ) {
-                if ( strpos( $url, $home_url ) === 0 ) {
-                    $post_id = url_to_postid( $url );
-                    if ( $post_id && $post_id !== $post->ID ) {
-                        $links[] = '<a href="' . get_edit_post_link( $post_id ) . '">' . get_the_title( $post_id ) . '</a>';
+                if ( preg_match_all( '/<a\s[^>]*href=["\']' . preg_quote( get_permalink( $post_id ), '/' ) . '["\'][^>]*>(.*?)<\/a>/i', $post->post_content, $matches ) ) {
+                    foreach ( $matches[1] as $anchor_text ) {
+                        $links[] = [
+                            'ID'          => $post->ID,
+                            'title'       => $post->post_title,
+                            'type'        => $post->post_type,
+                            'categories'  => get_the_category_list( ', ', '', $post->ID ),
+                            'anchor_text' => $anchor_text,
+                        ];
                     }
                 }
             }
         }
 
-        return implode( ', ', $links );
+        return $links;
+    }
+
+    public static function get_outbound_internal_links( $post_id ) {
+        $home_url = home_url();
+        $post     = get_post( $post_id );
+        $content  = $post->post_content;
+        $links    = [];
+
+        if ( preg_match_all( '/<a\s[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)<\/a>/i', $content, $matches, PREG_SET_ORDER ) ) {
+            foreach ( $matches as $match ) {
+                $url         = $match[1];
+                $anchor_text = $match[2];
+                if ( strpos( $url, $home_url ) === 0 ) {
+                    $linked_post_id = url_to_postid( $url );
+                    if ( $linked_post_id && $linked_post_id !== $post_id ) {
+                        $linked_post = get_post( $linked_post_id );
+                        $links[]     = [
+                            'ID'          => $linked_post->ID,
+                            'title'       => $linked_post->post_title,
+                            'type'        => $linked_post->post_type,
+                            'categories'  => get_the_category_list( ', ', '', $linked_post->ID ),
+                            'anchor_text' => $anchor_text,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $links;
     }
 }

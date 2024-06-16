@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
+define( 'WP_INTERNAL_LINKS_VERSION', 1.0 );
 define( 'WP_INTERNAL_LINKS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WP_INTERNAL_LINKS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WP_INTERNAL_LINKS_IS_DEVELOPMENT', true );

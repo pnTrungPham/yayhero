@@ -50,12 +50,28 @@ class CreatePostListTableController extends \WP_List_Table {
     }
 
     public function prepare_items() {
-        // Query posts and pages that contain internal links
+        $post_type    = filter_input( INPUT_GET, 'get_post_type', FILTER_SANITIZE_STRING ) ?? '';
+        $category     = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_STRING ) ?? '';
+        $search_value = filter_input( INPUT_GET, 's', FILTER_SANITIZE_STRING ) ?? '';
+        $only_orphan  = filter_input( INPUT_GET, 'only_orphan', FILTER_SANITIZE_STRING ) === '1';
+
         $args = [
             'post_type'      => [ 'post', 'page' ],
             'post_status'    => 'publish',
             'posts_per_page' => -1,
         ];
+
+        if ( ! empty( $post_type ) && in_array( $post_type, [ 'post', 'page' ] ) ) {
+            $args['post_type'] = $post_type;
+        }
+
+        if ( ! empty( $category ) ) {
+            $args['cat'] = $category;
+        }
+
+        if ( ! empty( $search_value ) ) {
+            $args['s'] = $search_value;
+        }
 
         $query = new \WP_Query( $args );
         $posts = [];
@@ -65,6 +81,17 @@ class CreatePostListTableController extends \WP_List_Table {
             if ( InternalLinksController::has_internal_links( $content ) ) {
                 $posts[] = $post;
             }
+        }
+
+        // Fillter orphan posts outbound internal links
+        if ( $only_orphan ) {
+            $posts = array_filter(
+                $posts,
+                function( $post ) {
+                    $inbound_links = InternalLinksController::get_inbound_internal_links( $post->ID );
+                    return empty( $inbound_links );
+                }
+            );
         }
 
         // Handle sorting
@@ -78,18 +105,39 @@ class CreatePostListTableController extends \WP_List_Table {
         $this->_column_headers = [ $columns, $hidden, $sortable ];
     }
 
+    protected function column_title( $item ) {
+        $title = '<a class="row-title" href="' . get_edit_post_link( $item->ID ) . '">' . $item->post_title . '</a>';
+
+        $edit_link = get_edit_post_link( $item->ID );
+
+        $actions = [
+            'edit'                            => sprintf( '<a href="%s">%s</a>', $edit_link, __( 'Edit', 'wpinternallinks' ) ),
+            'find_inbound_link_opportunities' => sprintf( '<a href="%s">%s</a>', '#', __( 'Find Inbound Link Opportunities', 'wpinternallinks' ) ),
+        ];
+
+        return sprintf( '%1$s %2$s', $title, $this->row_actions( $actions ) );
+    }
+
     public function column_default( $item, $column_name ) {
         switch ( $column_name ) {
-            case 'title':
-                return '<a href="' . get_edit_post_link( $item->ID ) . '">' . $item->post_title . '</a>';
+            // case 'title':
+            //     $edit_link = get_edit_post_link( $item->ID );
+            //     $title     = '<strong>' . $item->post_title . '</strong>';
+            //     $actions   = [
+            //         'edit' => sprintf( '<a href="%s">%s</a>', $edit_link, __( 'Edit', 'wpinternallinks' ) ),
+            //     ];
+            //     return sprintf( '%1$s %2$s', $title, $this->row_actions( $actions ) );
+
             case 'categories':
                 return get_the_category_list( ', ', '', $item->ID );
             case 'type':
                 return ucfirst( $item->post_type );
             case 'inbound_links':
-                return InternalLinksController::get_inbound_internal_links( $item->ID );
+                $count = count( InternalLinksController::get_inbound_internal_links( $item->ID ) );
+                return '<a href="#" class="inbound-links-count" data-post-id="' . $item->ID . '">' . $count . '</a>';
             case 'outbound_links':
-                return InternalLinksController::get_outbound_internal_links( $item );
+                $count = count( InternalLinksController::get_outbound_internal_links( $item->ID ) );
+                return '<a href="#" class="outbound-links-count" data-post-id="' . $item->ID . '">' . $count . '</a>';
             default:
                 return print_r( $item, true );
         }
@@ -104,13 +152,13 @@ class CreatePostListTableController extends \WP_List_Table {
                 $result = strcmp( $a->post_title, $b->post_title );
                 break;
             case 'inbound_links':
-                $a_count = count( explode( ', ', InternalLinksController::get_inbound_internal_links( $a->ID ) ) );
-                $b_count = count( explode( ', ', InternalLinksController::get_inbound_internal_links( $b->ID ) ) );
+                $a_count = count( InternalLinksController::get_inbound_internal_links( $a->ID ) );
+                $b_count = count( InternalLinksController::get_inbound_internal_links( $b->ID ) );
                 $result  = $a_count - $b_count;
                 break;
             case 'outbound_links':
-                $a_count = count( explode( ', ', InternalLinksController::get_outbound_internal_links( $a ) ) );
-                $b_count = count( explode( ', ', InternalLinksController::get_outbound_internal_links( $b ) ) );
+                $a_count = count( InternalLinksController::get_outbound_internal_links( $a->ID ) );
+                $b_count = count( InternalLinksController::get_outbound_internal_links( $b->ID ) );
                 $result  = $a_count - $b_count;
                 break;
             default:
@@ -118,5 +166,26 @@ class CreatePostListTableController extends \WP_List_Table {
         }
 
         return ( 'asc' === $order ) ? $result : -$result;
+    }
+
+    public function get_post_count_by_type( $post_type = '', $only_orphan = false ) {
+        $args = [
+            'post_type'      => $post_type ? $post_type : [ 'post', 'page' ],
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+        ];
+
+        if ( $only_orphan ) {
+            $args['meta_query'] = [
+                [
+                    'key'     => '_wp_page_template',
+                    'value'   => 'default',
+                    'compare' => 'NOT EXISTS',
+                ],
+            ];
+        }
+
+        $query = new \WP_Query( $args );
+        return $query->found_posts;
     }
 }

@@ -24,6 +24,7 @@ class Initialize {
 
     public static function wp_internal_links_init() {
         AdminEnqueue::get_instance();
+        Ajax::get_instance();
         AddShortcode::get_instance();
         AdminMenuController::get_instance();
     }
