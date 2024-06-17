@@ -38,15 +38,19 @@ class CreatePostListTableController extends \WP_List_Table {
             'outbound_links'             => 'Outbound Internal Links',
             'inbound_links_in_category'  => 'Inbound Internal Links Within Category',
             'outbound_links_in_category' => 'Outbound Internal Links Within Category',
+            'link_back_to_category'      => 'Link back to Category',
         ];
         return $columns;
     }
 
     public function get_sortable_columns() {
         $sortable_columns = [
-            'title'          => [ 'title', true ],
-            'inbound_links'  => [ 'inbound_links', false ],
-            'outbound_links' => [ 'outbound_links', false ],
+            'title'                      => [ 'title', true ],
+            'inbound_links'              => [ 'inbound_links', false ],
+            'outbound_links'             => [ 'outbound_links', false ],
+            'inbound_links_in_category'  => [ 'inbound_links_in_category', false ],
+            'outbound_links_in_category' => [ 'outbound_links_in_category', false ],
+            'link_back_to_category'      => [ 'link_back_to_category', false ],
         ];
         return $sortable_columns;
     }
@@ -146,9 +150,27 @@ class CreatePostListTableController extends \WP_List_Table {
             case 'outbound_links_in_category':
                 $count = count( InternalLinksController::get_outbound_internal_links_in_category( $item->ID ) );
                 return '<a href="#" class="outbound-links-in-category-count" data-type="outbound_category" data-post-id="' . $item->ID . '">' . $count . '</a>';
+            case 'link_back_to_category':
+                return self::get_category_link( $item->ID );
             default:
                 return print_r( $item, true );
         }
+    }
+
+    public static function get_category_link( $post_id ) {
+        $categories = get_the_category( $post_id );
+
+        if ( ! empty( $categories ) ) {
+            $main_category = $categories[0];
+            $category_link = get_category_link( $main_category->term_id );
+
+            $content    = get_post_field( 'post_content', $post_id );
+            $link_count = substr_count( $content, $category_link );
+
+            return '<a href="' . esc_url( $category_link ) . '">' . __( 'View Category', 'wpinternallinks' ) . '</a> (' . $link_count . ')';
+        }
+
+        return '';
     }
 
     private function sort_items( $a, $b ) {
