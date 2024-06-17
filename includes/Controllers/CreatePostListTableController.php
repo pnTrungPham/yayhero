@@ -165,7 +165,8 @@ class CreatePostListTableController extends \WP_List_Table {
             $category_link = get_category_link( $main_category->term_id );
 
             $content    = get_post_field( 'post_content', $post_id );
-            $link_count = substr_count( $content, $category_link );
+            $link       = 'href="' . esc_url( $category_link ) . '"';
+            $link_count = substr_count( $content, $link );
 
             return '<a href="' . esc_url( $category_link ) . '">' . __( 'View Category', 'wpinternallinks' ) . '</a> (' . $link_count . ')';
         }
