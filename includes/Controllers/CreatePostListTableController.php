@@ -31,11 +31,13 @@ class CreatePostListTableController extends \WP_List_Table {
 
     public function get_columns() {
         $columns = [
-            'title'          => 'Title',
-            'categories'     => 'Categories',
-            'type'           => 'Type',
-            'inbound_links'  => 'Inbound Internal Links',
-            'outbound_links' => 'Outbound Internal Links',
+            'title'                      => 'Title',
+            'categories'                 => 'Categories',
+            'type'                       => 'Type',
+            'inbound_links'              => 'Inbound Internal Links',
+            'outbound_links'             => 'Outbound Internal Links',
+            'inbound_links_in_category'  => 'Inbound Internal Links Within Category',
+            'outbound_links_in_category' => 'Outbound Internal Links Within Category',
         ];
         return $columns;
     }
@@ -129,15 +131,21 @@ class CreatePostListTableController extends \WP_List_Table {
             //     return sprintf( '%1$s %2$s', $title, $this->row_actions( $actions ) );
 
             case 'categories':
-                return get_the_category_list( ', ', '', $item->ID );
+                return $this->get_hierarchical_categories( $item->ID );
             case 'type':
                 return ucfirst( $item->post_type );
             case 'inbound_links':
                 $count = count( InternalLinksController::get_inbound_internal_links( $item->ID ) );
-                return '<a href="#" class="inbound-links-count" data-post-id="' . $item->ID . '">' . $count . '</a>';
+                return '<a href="#" class="inbound-links-count" data-type="inbound" data-post-id="' . $item->ID . '">' . $count . '</a>';
             case 'outbound_links':
                 $count = count( InternalLinksController::get_outbound_internal_links( $item->ID ) );
-                return '<a href="#" class="outbound-links-count" data-post-id="' . $item->ID . '">' . $count . '</a>';
+                return '<a href="#" class="outbound-links-count" data-type="outbound" data-post-id="' . $item->ID . '">' . $count . '</a>';
+            case 'inbound_links_in_category':
+                $count = count( InternalLinksController::get_inbound_internal_links_in_category( $item->ID ) );
+                return '<a href="#" class="inbound-links-in-category-count" data-type="inbound_category" data-post-id="' . $item->ID . '">' . $count . '</a>';
+            case 'outbound_links_in_category':
+                $count = count( InternalLinksController::get_outbound_internal_links_in_category( $item->ID ) );
+                return '<a href="#" class="outbound-links-in-category-count" data-type="outbound_category" data-post-id="' . $item->ID . '">' . $count . '</a>';
             default:
                 return print_r( $item, true );
         }
@@ -187,5 +195,30 @@ class CreatePostListTableController extends \WP_List_Table {
 
         $query = new \WP_Query( $args );
         return $query->found_posts;
+    }
+
+    private function get_hierarchical_categories( $post_id ) {
+        $taxonomy = get_option( 'wpinternallinks_taxonomy', 'category' );
+
+        $terms = get_the_terms( $post_id, $taxonomy );
+        if ( is_wp_error( $terms ) || empty( $terms ) ) {
+            return '';
+        }
+
+        $terms_hierarchical = [];
+        foreach ( $terms as $term ) {
+            $ancestors         = get_ancestors( $term->term_id, $taxonomy );
+            $ancestors         = array_reverse( $ancestors );
+            $ancestors[]       = $term->term_id;
+            $hierarchical_name = '';
+            foreach ( $ancestors as $ancestor_id ) {
+                $ancestor           = get_term( $ancestor_id, $taxonomy );
+                $hierarchical_name .= $ancestor->name . ' / ';
+            }
+            $hierarchical_name    = rtrim( $hierarchical_name, ' / ' );
+            $terms_hierarchical[] = $hierarchical_name;
+        }
+
+        return implode( ', ', $terms_hierarchical );
     }
 }

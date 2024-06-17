@@ -14,6 +14,29 @@ class AdminMenuController {
 
     protected function __construct() {
         add_action( 'admin_menu', [ $this, 'add_admin_menu' ] );
+
+        add_action(
+            'admin_init',
+            function() {
+                register_setting( 'wpinternallinks_settings', 'wpinternallinks_taxonomy' );
+                add_settings_section( 'wpinternallinks_settings_section', 'Internal Links Settings', null, 'internal-links-settings' );
+                add_settings_field( 'wpinternallinks_taxonomy', 'Taxonomy', [ $this, 'wpinternallinks_taxonomy_field' ], 'internal-links-settings', 'wpinternallinks_settings_section' );
+            }
+        );
+    }
+
+    public function wpinternallinks_taxonomy_field() {
+        $taxonomy   = get_option( 'wpinternallinks_taxonomy', 'category' );
+        $taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+        ?>
+        <select name="wpinternallinks_taxonomy">
+            <?php foreach ( $taxonomies as $tax ) : ?>
+                <option value="<?php echo esc_attr( $tax->name ); ?>" <?php selected( $taxonomy, $tax->name ); ?>>
+                    <?php echo esc_html( $tax->labels->singular_name ); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <?php
     }
 
     public function add_admin_menu() {

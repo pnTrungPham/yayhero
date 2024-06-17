@@ -30,11 +30,7 @@ class Ajax {
             $post_id   = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
             $link_type = isset( $_POST['link_type'] ) ? sanitize_text_field( $_POST['link_type'] ) : 'inbound';
 
-            if ( 'inbound' === $link_type ) {
-                $html = $this->get_inbound_links_html( $post_id );
-            } else {
-                $html = $this->get_outbound_links_html( $post_id );
-            }
+            $html = $this->get_popup_info_html( $post_id, $link_type ) ?? '';
 
             wp_send_json_success( [ 'html' => $html ] );
         } catch ( \Exception $e ) {
@@ -42,24 +38,28 @@ class Ajax {
         }
     }
 
-    public function get_inbound_links_html( $post_id ) {
-        $links = InternalLinksController::get_inbound_internal_links( $post_id );
+    public function get_popup_info_html( $post_id, $link_type ) {
+        if ( 'inbound' === $link_type ) {
+            $links = InternalLinksController::get_inbound_internal_links( $post_id );
+        }
+        if ( 'outbound' === $link_type ) {
+            $links = InternalLinksController::get_outbound_internal_links( $post_id );
+        }
+        if ( 'inbound_category' === $link_type ) {
+            $links = InternalLinksController::get_inbound_internal_links_in_category( $post_id );
+        }
+        if ( 'outbound_category' === $link_type ) {
+            $links = InternalLinksController::get_outbound_internal_links_in_category( $post_id );
+        }
 
-        ob_start();
-        include WP_INTERNAL_LINKS_PLUGIN_PATH . 'templates/dashboard/popup-info.php';
-        $html = ob_get_contents();
-        ob_end_clean();
-        return $html;
-    }
-
-    public function get_outbound_links_html( $post_id ) {
-        $links = InternalLinksController::get_outbound_internal_links( $post_id );
-
-        ob_start();
-        include WP_INTERNAL_LINKS_PLUGIN_PATH . 'templates/dashboard/popup-info.php';
-        $html = ob_get_contents();
-        ob_end_clean();
-        return $html;
+        if ( ! empty( $links ) ) {
+            ob_start();
+            include WP_INTERNAL_LINKS_PLUGIN_PATH . 'templates/dashboard/popup-info.php';
+            $html = ob_get_contents();
+            ob_end_clean();
+            return $html;
+        }
+        return '';
     }
 
 }
