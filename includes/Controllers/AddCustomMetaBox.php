@@ -32,20 +32,15 @@ class AddCustomMetaBox {
 
         // Output the suggestions
         if ( ! empty( $suggestions ) ) {
-            echo '<ul>';
-            foreach ( $suggestions as $suggestion ) {
-                echo '<li><a href="' . esc_url( $suggestion['url'] ) . '">' . esc_html( $suggestion['title'] ) . '</a></li>';
-            }
-            echo '</ul>';
+            ob_start();
+            include WP_INTERNAL_LINKS_PLUGIN_PATH . 'templates/meta-box/suggestion-table.php';
+            $html = ob_get_contents();
+            ob_end_clean();
+            wp_ilink_kses_post_e( $html );
         } else {
             echo 'No internal link suggestions available.';
         }
 
-        // Display the post content with highlighted places
-        $post_content        = get_post_field( 'post_content', $post->ID );
-        $highlighted_content = $this->highlight_places_in_content( $post_content, $suggestions );
-        echo '<div><strong>Highlighted Content:</strong></div>';
-        echo '<div>' . $highlighted_content . '</div>';
     }
 
     public function get_internal_link_suggestions( $post_id ) {

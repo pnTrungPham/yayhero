@@ -24,6 +24,9 @@ class Initialize {
     }
 
     public static function wp_internal_links_init() {
+
+        require_once WP_INTERNAL_LINKS_PLUGIN_PATH . 'includes/Functions.php';
+
         AdminEnqueue::get_instance();
         Ajax::get_instance();
         AddShortcode::get_instance();
