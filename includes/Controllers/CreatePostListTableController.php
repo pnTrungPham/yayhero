@@ -16,6 +16,9 @@ class CreatePostListTableController extends \WP_List_Table {
 
     use SingletonTrait;
 
+    protected $total_items;
+    protected $per_page = 10; // Number of items per page
+
     /**
      * The Constructor that load the engine classes
      */
@@ -60,6 +63,7 @@ class CreatePostListTableController extends \WP_List_Table {
         $category     = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_STRING ) ?? '';
         $search_value = filter_input( INPUT_GET, 's', FILTER_SANITIZE_STRING ) ?? '';
         $only_orphan  = filter_input( INPUT_GET, 'only_orphan', FILTER_SANITIZE_STRING ) === '1';
+        $paged        = filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT ) ?? 1;
 
         $args = [
             'post_type'      => [ 'post', 'page' ],
@@ -103,7 +107,19 @@ class CreatePostListTableController extends \WP_List_Table {
         // Handle sorting
         usort( $posts, [ $this, 'sort_items' ] );
 
-        $this->items = $posts;
+        // Set pagination parameters
+        $total_items       = count( $posts );
+        $this->total_items = $total_items;
+        $this->set_pagination_args(
+            [
+                'total_items' => $total_items,
+                'per_page'    => $this->per_page,
+            ]
+        );
+
+        $current_page = $this->get_pagenum();
+        $offset       = ( $current_page - 1 ) * $this->per_page;
+        $this->items  = array_slice( $posts, $offset, $this->per_page );
 
         $columns               = $this->get_columns();
         $hidden                = [];
@@ -126,14 +142,6 @@ class CreatePostListTableController extends \WP_List_Table {
 
     public function column_default( $item, $column_name ) {
         switch ( $column_name ) {
-            // case 'title':
-            //     $edit_link = get_edit_post_link( $item->ID );
-            //     $title     = '<strong>' . $item->post_title . '</strong>';
-            //     $actions   = [
-            //         'edit' => sprintf( '<a href="%s">%s</a>', $edit_link, __( 'Edit', 'wpinternallinks' ) ),
-            //     ];
-            //     return sprintf( '%1$s %2$s', $title, $this->row_actions( $actions ) );
-
             case 'categories':
                 return $this->get_hierarchical_categories( $item->ID );
             case 'type':
@@ -216,8 +224,15 @@ class CreatePostListTableController extends \WP_List_Table {
             ];
         }
 
-        $query = new \WP_Query( $args );
-        return $query->found_posts;
+        $query                     = new \WP_Query( $args );
+        $posts_with_internal_links = array_filter(
+            $query->posts,
+            function( $post ) {
+                return InternalLinksController::has_internal_links( $post->post_content );
+            }
+        );
+
+        return count( $posts_with_internal_links );
     }
 
     private function get_hierarchical_categories( $post_id ) {
