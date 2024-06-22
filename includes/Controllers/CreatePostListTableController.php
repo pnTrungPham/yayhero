@@ -36,14 +36,53 @@ class CreatePostListTableController extends \WP_List_Table {
         $columns = [
             'title'                      => 'Title',
             'categories'                 => 'Categories',
-            'type'                       => 'Type',
-            'inbound_links'              => 'Inbound Internal Links',
-            'outbound_links'             => 'Outbound Internal Links',
-            'inbound_links_in_category'  => 'Inbound Internal Links Within Category',
-            'outbound_links_in_category' => 'Outbound Internal Links Within Category',
-            'link_back_to_category'      => 'Link back to Category',
+            'inbound_links'              => $this->get_inbound_links_title(),
+            'outbound_links'             => esc_html__( 'Outbound', 'wpinternallinks' ),
+            'inbound_links_in_category'  => $this->get_inbound_links_within_category_title(),
+            'outbound_links_in_category' => 'Outbound',
+            'link_back_to_category'      => $this->get_link_back_category_title(),
         ];
         return $columns;
+    }
+
+    public static function get_link_back_category_title() {
+        ob_start();
+        ?>
+            <div class="wpil-link-back-category-title-title">
+                <img width="50" src="<?php echo esc_url( WP_INTERNAL_LINKS_PLUGIN_URL . 'assets/admin/images/logo-back-parent.png' ); ?>" alt="WP Internal Links">
+                <p class="wpil-text-label"><strong><?php esc_html_e( 'Internal Links', 'wpinternallinks' ); ?></strong></p>
+                <p class="wpil-text-des"><strong><?php esc_html_e( '[Back to Parent]', 'wpinternallinks' ); ?></strong></p>
+                <p><?php esc_html_e( 'Link back to Category', 'wpinternallinks' ); ?></p>
+            </div>
+        <?php
+        return ob_get_clean();
+    }
+
+
+    public static function get_inbound_links_within_category_title() {
+        ob_start();
+        ?>
+            <div class="wpil-inbound-links-within-category-title">
+                <img width="50" src="<?php echo esc_url( WP_INTERNAL_LINKS_PLUGIN_URL . 'assets/admin/images/logo-within-cat.png' ); ?>" alt="WP Internal Links">
+                <p class="wpil-text-label"><strong><?php esc_html_e( 'Internal Links', 'wpinternallinks' ); ?></strong></p>
+                <p class="wpil-text-des"><strong><?php esc_html_e( '[Within the Category]', 'wpinternallinks' ); ?></strong></p>
+                <p><?php esc_html_e( 'Inbound', 'wpinternallinks' ); ?></p>
+            </div>
+        <?php
+        return ob_get_clean();
+    }
+
+    public static function get_inbound_links_title() {
+        ob_start();
+        ?>
+            <div class="wpil-inbound-links-title">
+                <img width="50" src="<?php echo esc_url( WP_INTERNAL_LINKS_PLUGIN_URL . 'assets/admin/images/logo-entrire.png' ); ?>" alt="WP Internal Links">
+                <p class="wpil-text-label"><strong><?php esc_html_e( 'Internal Links', 'wpinternallinks' ); ?></strong></p>
+                <p class="wpil-text-des"><strong><?php esc_html_e( '[Entire WebSite]', 'wpinternallinks' ); ?></strong></p>
+                <p><?php esc_html_e( 'Inbound', 'wpinternallinks' ); ?></p>
+            </div>
+        <?php
+        return ob_get_clean();
     }
 
     public function get_sortable_columns() {
@@ -88,9 +127,9 @@ class CreatePostListTableController extends \WP_List_Table {
 
         foreach ( $query->posts as $post ) {
             $content = $post->post_content;
-            // if ( InternalLinksController::has_internal_links( $content ) ) {
+            if ( InternalLinksController::has_internal_links( $content ) ) {
                 $posts[] = $post;
-            //}
+            }
         }
 
         // Fillter orphan posts outbound internal links
@@ -144,8 +183,6 @@ class CreatePostListTableController extends \WP_List_Table {
         switch ( $column_name ) {
             case 'categories':
                 return $this->get_hierarchical_categories( $item->ID );
-            case 'type':
-                return ucfirst( $item->post_type );
             case 'inbound_links':
                 $count = count( InternalLinksController::get_inbound_internal_links( $item->ID ) );
                 return '<a href="#" class="inbound-links-count" data-type="inbound" data-post-id="' . $item->ID . '">' . $count . '</a>';

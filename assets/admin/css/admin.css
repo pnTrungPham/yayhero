@@ -42,3 +42,51 @@
 .wpil-dashboard-page .wrap {
   width: 100%;
 }
+
+.wpil-dashboard-page .manage-column {
+  position: relative;
+}
+
+.wpil-dashboard-page .column-inbound_links .wpil-text-label,
+.wpil-dashboard-page .column-inbound_links .wpil-text-des,
+.wpil-dashboard-page .column-inbound_links_in_category .wpil-text-label,
+.wpil-dashboard-page .column-inbound_links_in_category .wpil-text-des,
+.wpil-dashboard-page .column-link_back_to_category .wpil-text-label,
+.wpil-dashboard-page .column-link_back_to_category .wpil-text-des {
+  color: #2271b1;
+}
+
+.wpil-dashboard-page .column-inbound_links .sorting-indicators,
+.wpil-dashboard-page .column-inbound_links_in_category .sorting-indicators,
+.wpil-dashboard-page .column-link_back_to_category .sorting-indicators {
+  position: absolute;
+  bottom: 25px;
+  left: 57px;
+}
+
+.wpil-dashboard-page .column-link_back_to_category .sorting-indicators {
+  left: 140px;
+}
+
+.wpil-dashboard-page #outbound_links a,
+.wpil-dashboard-page #outbound_links_in_category a {
+  position: absolute;
+  bottom: 15px;
+  color: #2c3338;
+}
+
+.wpil-dashboard-page tfoot .manage-column .wpil-text-label,
+.wpil-dashboard-page tfoot .manage-column .wpil-text-des,
+.wpil-dashboard-page tfoot .manage-column img {
+  display: none;
+}
+
+.wpil-dashboard-page tfoot th.column-outbound_links a,
+.wpil-dashboard-page tfoot th.column-outbound_links_in_category a {
+  color: #2c3338;
+}
+
+.wpil-dashboard-page a:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
