@@ -88,9 +88,9 @@ class CreatePostListTableController extends \WP_List_Table {
 
         foreach ( $query->posts as $post ) {
             $content = $post->post_content;
-            if ( InternalLinksController::has_internal_links( $content ) ) {
+            // if ( InternalLinksController::has_internal_links( $content ) ) {
                 $posts[] = $post;
-            }
+            //}
         }
 
         // Fillter orphan posts outbound internal links

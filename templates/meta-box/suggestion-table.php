@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
     }
 </style>
 
-<table>
+<table class="wpil-table-suggested">
     <thead>
         <tr>
             <th><b><?php esc_html_e( 'Phrases In This Post To Link From', 'wpinternallinks' ); ?></b></th>
@@ -49,7 +49,7 @@ defined( 'ABSPATH' ) || exit;
                     </div>
                 </td>
                 <td> 
-                    <a href="#" class="button button-primary"><?php esc_html_e( 'Copy', 'wpinternallinks' ); ?></a>
+                    <a href="" class="button button-primary wpil-table-suggested-button-copy"><?php esc_html_e( 'Copy', 'wpinternallinks' ); ?></a>
                 </td>
             </tr>
         <?php } ?>
