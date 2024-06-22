@@ -168,7 +168,7 @@ class InternalLinksController {
     }
 
 
-    private function get_anchor_text( $content, $url ) {
+    public static function get_anchor_text( $content, $url ) {
         $pattern = '/<a\s[^>]*href=["\']' . preg_quote( $url, '/' ) . '["\'][^>]*>(.*?)<\/a>/i';
         if ( preg_match( $pattern, $content, $matches ) ) {
             return $matches[1];

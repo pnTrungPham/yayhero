@@ -49,7 +49,7 @@ defined( 'ABSPATH' ) || exit;
                     </div>
                 </td>
                 <td> 
-                    <a href="" class="button button-primary wpil-table-suggested-button-copy"><?php esc_html_e( 'Copy', 'wpinternallinks' ); ?></a>
+                    <button class="button button-primary wpil-table-suggested-button-copy"><?php esc_html_e( 'Copy', 'wpinternallinks' ); ?></button>
                 </td>
             </tr>
         <?php } ?>
