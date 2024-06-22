@@ -20,9 +20,10 @@ const wpInternalLinks = {
                     console.log(response.data.html);
                     if (response.success && response.data.html) {
                         // Show popup with response.data.html
-                        var $popup = $('<div class="wp-internal-links-popup"></div>').html(response.data.html);
+                        const $popup = $('<div class="wp-internal-links-popup"></div>').html(response.data.html);
+                        const title = response.data.title;
                         $popup.dialog({
-                            title: linkType === 'inbound' ? 'Inbound Internal Links' : 'Outbound Internal Links',
+                            title: title,
                             width: 600,
                             modal: true,
                             buttons: {

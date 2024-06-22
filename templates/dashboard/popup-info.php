@@ -1,6 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 ?>
+<h3><?php echo esc_html__( 'Information for: ', 'wpinternallinks' ) . esc_html( $post_title ); ?></h3>
 <table>
     <thead>
         <tr>
