@@ -11,106 +11,129 @@ class LinkSuggestionsController {
 
     use SingletonTrait;
 
+    protected function __construct() {
+        add_action( 'add_meta_boxes', [ $this, 'add_custom_meta_box' ] );
+    }
 
-    public static function get_post_suggestions( $post_id, $target_id = null, $keyword = null, $count = 5 ) {
-        $post = get_post( $post_id );
-        if ( ! $post ) {
-            return [];
-        }
+    public function add_custom_meta_box() {
+        add_meta_box(
+            'custom_meta_box',
+            'Suggested Outbound Links',
+            [ $this, 'display_internal_link_suggestions_meta_box' ],
+            [ 'post', 'page' ],
+            'normal',
+            'high'
+        );
+    }
 
-        $ignore_words = [ 'the', 'is', 'at', 'which', 'on', 'and' ];
+    public function display_internal_link_suggestions_meta_box( $post ) {
 
-        if ( $target_id ) {
-            $internal_links = self::get_linked_post_id( $target_id );
-        } else {
-            $internal_links = self::get_outbound_links( $post_id );
-        }
+        $current_post_id      = $post->ID;
+        $current_post_content = get_post_field( 'post_content', $current_post_id );
 
-        $used_posts = [];
-        foreach ( $internal_links as $link ) {
-            if ( ! empty( $link->ID ) ) {
-                $used_posts[] = $link->ID;
-            }
-        }
+        $suggested_link_text = '';
+        $suggested_link_url  = '';
 
-        $words_to_posts = self::get_title_words( $keyword );
+        $args = [
+            'post_type'      => 'post',
+            'post__not_in'   => [ $current_post_id ],
+            'posts_per_page' => -1,
+            'publish_status' => 'published',
+        ];
 
+        $all_posts   = get_posts( $args );
         $suggestions = [];
-        foreach ( $words_to_posts as $word => $posts ) {
-            if ( in_array( $word, $ignore_words ) ) {
-                continue;
-            }
 
-            foreach ( $posts as $p ) {
-                if ( in_array( $p->ID, $used_posts ) ) {
-                    continue;
-                }
+        foreach ( $all_posts as $single_post ) {
+            $single_post_title         = get_the_title( $single_post->ID );
+            $array_text_common_phrases = $this->detect_common_phrases( $current_post_content, $single_post_title );
+            if ( ! empty( $array_text_common_phrases ) ) {
+                foreach ( $array_text_common_phrases as $text_common_phrases ) {
+                    $suggested_link_text = $text_common_phrases;
+                    $title_post_outbound = $single_post->post_title;
+                    $url_post_outbound   = get_permalink( $single_post->ID );
 
-                if ( ! isset( $suggestions[ $p->ID ] ) ) {
-                    $suggestions[ $p->ID ] = [
-                        'post'  => $p,
-                        'score' => 0,
-                        'words' => [],
+                    $suggestions[] = [
+                        'anchor_text'         => $suggested_link_text,
+                        'title_post_outbound' => $title_post_outbound,
+                        'url_post_outbound'   => $url_post_outbound,
+                        'post_outbound'       => $single_post,
                     ];
+
                 }
-
-                $suggestions[ $p->ID ]['words'][] = $word;
-                $suggestions[ $p->ID ]['score']  += 1;
             }
         }
 
-        usort(
-            $suggestions,
-            function ( $a, $b ) {
-                return $b['score'] - $a['score'];
-            }
-        );
-
-        return array_slice( $suggestions, 0, $count );
-    }
-
-    private static function get_linked_post_id( $target_id ) {
-        global $wpdb;
-        $linked_posts = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'post' AND post_status = 'publish' AND ID IN (SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key = 'linked_post_id' AND post_id = %d)",
-                $target_id
-            )
-        );
-        return $linked_posts;
-    }
-
-    private static function get_outbound_links( $post_id ) {
-        global $wpdb;
-        $outbound_links = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'post' AND post_status = 'publish' AND ID IN (SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key = 'outbound_link_id' AND post_id = %d)",
-                $post_id
-            )
-        );
-        return $outbound_links;
-    }
-
-    private static function get_title_words( $keyword = null ) {
-        global $wpdb;
-        $sql = "SELECT ID, post_title FROM {$wpdb->posts} WHERE post_type = 'post' AND post_status = 'publish'";
-        if ( $keyword ) {
-            $sql .= $wpdb->prepare( ' AND post_title LIKE %s', '%' . $wpdb->esc_like( $keyword ) . '%' );
+        if ( ! empty( $suggestions ) ) {
+            ob_start();
+            include WP_INTERNAL_LINKS_PLUGIN_PATH . 'templates/meta-box/suggestion-table.php';
+            $html = ob_get_contents();
+            ob_end_clean();
+            wp_ilink_kses_post_e( $html );
+        } else {
+            esc_html_e( 'No internal link suggestions available.', 'wpinternallinks' );
         }
-        $posts = $wpdb->get_results( $sql );
+    }
 
-        $words_to_posts = [];
-        foreach ( $posts as $post ) {
-            $words = explode( ' ', strtolower( $post->post_title ) );
-            foreach ( $words as $word ) {
-                if ( ! isset( $words_to_posts[ $word ] ) ) {
-                    $words_to_posts[ $word ] = [];
+    public function longest_common_substring( $text1, $text2 ) {
+        $pattern     = '/[^\p{L}\p{N}\s]+/u';
+        $clean_text1 = preg_replace( $pattern, ' ', $text1 );
+        $clean_text2 = preg_replace( $pattern, ' ', $text2 );
+
+        $words1 = preg_split( '/\s+/', $clean_text1 );
+        $words2 = preg_split( '/\s+/', $clean_text2 );
+
+        $length1        = count( $words1 );
+        $length2        = count( $words2 );
+        $common_phrases = [];
+
+        $excluded_words = [ 'a', 'an', 'is', 'the', 'for', 'by', 'and', 'or', 'of the', 'for a', 'with', 'your' ];
+
+        for ( $i = 0; $i < $length1; $i++ ) {
+            for ( $j = 0; $j < $length2; $j++ ) {
+                $phrase = '';
+                $k      = 0;
+                while ( $i + $k < $length1 && $j + $k < $length2 && $words1[ $i + $k ] == $words2[ $j + $k ] ) {
+                    if ( $phrase !== '' ) {
+                        $phrase .= ' ';
+                    }
+                    $phrase .= $words1[ $i + $k ];
+                    $k++;
                 }
-                $words_to_posts[ $word ][] = $post;
+                if ( $phrase !== '' && strlen( $phrase ) > 2 && ! in_array( strtolower( $phrase ), $excluded_words ) ) {
+                    $common_phrases[] = $phrase;
+                }
             }
         }
 
-        return $words_to_posts;
+        return array_unique( $common_phrases );
     }
+
+    public function detect_common_phrases( $post_content, $post_title ) {
+        $common_phrases = $this->longest_common_substring( $post_content, $post_title );
+        return $this->filter_array( $common_phrases );
+    }
+
+    public function filter_array( $input_array ) {
+        $filtered_array = [];
+
+        foreach ( $input_array as $item ) {
+            $keep_item = true;
+
+            foreach ( $filtered_array as $filtered_item ) {
+                if ( strpos( $item, $filtered_item ) !== false || strpos( $filtered_item, $item ) !== false ) {
+                    $keep_item = false;
+                    break;
+                }
+            }
+
+            if ( $keep_item ) {
+                $filtered_array[] = $item;
+            }
+        }
+
+        return $filtered_array;
+    }
+
 }
 

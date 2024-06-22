@@ -36,16 +36,16 @@ defined( 'ABSPATH' ) || exit;
         <?php foreach ( $suggestions as $suggestion ) { ?>
             <tr>
                 <td>                 
-                    <?php echo esc_html( $suggestion['title'] ); ?>
+                    <?php echo esc_html( $suggestion['anchor_text'] ); ?>
                 </td>
                 <td>
                     <div>
                         <strong>Title:</strong> 
-                        <span><?php echo esc_html( $suggestion['title'] ); ?></span>
+                        <span><i><strong><?php echo esc_html( $suggestion['title_post_outbound'] ); ?></strong></i></span>
                     </div>
                     <div>
                         <strong>Url:</strong> 
-                        <span><a href="<?php echo esc_url( $suggestion['url'] ); ?>"><?php echo esc_url( $suggestion['url'] ); ?></a></span>
+                        <span><a href="<?php echo esc_url( $suggestion['url_post_outbound'] ); ?>"><?php echo esc_url( $suggestion['url_post_outbound'] ); ?></a></span>
                     </div>
                 </td>
                 <td> 
