@@ -167,7 +167,8 @@ class CreatePostListTableController extends \WP_List_Table {
     }
 
     protected function column_title( $item ) {
-        $title = '<a class="row-title" href="' . get_edit_post_link( $item->ID ) . '">' . $item->post_title . '</a>';
+        $type  = '<span class="wpil-post-type"> [' . get_post_type( $item->ID ) . ']</span>';
+        $title = '<a class="row-title" href="' . get_edit_post_link( $item->ID ) . '">' . $item->post_title . $type . '</a>';
 
         $edit_link = get_edit_post_link( $item->ID );
 
@@ -185,16 +186,20 @@ class CreatePostListTableController extends \WP_List_Table {
                 return $this->get_hierarchical_categories( $item->ID );
             case 'inbound_links':
                 $count = count( InternalLinksController::get_inbound_internal_links( $item->ID ) );
-                return '<a href="#" class="inbound-links-count" data-type="inbound" data-post-id="' . $item->ID . '">' . $count . '</a>';
+                $class = $count > 0 ? ' bg-green' : ' bg-gray';
+                return '<a href="#" class="wpil-count-link inbound-links-count' . $class . '" data-type="inbound" data-post-id="' . $item->ID . '">' . $count . '</a>';
             case 'outbound_links':
                 $count = count( InternalLinksController::get_outbound_internal_links( $item->ID ) );
-                return '<a href="#" class="outbound-links-count" data-type="outbound" data-post-id="' . $item->ID . '">' . $count . '</a>';
+                $class = $count > 0 ? ' bg-green' : ' bg-gray';
+                return '<a href="#" class="wpil-count-link outbound-links-count' . $class . '"  data-type="outbound" data-post-id="' . $item->ID . '">' . $count . '</a>';
             case 'inbound_links_in_category':
                 $count = count( InternalLinksController::get_inbound_internal_links_in_category( $item->ID ) );
-                return '<a href="#" class="inbound-links-in-category-count" data-type="inbound_category" data-post-id="' . $item->ID . '">' . $count . '</a>';
+                $class = $count > 0 ? ' bg-green' : ' bg-gray';
+                return '<a href="#" class="wpil-count-link inbound-links-in-category-count' . $class . '"  data-type="inbound_category" data-post-id="' . $item->ID . '">' . $count . '</a>';
             case 'outbound_links_in_category':
                 $count = count( InternalLinksController::get_outbound_internal_links_in_category( $item->ID ) );
-                return '<a href="#" class="outbound-links-in-category-count" data-type="outbound_category" data-post-id="' . $item->ID . '">' . $count . '</a>';
+                $class = $count > 0 ? ' bg-green' : ' bg-gray';
+                return '<a href="#" class="wpil-count-link outbound-links-in-category-count' . $class . '"  data-type="outbound_category" data-post-id="' . $item->ID . '">' . $count . '</a>';
             case 'link_back_to_category':
                 return self::get_category_link( $item->ID );
             default:
@@ -212,8 +217,9 @@ class CreatePostListTableController extends \WP_List_Table {
             $content    = get_post_field( 'post_content', $post_id );
             $link       = 'href="' . esc_url( $category_link ) . '"';
             $link_count = substr_count( $content, $link );
+            $class      = $link_count > 0 ? ' bg-green' : ' bg-gray';
 
-            return '<a href="' . esc_url( $category_link ) . '">' . __( 'View Category', 'wpinternallinks' ) . '</a> (' . $link_count . ')';
+            return '<a  class="wpil-count-link' . $class . '"  href="' . esc_url( $category_link ) . '">' . __( 'View Category', 'wpinternallinks' ) . '</a>';
         }
 
         return '';

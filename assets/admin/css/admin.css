@@ -90,3 +90,32 @@
   box-shadow: none !important;
   outline: none !important;
 }
+
+.wpil-dashboard-page td.column-inbound_links,
+.wpil-dashboard-page td.column-outbound_links,
+.wpil-dashboard-page td.column-inbound_links_in_category,
+.wpil-dashboard-page td.column-outbound_links_in_category,
+.wpil-dashboard-page td.column-link_back_to_category {
+  position: relative;
+}
+
+.wpil-dashboard-page .wpil-count-link {
+  padding: 5px 30px;
+  color: #fff;
+  margin-top: 10px;
+  position: absolute;
+  text-decoration: underline;
+}
+
+.wpil-dashboard-page .wpil-count-link.bg-green {
+  background: #6bc623;
+}
+
+.wpil-dashboard-page .wpil-count-link.bg-gray {
+  background: #c3c4c7;
+}
+
+.wpil-dashboard-page .wpil-post-type {
+  font-weight: initial;
+  color: #50575e;
+}
