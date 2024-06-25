@@ -6,6 +6,7 @@ use WPInternalLinks\Controllers\AdminMenuController;
 use WPInternalLinks\Enqueue\AdminEnqueue;
 use WPInternalLinks\Shortcode\AddShortcode;
 use WPInternalLinks\Controllers\LinkSuggestionsController;
+use WPInternalLinks\Controllers\MetaBoxMainCategory;
 
 /**
  * WPInternalLinks Plugin Initializer
@@ -32,5 +33,6 @@ class Initialize {
         AddShortcode::get_instance();
         AdminMenuController::get_instance();
         LinkSuggestionsController::get_instance();
+        MetaBoxMainCategory::get_instance();
     }
 }
