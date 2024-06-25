@@ -119,3 +119,7 @@
   font-weight: initial;
   color: #50575e;
 }
+
+.wpil-copy-link {
+  cursor: copy;
+}

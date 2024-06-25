@@ -120,10 +120,15 @@ class CreatePostListTableController extends \WP_List_Table {
 
         if ( ! empty( $search_value ) ) {
             $args['s'] = $search_value;
+            add_filter( 'posts_where', [ $this, 'title_filter' ], 10, 2 );
         }
 
         $query = new \WP_Query( $args );
         $posts = [];
+
+        if ( ! empty( $search_value ) ) {
+            remove_filter( 'posts_where', [ $this, 'title_filter' ], 10 );
+        }
 
         foreach ( $query->posts as $post ) {
             $content = $post->post_content;
@@ -166,15 +171,25 @@ class CreatePostListTableController extends \WP_List_Table {
         $this->_column_headers = [ $columns, $hidden, $sortable ];
     }
 
+    public function title_filter( $where, $wp_query ) {
+        global $wpdb;
+        $search_value = $wp_query->get( 's' );
+        if ( $search_value ) {
+            $where .= ' AND ' . $wpdb->posts . '.post_title LIKE \'%' . esc_sql( $wpdb->esc_like( $search_value ) ) . '%\'';
+        }
+        return $where;
+    }
+
     protected function column_title( $item ) {
         $type  = '<span class="wpil-post-type"> [' . get_post_type( $item->ID ) . ']</span>';
         $title = '<a class="row-title" href="' . get_edit_post_link( $item->ID ) . '">' . $item->post_title . $type . '</a>';
 
         $edit_link = get_edit_post_link( $item->ID );
+        $permalink = get_permalink( $item->ID );
 
         $actions = [
-            'edit'                            => sprintf( '<a href="%s">%s</a>', $edit_link, __( 'Edit', 'wpinternallinks' ) ),
-            'find_inbound_link_opportunities' => sprintf( '<a href="%s">%s</a>', '#', __( 'Find Inbound Link Opportunities', 'wpinternallinks' ) ),
+            'find_inbound_link_opportunities' => sprintf( '<a href="%s">%s</a>', $edit_link, __( 'Find Inbound Link Opportunities', 'wpinternallinks' ) ),
+            'copy_link'                       => sprintf( '<a class="wpil-copy-link" data-post-url="%s">%s</a>', $permalink, __( 'Copy Permalink', 'wpinternallinks' ) ),
         ];
 
         return sprintf( '%1$s %2$s', $title, $this->row_actions( $actions ) );

@@ -45,10 +45,24 @@ const wpInternalLinks = {
             e.preventDefault();
             console.log(1111);
         });
+    },
+    copyLinkPost($) {
+        jQuery('.wpil-copy-link').on('click', function(e) {
+            e.preventDefault();
+            const postURL = jQuery(this).data('post-url');
+            const $temp = jQuery("<input>");
+            jQuery("body").append($temp);
+            $temp.val(postURL).select();
+            document.execCommand("copy");
+            $temp.remove();
+            alert('Copy link success!');
+        });
+    
     }
 }
 
 jQuery(document).ready(function($) {
     wpInternalLinks.showInfoInternalLinks($);
     wpInternalLinks.getInfoSuggest($);
+    wpInternalLinks.copyLinkPost($);
 });

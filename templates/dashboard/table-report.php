@@ -62,7 +62,7 @@ $orphan_count = $post_list_table->get_post_count_by_type( [ 'page' ], true );
             $categories        = get_categories();
 
             foreach ( $categories as $cate_item ) {
-                $selected = $selected_category === $cate_item->term_id ? 'selected' : '';
+                $selected = strval( $cate_item->term_id ) === $selected_category ? 'selected' : '';
                 echo '<option value="' . esc_attr( $cate_item->term_id ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $cate_item->name ) . '</option>';
             }
 
