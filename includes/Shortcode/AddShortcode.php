@@ -24,6 +24,7 @@ class AddShortcode {
     }
 
     public function custom_breadcrumbs() {
+        global $post;
         $home_text = 'Home';
         $separator = ' &raquo; ';
         $home_link = home_url( '/' );
@@ -38,13 +39,15 @@ class AddShortcode {
             $category    = get_queried_object();
             $breadcrumb .= $separator . single_cat_title( '', false );
         } elseif ( is_single() ) {
-            $category = get_the_category();
+            $main_category = get_post_meta( $post->ID, '_main_category_id', true );
+            $category      = get_category( $main_category );
+
             if ( $category ) {
-                $breadcrumb .= $separator . '<a href="' . get_category_link( $category[0]->term_id ) . '">' . $category[0]->name . '</a>';
+                $breadcrumb .= $separator . '<a href="' . get_category_link( $category->term_id ) . '">' . $category->name . '</a>';
             }
             $breadcrumb .= $separator . get_the_title();
         } elseif ( is_page() && ! is_front_page() ) {
-            global $post;
+
             if ( $post->post_parent ) {
                 $parent_id = $post->post_parent;
                 $crumbs    = [];

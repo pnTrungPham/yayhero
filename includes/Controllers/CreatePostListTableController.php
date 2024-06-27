@@ -216,7 +216,9 @@ class CreatePostListTableController extends \WP_List_Table {
                 $class = $count > 0 ? ' bg-green' : ' bg-gray';
                 return '<a href="#" class="wpil-count-link outbound-links-in-category-count' . $class . '"  data-type="outbound_category" data-post-id="' . $item->ID . '">' . $count . '</a>';
             case 'link_back_to_category':
-                return self::get_category_link( $item->ID );
+                $count = ( InternalLinksController::get_inbound_internal_links_in_category_from_main( $item->ID ) );
+                $class = $count > 0 ? ' bg-green' : ' bg-gray';
+                return '<a href="#" class="wpil-count-link outbound-links-in-category-count' . $class . '"  data-type="outbound_category" data-post-id="' . $item->ID . '">' . $count . '</a>';
             default:
                 return print_r( $item, true );
         }
