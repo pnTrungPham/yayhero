@@ -12,7 +12,7 @@ use WPSource\Utils\SingletonTrait;
 class SettingModel {
     use SingletonTrait;
 
-    const OPTION_NAME = 'wp_source_fm_settings';
+    const OPTION_NAME = 'rpfm_settings';
 
     // TODO: change variable name to be more meaning in db ( when initialize )
     const DEFAULT = [];

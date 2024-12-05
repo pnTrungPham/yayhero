@@ -1,6 +1,6 @@
 <?php
 
-define( 'WP_SOURCE_FM_PHP_ROOT_PATH', dirname( __FILE__ ) );
+define( 'RPFM_PHP_ROOT_PATH', dirname( __FILE__ ) );
 
 function elFinderAutoloader( $name ) {
     $map = [
@@ -29,18 +29,18 @@ function elFinderAutoloader( $name ) {
         'elFinderVolumeTrash'                        => 'elFinderVolumeTrash.class.php',
     ];
     if ( isset( $map[ $name ] ) ) {
-        return include_once WP_SOURCE_FM_PHP_ROOT_PATH . '/' . $map[ $name ];
+        return include_once RPFM_PHP_ROOT_PATH . '/' . $map[ $name ];
     }
     $prefix = substr( $name, 0, 14 );
     if ( substr( $prefix, 0, 8 ) === 'elFinder' ) {
         if ( $prefix === 'elFinderVolume' ) {
-            $file = WP_SOURCE_FM_PHP_ROOT_PATH . '/' . $name . '.class.php';
+            $file = RPFM_PHP_ROOT_PATH . '/' . $name . '.class.php';
             return ( is_file( $file ) && include_once $file );
         } elseif ( $prefix === 'elFinderPlugin' ) {
-            $file = WP_SOURCE_FM_PHP_ROOT_PATH . '/plugins/' . substr( $name, 14 ) . '/plugin.php';
+            $file = RPFM_PHP_ROOT_PATH . '/plugins/' . substr( $name, 14 ) . '/plugin.php';
             return ( is_file( $file ) && include_once $file );
         } elseif ( $prefix === 'elFinderEditor' ) {
-            $file = WP_SOURCE_FM_PHP_ROOT_PATH . '/editors/' . substr( $name, 14 ) . '/editor.php';
+            $file = RPFM_PHP_ROOT_PATH . '/editors/' . substr( $name, 14 ) . '/editor.php';
             return ( is_file( $file ) && include_once $file );
         }
     }

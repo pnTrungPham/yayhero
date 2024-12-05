@@ -25,7 +25,7 @@ class UserRoleController extends BaseController {
 
     protected function init_hooks() {
         register_rest_route(
-            WP_SOURCE_FM_REST_NAMESPACE,
+            RPFM_REST_NAMESPACE,
             '/user-role',
             [
                 [

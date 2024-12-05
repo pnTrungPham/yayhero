@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name:     File Manager Plus - WPSource
+ * Plugin Name:     Rapid File Manager
  * Plugin URI:      https://wpsource.tech/
  * Description:     Starter plugin.Basic WordPress plugin development.
  * Author:          Alan Project
@@ -23,15 +23,15 @@ if ( file_exists( dirname( __FILE__ ) . '/includes/ElFinder/php/autoload.php' ) 
     require_once dirname( __FILE__ ) . '/includes/ElFinder/php/autoload.php';
 }
 
-define( 'WP_SOURCE_FM_VERSION', '1.7.8' );
+define( 'RPFM_VERSION', '1.7.8' );
 
-define( 'WP_SOURCE_FM_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'WP_SOURCE_FM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'WP_SOURCE_FM_IS_DEVELOPMENT', true );
+define( 'RPFM_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'RPFM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'RPFM_IS_DEVELOPMENT', true );
 
 
-if ( ! defined( 'WP_SOURCE_FM_REST_NAMESPACE' ) ) {
-    define( 'WP_SOURCE_FM_REST_NAMESPACE', 'wp_source/v1' );
+if ( ! defined( 'RPFM_REST_NAMESPACE' ) ) {
+    define( 'RPFM_REST_NAMESPACE', 'wp_source/v1' );
 }
 
 spl_autoload_register(
