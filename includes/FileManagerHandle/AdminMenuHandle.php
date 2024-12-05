@@ -1,8 +1,8 @@
 <?php
 
-namespace WPSource\FileManagerHandle;
+namespace RPFM\FileManagerHandle;
 
-use WPSource\Utils\SingletonTrait;
+use RPFM\Utils\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;
 

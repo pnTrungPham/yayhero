@@ -10,10 +10,10 @@
  * Domain Path:     /languages
  * Version:         1.0
  *
- * @package WPSource
+ * @package RPFM
  */
 
-namespace WPSource;
+namespace RPFM;
 
 if ( ! defined( 'ABSPATH' ) ) {
     die( 'We\'re sorry, but you can not directly access this file.' );
@@ -55,10 +55,10 @@ spl_autoload_register(
 );
 
 if ( ! wp_installing() ) {
-    if ( ! function_exists( 'WPSource\\init' ) ) {
+    if ( ! function_exists( 'RPFM\\init' ) ) {
         function init() {
-            \WPSource\Initialize::get_instance();
+            \RPFM\Initialize::get_instance();
         }
     }
-    add_action( 'plugins_loaded', 'WPSource\\init' );
+    add_action( 'plugins_loaded', 'RPFM\\init' );
 }

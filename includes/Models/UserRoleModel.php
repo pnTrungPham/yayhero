@@ -1,8 +1,8 @@
 <?php
 
-namespace WPSource\Models;
+namespace RPFM\Models;
 
-use WPSource\Utils\SingletonTrait;
+use RPFM\Utils\SingletonTrait;
 
 /**
  * User Role Model

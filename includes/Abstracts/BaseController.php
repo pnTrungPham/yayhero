@@ -1,5 +1,5 @@
 <?php
-namespace WPSource\Abstracts;
+namespace RPFM\Abstracts;
 
 /**
  * Base Rest API Controller

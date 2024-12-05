@@ -1,10 +1,10 @@
 <?php
 
-namespace WPSource\Controllers;
+namespace RPFM\Controllers;
 
-use WPSource\Abstracts\BaseController;
-use WPSource\Utils\SingletonTrait;
-use WPSource\Models\SettingModel;
+use RPFM\Abstracts\BaseController;
+use RPFM\Utils\SingletonTrait;
+use RPFM\Models\SettingModel;
 
 
 /**

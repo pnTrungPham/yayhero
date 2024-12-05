@@ -1,7 +1,7 @@
 <?php
-namespace WPSource\Engine;
+namespace RPFM\Engine;
 
-use WPSource\Utils\SingletonTrait;
+use RPFM\Utils\SingletonTrait;
 /**
  * YayMail Rest API
  */

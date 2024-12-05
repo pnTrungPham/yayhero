@@ -1,8 +1,8 @@
 <?php
 
-namespace WPSource\Enqueue;
+namespace RPFM\Enqueue;
 
-use WPSource\Utils\SingletonTrait;
+use RPFM\Utils\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;
 

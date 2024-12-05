@@ -1,10 +1,10 @@
 <?php
-namespace WPSource;
+namespace RPFM;
 
-use WPSource\Utils\SingletonTrait;
+use RPFM\Utils\SingletonTrait;
 
 /**
- * WPSource Plugin Initializer
+ * RPFM Plugin Initializer
  *
  * @method static Initialize get_instance()
  */
@@ -20,11 +20,11 @@ class Initialize {
     }
 
     public static function wpsource_init() {
-        //\WPSource\Controllers\SettingController::get_instance();
-        \WPSource\Enqueue\Admin::get_instance();
-        \WPSource\Enqueue\WPSourceViteApp::get_instance();
-        \WPSource\Engine\RestAPI::get_instance();
-        \WPSource\FileManagerHandle\AdminMenuHandle::get_instance();
-        \WPSource\FileManagerHandle\Connector::get_instance();
+        //\RPFM\Controllers\SettingController::get_instance();
+        \RPFM\Enqueue\Admin::get_instance();
+        \RPFM\Enqueue\WPSourceViteApp::get_instance();
+        \RPFM\Engine\RestAPI::get_instance();
+        \RPFM\FileManagerHandle\AdminMenuHandle::get_instance();
+        \RPFM\FileManagerHandle\Connector::get_instance();
     }
 }
