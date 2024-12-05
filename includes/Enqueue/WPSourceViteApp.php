@@ -17,11 +17,11 @@ class WPSourceViteApp {
     }
 
     private function init_hooks() {
-        add_action( 'admin_head', [ $this, 'wpsource_register_preload_modules' ] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'wpsource_register_entry' ] );
+        add_action( 'admin_head', [ $this, 'rpfm_register_preload_modules' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'rpfm_register_entry' ] );
     }
 
-    public function wpsource_register_preload_modules() {
+    public function rpfm_register_preload_modules() {
         echo '<script type="module">
            import RefreshRuntime from "http://localhost:3001/@react-refresh"
            RefreshRuntime.injectIntoGlobalHook(window)
@@ -31,11 +31,11 @@ class WPSourceViteApp {
            </script>';
     }
 
-    public function wpsource_register_entry() {
+    public function rpfm_register_entry() {
         add_filter(
             'script_loader_tag',
             function ( $tag, $handle, $src ) {
-                if ( strpos( $handle, 'module/wpsource/' ) !== false ) {
+                if ( strpos( $handle, 'module/rpfm/' ) !== false ) {
                     $str  = "type='module'";
                     $str .= RPFM_IS_DEVELOPMENT ? ' crossorigin' : '';
                     $tag  = '<script ' . $str . ' src="' . $src . '" id="' . $handle . '-js"></script>';
@@ -46,11 +46,11 @@ class WPSourceViteApp {
             3
         );
 
-        wp_register_script( 'module/wpsource/main.tsx', 'http://localhost:3001/main.tsx', [ 'react', 'react-dom' ], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-        wp_enqueue_script( 'module/wpsource/main.tsx' );
+        wp_register_script( 'module/rpfm/main.tsx', 'http://localhost:3001/main.tsx', [ 'react', 'react-dom' ], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+        wp_enqueue_script( 'module/rpfm/main.tsx' );
         wp_localize_script(
-            'module/wpsource/main.tsx',
-            'wpsourceData',
+            'module/rpfm/main.tsx',
+            'rpfmData',
             [
                 'api'        => [
                     'url'   => esc_url_raw( rest_url() ),

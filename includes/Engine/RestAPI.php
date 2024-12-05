@@ -14,13 +14,13 @@ class RestAPI {
      * @return void
      */
     protected function __construct() {
-        add_action( 'rest_api_init', [ $this, 'add_wpsource_endpoints' ] );
+        add_action( 'rest_api_init', [ $this, 'add_rpfm_endpoints' ] );
     }
 
     /**
      * Add YayMail Endpoints
      */
-    public function add_wpsource_endpoints() {
+    public function add_rpfm_endpoints() {
 
     }
 }

@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
     url: ajaxurl,
     customData: {
       action: 'wps_fm_connector',
-      nonce: '<?php echo wp_create_nonce( 'wpsource-admin-nonce' ); ?>'
+      nonce: '<?php echo wp_create_nonce( 'rpfm-admin-nonce' ); ?>'
     },
     lang: 'LANG',
     requestType: 'post',

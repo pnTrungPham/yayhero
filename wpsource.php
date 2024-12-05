@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name:     Rapid File Manager
- * Plugin URI:      https://wpsource.tech/
+ * Plugin URI:      https://rpfm.tech/
  * Description:     Starter plugin.Basic WordPress plugin development.
  * Author:          Alan Project
- * Author URI:      https://wpsource.tech/
- * Text Domain:     wpsource
+ * Author URI:      https://rpfm.tech/
+ * Text Domain:     rpfm
  * Domain Path:     /languages
  * Version:         1.0
  *

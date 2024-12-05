@@ -16,10 +16,10 @@ class Initialize {
      * The Constructor that load the engine classes
      */
     protected function __construct() {
-        add_action( 'init', [ $this, 'wpsource_init' ] );
+        add_action( 'init', [ $this, 'rpfm_init' ] );
     }
 
-    public static function wpsource_init() {
+    public static function rpfm_init() {
         //\RPFM\Controllers\SettingController::get_instance();
         \RPFM\Enqueue\Admin::get_instance();
         \RPFM\Enqueue\WPSourceViteApp::get_instance();

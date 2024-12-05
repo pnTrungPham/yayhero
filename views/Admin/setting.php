@@ -8,6 +8,6 @@ padding-top: 15px;
 }
 </style>
 
-<div id="wpsource-app">
+<div id="rpfm-app">
     not connected
 </div> 
