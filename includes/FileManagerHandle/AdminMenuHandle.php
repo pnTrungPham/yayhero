@@ -36,16 +36,16 @@ class AdminMenuHandle {
             30
         );
 
-        $settings_suffix = add_submenu_page(
-            'wpsource/wpsource-admin.php',
-            'Settings',
-            'Settings',
-            'manage_options',
-            'wpsource-settings',
-            [ $this, 'settings_page' ]
-        );
+        // $settings_suffix = add_submenu_page(
+        //     'wpsource/wpsource-admin.php',
+        //     'Settings',
+        //     'Settings',
+        //     'manage_options',
+        //     'wpsource-settings',
+        //     [ $this, 'settings_page' ]
+        // );
 
-        $this->hook_suffix = [ $display_suffix, $settings_suffix ];
+        $this->hook_suffix = [ $display_suffix ];
     }
 
     public function wpsource_render_file_manager() {
