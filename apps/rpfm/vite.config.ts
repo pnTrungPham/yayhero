@@ -40,7 +40,7 @@ export default defineConfig({
   build: {
     manifest: true,
     emptyOutDir: true,
-    outDir: path.resolve("../../assets", "dist/wpsource"),
+    outDir: path.resolve("../../assets", "dist/rpfm"),
     assetsDir: "",
     rollupOptions: {
       input: {
