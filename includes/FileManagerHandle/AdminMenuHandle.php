@@ -36,16 +36,16 @@ class AdminMenuHandle {
             30
         );
 
-        // $settings_suffix = add_submenu_page(
-        //     'rpfm/rpfm-admin.php',
-        //     'Settings',
-        //     'Settings',
-        //     'manage_options',
-        //     'rpfm-settings',
-        //     [ $this, 'settings_page' ]
-        // );
+        $settings_suffix = add_submenu_page(
+            'rpfm/rpfm-admin.php',
+            'Settings',
+            'Settings',
+            'manage_options',
+            'rpfm-settings',
+            [ $this, 'settings_page' ]
+        );
 
-        $this->hook_suffix = [ $display_suffix ];
+        $this->hook_suffix = [ $display_suffix, $settings_suffix ];
     }
 
     public function rpfm_render_file_manager() {

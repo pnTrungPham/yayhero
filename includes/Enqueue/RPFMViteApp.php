@@ -7,9 +7,9 @@ use RPFM\Utils\SingletonTrait;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * WPSourceViteApp Classes
+ * RPFMViteApp Classes
  */
-class WPSourceViteApp {
+class RPFMViteApp {
     use SingletonTrait;
 
     protected function __construct() {

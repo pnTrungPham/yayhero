@@ -22,7 +22,7 @@ class Initialize {
     public static function rpfm_init() {
         //\RPFM\Controllers\SettingController::get_instance();
         \RPFM\Enqueue\Admin::get_instance();
-        \RPFM\Enqueue\WPSourceViteApp::get_instance();
+        \RPFM\Enqueue\RPFMViteApp::get_instance();
         \RPFM\Engine\RestAPI::get_instance();
         \RPFM\FileManagerHandle\AdminMenuHandle::get_instance();
         \RPFM\FileManagerHandle\Connector::get_instance();

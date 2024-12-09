@@ -4,10 +4,10 @@
  * Plugin Name:     Rapid File Manager
  * Plugin URI:      https://rpfm.tech/
  * Description:     Starter plugin.Basic WordPress plugin development.
- * Author:          Alan Project
+ * Author:          Rapid File Manager
  * Author URI:      https://rpfm.tech/
  * Text Domain:     rpfm
- * Domain Path:     /languages
+ * Domain Path:     /i18n/languages/
  * Version:         1.0
  *
  * @package RPFM
@@ -23,7 +23,7 @@ if ( file_exists( dirname( __FILE__ ) . '/includes/ElFinder/php/autoload.php' ) 
     require_once dirname( __FILE__ ) . '/includes/ElFinder/php/autoload.php';
 }
 
-define( 'RPFM_VERSION', '1.7.8' );
+define( 'RPFM_VERSION', '1.0' );
 
 define( 'RPFM_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'RPFM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -35,7 +35,7 @@ if ( ! defined( 'RPFM_REST_NAMESPACE' ) ) {
 }
 
 spl_autoload_register(
-    function ( $class ) {
+    function ( $class )   {
         $prefix   = __NAMESPACE__;
         $base_dir = __DIR__ . '/includes';
 

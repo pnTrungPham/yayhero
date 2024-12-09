@@ -46,7 +46,7 @@
     <file>templates</file>
 	<file>views</file>
 	<file>uninstall.php</file>
-	<file>wpsource.php</file>
+	<file>rapid-file-manager.php</file>
 	<!-- Do not fail on warnings -->
 	<config name="ignore_warnings_on_exit" value="1" />
 
