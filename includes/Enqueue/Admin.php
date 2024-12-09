@@ -26,7 +26,7 @@ class Admin {
 
         wp_localize_script(
             'rpfm-elfinder-js',
-            'wps_connector_data',
+            'rpfm_connector_data',
             [
                 'admin_ajax' => admin_url( 'admin-ajax.php' ),
                 'nonce'      => wp_create_nonce( 'rpfm-admin-nonce' ),
@@ -50,5 +50,4 @@ class Admin {
         wp_enqueue_script( 'rpfm-elfinder-editor', RPFM_PLUGIN_URL . 'includes/ElFinder/js/extras/editors.default.min.js', [], RPFM_VERSION );
         wp_enqueue_script( 'rpfm-elfinder-lang', RPFM_PLUGIN_URL . 'includes/ElFinder/js/i18n/elfinder.LANG.js', [], RPFM_VERSION );
     }
-
 }

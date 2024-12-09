@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Plugin Name:     Rapid File Manager
- * Plugin URI:      https://rpfm.tech/
- * Description:     Starter plugin.Basic WordPress plugin development.
- * Author:          Rapid File Manager
- * Author URI:      https://rpfm.tech/
- * Text Domain:     rpfm
- * Domain Path:     /i18n/languages/
- * Version:         1.0
+ * Plugin Name: Rapid File Manager
+ * Plugin URI: https://rpfm.tech/
+ * Description: Rapid File Manager is a plugin that allows you to manage your files in the admin website dashboard.
+ * Author: Rapid File Manager
+ * Author URI: https://rpfm.tech/
+ * Text Domain: rpfm
+ * Domain Path: /i18n/languages/
+ * Version: 1.0
  *
  * @package RPFM
  */

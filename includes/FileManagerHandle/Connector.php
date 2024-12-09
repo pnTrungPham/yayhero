@@ -12,17 +12,15 @@ defined( 'ABSPATH' ) || exit;
 class Connector {
     use SingletonTrait;
 
-
-
     protected function __construct() {
         $this->init_hooks();
     }
 
     private function init_hooks() {
-        add_action( 'wp_ajax_wps_fm_connector', [ $this, 'wps_fm_connector' ] );
+        add_action( 'wp_ajax_rpfm_fm_connector', [ $this, 'rpfm_fm_connector' ] );
     }
 
-    public function wps_fm_connector() {
+    public function rpfm_fm_connector() {
         $opts = [
             'bind'  => [],
             'debug' => false,
@@ -47,5 +45,4 @@ class Connector {
         $connector->run();
         wp_die();
     }
-
 }
