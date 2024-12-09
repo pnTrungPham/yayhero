@@ -69,5 +69,4 @@ abstract class BaseController {
 
         return rest_ensure_response( $response );
     }
-
 }

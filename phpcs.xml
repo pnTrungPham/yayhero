@@ -11,11 +11,13 @@
 
 	<rule ref="WordPress-Core">
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
-		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
-		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
-		<exclude name="WordPress.DB.PreparedSQL.NotPrepared" />
-		<exclude name="WordPress.DB.PreparedSQL.InterpolatedNotPrepared" />
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+        <exclude name="WordPress.DB.PreparedSQL.NotPrepared" />
+        <exclude name="WordPress.DB.PreparedSQL.InterpolatedNotPrepared" />
+        <exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
 	</rule>
 	<rule ref="WordPress-Extra" />
 
@@ -35,8 +37,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="wpsource"/>
-				<element value="woocommerce"/>
+				<element value="rpfm"/>
 			</property>
 		</properties>
 	</rule>

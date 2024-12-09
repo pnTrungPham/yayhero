@@ -19,8 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
-if ( file_exists( dirname( __FILE__ ) . '/includes/ElFinder/php/autoload.php' ) ) {
-    require_once dirname( __FILE__ ) . '/includes/ElFinder/php/autoload.php';
+if ( file_exists( __DIR__ . '/includes/ElFinder/php/autoload.php' ) ) {
+    require_once __DIR__ . '/includes/ElFinder/php/autoload.php';
 }
 
 define( 'RPFM_VERSION', '1.0' );
@@ -35,7 +35,7 @@ if ( ! defined( 'RPFM_REST_NAMESPACE' ) ) {
 }
 
 spl_autoload_register(
-    function ( $class )   {
+    function ( $class ) {
         $prefix   = __NAMESPACE__;
         $base_dir = __DIR__ . '/includes';
 
