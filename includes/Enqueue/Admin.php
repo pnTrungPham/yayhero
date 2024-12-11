@@ -45,6 +45,7 @@ class Admin {
     }
 
     public function enqueue_elfinder() {
+        wp_enqueue_script( 'rpfm-elfinder-connector', RPFM_PLUGIN_URL . 'assets/js/elfinder-connector.js', [ 'jquery' ], RPFM_VERSION, true );
         wp_enqueue_script( 'rpfm-elfinder-css', RPFM_PLUGIN_URL . 'includes/ElFinder/css/elfinder.min.css', [], RPFM_VERSION, true );
         wp_enqueue_script( 'rpfm-elfinder-js', RPFM_PLUGIN_URL . 'includes/ElFinder/js/elfinder.full.js', [], RPFM_VERSION );
         wp_enqueue_script( 'rpfm-elfinder-editor', RPFM_PLUGIN_URL . 'includes/ElFinder/js/extras/editors.default.min.js', [], RPFM_VERSION );

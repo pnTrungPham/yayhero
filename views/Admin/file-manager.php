@@ -2,24 +2,8 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 
-<div class="wps-file-manager-container">
-    <div id="wps-file-connected">
+<div class="fpfm-file-manager-container">
+    <div id="fpfm-file-connected">
         connected
     </div>
 </div>
-
-<script>
-jQuery(document).ready(function() {
-    jQuery('#wps-file-connected').elfinder({
-    url: ajaxurl,
-    customData: {
-        action: 'rpfm_fm_connector',
-        nonce: '<?php echo wp_create_nonce( 'rpfm-admin-nonce' ); ?>'
-    },
-    lang: 'LANG',
-    requestType: 'post',
-    width: 'auto',
-    height: '600',
-    });
-});
-</script>
