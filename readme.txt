@@ -2,7 +2,7 @@
 Contributors: rapidfilemanager
 Tags: file manager, file organizer, file explorer, secure file management, file upload
 Requires at least: 5.8
-Tested up to: 6.4
+Tested up to: 6.7
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later

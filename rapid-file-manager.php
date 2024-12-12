@@ -2,13 +2,11 @@
 
 /**
  * Plugin Name: Rapid File Manager
- * Plugin URI: https://rpfm.tech/
  * Description: Rapid File Manager is a plugin that allows you to manage your files in the admin website dashboard.
  * Author: Rapid File Manager
- * Author URI: https://rpfm.tech/
  * Text Domain: rpfm
  * Domain Path: /i18n/languages/
- * Version: 1.0
+ * Version: 1.0.0
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * @package RPFM
