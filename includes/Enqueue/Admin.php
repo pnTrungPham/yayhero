@@ -35,12 +35,12 @@ class Admin {
     }
 
     public function enqueue_jquery_ui() {
-        wp_enqueue_style( 'rpfm-jq-ui-css', RPFM_PLUGIN_URL . 'includes/ElFinder/jquery/jquery-ui.min.css', [], RPFM_VERSION, true );
+        wp_enqueue_style( 'rpfm-jq-ui-css', RPFM_PLUGIN_URL . 'assets/jquery/jquery-ui.min.css', [], RPFM_VERSION, true );
 
         if ( version_compare( get_bloginfo( 'version' ), '5.6', '>=' ) ) {
-            wp_enqueue_script( 'rpfm-jq-ui-js', RPFM_PLUGIN_URL . 'includes/ElFinder/jquery/jquery-ui.min.js', [], RPFM_VERSION, true );
+            wp_enqueue_script( 'rpfm-jq-ui-js', RPFM_PLUGIN_URL . 'assets/jquery/jquery-ui.min.js', [], RPFM_VERSION, true );
         } else {
-            wp_enqueue_script( 'rpfm-jq-ui-js', RPFM_PLUGIN_URL . 'includes/ElFinder/jquery/jquery-ui-old.min.js', [], RPFM_VERSION, true );
+            wp_enqueue_script( 'rpfm-jq-ui-js', RPFM_PLUGIN_URL . 'assets/jquery/jquery-ui-old.min.js', [], RPFM_VERSION, true );
         }
     }
 
