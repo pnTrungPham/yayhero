@@ -32,7 +32,7 @@ class elFinder
      *
      * @var integer
      */
-    protected static $ApiRevision = 65;
+    protected static $ApiRevision = 64;
 
     /**
      * Storages (root dirs)
@@ -3206,7 +3206,7 @@ class elFinder
             } else {
                 // old way
                 $part = $base . $m[2];
-                if (move_uploaded_file($tmpname, $part)) {
+                if (wp_handle_upload($tmpname, $part)) {
                     chmod($part, 0600);
                     if ($clast < count(glob($base . '*'))) {
                         $parts = array();
@@ -5248,14 +5248,14 @@ var go = function() {
 
         static $allowed = null;
 
-        if ($allowed === null) {
-            if ($allowed = function_exists('proc_open')) {
-                if ($disabled = ini_get('disable_functions')) {
-                    $funcs = array_map('trim', explode(',', $disabled));
-                    $allowed = !in_array('proc_open', $funcs);
-                }
-            }
-        }
+        // if ($allowed === null) {
+        //     if ($allowed = function_exists('proc_open')) {
+        //         if ($disabled = ini_get('disable_functions')) {
+        //             $funcs = array_map('trim', explode(',', $disabled));
+        //             $allowed = !in_array('proc_open', $funcs);
+        //         }
+        //     }
+        // }
 
         if (!$allowed) {
             $return_var = -1;
@@ -5273,49 +5273,50 @@ var go = function() {
             2 => array("pipe", "w")   // stderr
         );
 
-        $process = proc_open($command, $descriptorspec, $pipes, $cwd, null);
+        //$process = proc_open($command, $descriptorspec, $pipes, $cwd, null);
+        $process = null;
 
-        if (is_resource($process)) {
-            stream_set_blocking($pipes[1], 0);
-            stream_set_blocking($pipes[2], 0);
+        // if (is_resource($process)) {
+        //     stream_set_blocking($pipes[1], 0);
+        //     stream_set_blocking($pipes[2], 0);
 
-            fclose($pipes[0]);
+        //     fclose($pipes[0]);
 
-            $tmpout = '';
-            $tmperr = '';
-            while (feof($pipes[1]) === false || feof($pipes[2]) === false) {
-                elFinder::extendTimeLimit();
-                $read = array($pipes[1], $pipes[2]);
-                $write = null;
-                $except = null;
-                $ret = stream_select($read, $write, $except, 1);
-                if ($ret === false) {
-                    // error
-                    break;
-                } else if ($ret === 0) {
-                    // timeout
-                    continue;
-                } else {
-                    foreach ($read as $sock) {
-                        if ($sock === $pipes[1]) {
-                            $tmpout .= fread($sock, 4096);
-                        } else if ($sock === $pipes[2]) {
-                            $tmperr .= fread($sock, 4096);
-                        }
-                    }
-                }
-            }
+        //     $tmpout = '';
+        //     $tmperr = '';
+        //     while (feof($pipes[1]) === false || feof($pipes[2]) === false) {
+        //         elFinder::extendTimeLimit();
+        //         $read = array($pipes[1], $pipes[2]);
+        //         $write = null;
+        //         $except = null;
+        //         $ret = stream_select($read, $write, $except, 1);
+        //         if ($ret === false) {
+        //             // error
+        //             break;
+        //         } else if ($ret === 0) {
+        //             // timeout
+        //             continue;
+        //         } else {
+        //             foreach ($read as $sock) {
+        //                 if ($sock === $pipes[1]) {
+        //                     $tmpout .= fread($sock, 4096);
+        //                 } else if ($sock === $pipes[2]) {
+        //                     $tmperr .= fread($sock, 4096);
+        //                 }
+        //             }
+        //         }
+        //     }
 
-            fclose($pipes[1]);
-            fclose($pipes[2]);
+        //     fclose($pipes[1]);
+        //     fclose($pipes[2]);
 
-            $output = $tmpout;
-            $error_output = $tmperr;
-            $return_var = proc_close($process);
+        //     $output = $tmpout;
+        //     $error_output = $tmperr;
+        //     $return_var = proc_close($process);
 
-        } else {
-            $return_var = -1;
-        }
+        // } else {
+        //     $return_var = -1;
+        // }
 
         return $return_var;
 
