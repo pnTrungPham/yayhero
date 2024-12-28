@@ -1,22 +1,18 @@
-import { Form, Switch } from "antd";
-import { useWPSourceStore } from "../../../store/wpSourceStore";
+import { Form, Switch } from 'antd';
+import { useWPSourceStore } from '../../../store/wpSourceStore';
 
 const ExtraText = () => {
   return (
-    <div>
+    <div className='fw-font-medium fw-lowercase'>
       <p>Will Hide .htaccess file (if exists) in file manager. </p>
     </div>
   );
 };
 
 function HideHtaccess() {
-  const setSettingsHideHtaccess = useWPSourceStore(
-    (state) => state.setSettingsHideHtaccess
-  );
+  const setSettingsHideHtaccess = useWPSourceStore((state) => state.setSettingsHideHtaccess);
 
-  const settingsHideHtaccess = useWPSourceStore(
-    (state) => state.settings.hide_htaccess
-  );
+  const settingsHideHtaccess = useWPSourceStore((state) => state.settings.hide_htaccess);
 
   const handleChange = (e: boolean) => {
     setSettingsHideHtaccess(e);
@@ -24,14 +20,12 @@ function HideHtaccess() {
 
   return (
     <Form.Item
-      label="Hide .htaccess?"
-      name="hide_htaccess"
+      label='Hide .htaccess?'
+      name='hide_htaccess'
       extra={<ExtraText />}
+      className='fw-font-medium fw-uppercase'
     >
-      <Switch
-        className="fw-hide-htaccess__switch fw-bg-[#bfbfbf]"
-        onChange={handleChange}
-      />
+      <Switch className='fw-hide-htaccess__switch fw-bg-[#bfbfbf]' onChange={handleChange} />
     </Form.Item>
   );
 }

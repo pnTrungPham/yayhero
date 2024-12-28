@@ -1,9 +1,9 @@
-import { Form, Input } from "antd";
-import { useWPSourceStore } from "../../../store/wpSourceStore";
+import { Form, Input } from 'antd';
+import { useWPSourceStore } from '../../../store/wpSourceStore';
 
 const ExtraText = () => {
   return (
-    <div>
+    <div className='fw-font-medium fw-lowercase'>
       <p>
         Default path is: <code>https://alan.ninjateam.org</code>
       </p>
@@ -12,9 +12,7 @@ const ExtraText = () => {
 };
 
 function FileUrl() {
-  const setSettingsFileUrl = useWPSourceStore(
-    (state) => state.setSettingsFileUrl
-  );
+  const setSettingsFileUrl = useWPSourceStore((state) => state.setSettingsFileUrl);
 
   const settingsFileUrl = useWPSourceStore((state) => state.settings.file_url);
 
@@ -23,8 +21,13 @@ function FileUrl() {
   };
 
   return (
-    <Form.Item label="File Url" name="file_url" extra={<ExtraText />}>
-      <Input placeholder="ex:..." onChange={handleChange} />
+    <Form.Item
+      label='File Url'
+      name='file_url'
+      extra={<ExtraText />}
+      className='fw-font-medium fw-uppercase'
+    >
+      <Input placeholder='ex:...' onChange={handleChange} />
     </Form.Item>
   );
 }
