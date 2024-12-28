@@ -1,7 +1,6 @@
 import { Form } from "antd";
 import {
   RootPath,
-  UserRoleAccess,
   FileUrl,
   MaxUploadFile,
   Language,
@@ -32,7 +31,6 @@ function SettingsTab() {
       labelWrap
       initialValues={settings}
     >
-      <UserRoleAccess />
       <RootPath />
       <FileUrl />
       <MaxUploadFile />

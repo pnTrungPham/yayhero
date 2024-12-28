@@ -8,6 +8,7 @@ import {
   FolderFileToHide,
   DisableCommand,
   SaveUserRole,
+  UserRoleAccess,
 } from "../../../modules/user-role-restrictions";
 
 function UserRoleRestrictions() {
@@ -21,6 +22,7 @@ function UserRoleRestrictions() {
       labelAlign="left"
       labelWrap
     >
+      <UserRoleAccess />
       <UserRoleSelected />
       <DisableCommand />
       <RootPathForUser />

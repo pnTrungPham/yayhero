@@ -6,6 +6,7 @@ import FileExtensionToUpload from "./file-extension-to-upload";
 import FolderFileToHide from "./folder-file-to-hide";
 import DisableCommand from "./disable-command";
 import SaveUserRole from "./save-user-role";
+import UserRoleAccess from "./user-role-access";
 
 export {
   UserRoleSelected,
@@ -16,4 +17,5 @@ export {
   FolderFileToHide,
   DisableCommand,
   SaveUserRole,
+  UserRoleAccess,
 };
