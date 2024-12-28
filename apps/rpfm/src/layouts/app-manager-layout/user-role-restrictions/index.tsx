@@ -18,7 +18,7 @@ function UserRoleRestrictions() {
       wrapperCol={{ span: 14 }}
       layout="horizontal"
       size="large"
-      className="wps-form-user-role-restrictions bg-[#ffffff] pt-[20px] px-[20px]"
+      className="fw-form-user-role-restrictions bg-[#ffffff] pt-[20px] px-[20px]"
       labelAlign="left"
       labelWrap
     >

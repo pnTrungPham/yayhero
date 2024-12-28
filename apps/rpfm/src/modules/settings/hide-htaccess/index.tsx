@@ -29,7 +29,7 @@ function HideHtaccess() {
       extra={<ExtraText />}
     >
       <Switch
-        className="wps-hide-htaccess__switch fw-bg-[#bfbfbf]"
+        className="fw-hide-htaccess__switch fw-bg-[#bfbfbf]"
         onChange={handleChange}
       />
     </Form.Item>

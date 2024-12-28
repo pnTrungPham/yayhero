@@ -27,12 +27,11 @@ const AppManagerLayout: React.FC = () => {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout className="fw-bg-[#ffffff]">
       <Tabs
         onChange={onChange}
-        type="card"
         items={items}
-        className="wps-tab-container"
+        className="fw-tab-container fw-px-2.5"
       />
     </Layout>
   );

@@ -26,7 +26,7 @@ function SettingsTab() {
       wrapperCol={{ span: 14 }}
       layout="horizontal"
       size="large"
-      className="fw-wps-form-settings fw-bg-[#ffffff] fw-pt-[20px] fw-px-[20px]"
+      className="fw-fw-form-settings fw-bg-[#ffffff] fw-pt-[20px] fw-px-[20px]"
       labelAlign="left"
       labelWrap
       initialValues={settings}
