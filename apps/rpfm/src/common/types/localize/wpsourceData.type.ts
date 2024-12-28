@@ -1,4 +1,4 @@
-export type WPSourceDataType = {
+export type rpfmDataType = {
   urls: {
     asset_url: string;
     vite_dynamic_base: string;

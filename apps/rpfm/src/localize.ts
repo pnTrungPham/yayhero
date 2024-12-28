@@ -6,4 +6,4 @@ export type Data = {
   }
 };
 
-export const wpsourceData = (window as any).wpsourceData as Data;
+export const rpfmData = (window as any).rpfmData as Data;

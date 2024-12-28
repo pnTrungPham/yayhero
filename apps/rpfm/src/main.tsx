@@ -8,5 +8,5 @@ ReactDOM.render(
     <App />
   </React.StrictMode>,
 
-  document.getElementById("wpsource-app") as HTMLElement
+  document.getElementById("rpfm-app") as HTMLElement
 );

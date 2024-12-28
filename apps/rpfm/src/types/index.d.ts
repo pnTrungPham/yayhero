@@ -2,14 +2,14 @@ import { ReactElement, ReactNode } from "react";
 
 import jQuery from "@types/jquery";
 
-type WPSourceDataType =
-  import("@src/common/types/localize/wpsourceData.type").WPSourceDataType;
+type rpfmDataType =
+  import("@src/common/types/localize/rpfmData.type").rpfmDataType;
 
 declare global {
   // eslint-disable-next-line no-unused-vars
   interface Window {
     jQuery: typeof jQuery;
-    wpsourceData: WPSourceDataType;
+    rpfmData: rpfmDataType;
   }
 }
 
