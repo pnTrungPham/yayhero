@@ -3,7 +3,7 @@ import { useWPSourceStore } from '../../../store/wpSourceStore';
 
 const ExtraText = () => {
   return (
-    <div className='fw-font-medium fw-lowercase'>
+    <div className='fw-mt-2 fw-font-normal fw-lowercase'>
       <p>
         Default path is: <code>https://alan.ninjateam.org</code>
       </p>

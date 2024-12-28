@@ -3,7 +3,7 @@ import { useWPSourceStore } from '../../../store/wpSourceStore';
 
 const ExtraText = () => {
   return (
-    <div className='fw-font-medium fw-lowercase'>
+    <div className='fw-font-normal fw-lowercase'>
       <p>After enable trash, after delete your files will go to trash folder.</p>
     </div>
   );

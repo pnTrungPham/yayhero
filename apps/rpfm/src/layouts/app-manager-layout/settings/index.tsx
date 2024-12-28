@@ -25,7 +25,7 @@ function SettingsTab() {
       wrapperCol={{ span: 14 }}
       layout='horizontal'
       size='large'
-      className='fw-fw-form-settings fw-bg-[#ffffff] fw-px-[20px] fw-pt-[20px]'
+      className='fw-form-settings fw-px-[20px] fw-pt-[20px]'
       labelAlign='left'
       labelWrap
       initialValues={settings}

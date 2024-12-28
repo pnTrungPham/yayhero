@@ -17,10 +17,16 @@ class Admin {
     }
 
     private function init_hooks() {
-        add_action( 'admin_enqueue_scripts', [ $this, 'rpfm_admin_enqueue' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'rpfm_admin_enqueue' ], 100 );
     }
 
     public function rpfm_admin_enqueue() {
+        if (is_admin()) {
+            // Dequeue forms.css từ WordPress admin
+            wp_dequeue_style('forms-css');
+            wp_deregister_style('forms-css');
+        }
+
         $this->enqueue_jquery_ui();
         $this->enqueue_elfinder();
 

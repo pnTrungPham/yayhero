@@ -3,7 +3,7 @@ import { useWPSourceStore } from '../../../store/wpSourceStore';
 
 const ExtraText = () => {
   return (
-    <div className='fw-font-medium fw-lowercase'>
+    <div className='fw-font-normal fw-lowercase'>
       <p>Will Hide .htaccess file (if exists) in file manager. </p>
     </div>
   );

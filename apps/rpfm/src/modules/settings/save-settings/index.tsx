@@ -1,7 +1,7 @@
-import { Button, Form } from "antd";
+import { Button, Form } from 'antd';
 
-import useSettingsQueries from "../../../hooks/queries/useSettingsQueries";
-import { useWPSourceStore } from "../../../store/wpSourceStore";
+import useSettingsQueries from '../../../hooks/queries/useSettingsQueries';
+import { useWPSourceStore } from '../../../store/wpSourceStore';
 
 function SaveSettings() {
   const settings = useWPSourceStore((state) => state.settings);
@@ -12,16 +12,17 @@ function SaveSettings() {
     const response = await saveSettingsMutation.mutateAsync(settings);
 
     if (response) {
-      console.log("Settings updated successfully");
+      console.log('Settings updated successfully');
     }
   };
 
   return (
-    <Form.Item label="">
+    <Form.Item label=''>
       <Button
-        type="primary"
-        htmlType="submit"
-        className="fw-bg-[#1677ff]"
+        type='primary'
+        htmlType='submit'
+        className='fw-rounded-lg fw-bg-[#3760f7]'
+        size='medium'
         onClick={handleSave}
       >
         Save Changes

@@ -3,7 +3,7 @@ import { useWPSourceStore } from '../../../store/wpSourceStore';
 
 const ExtraText = () => {
   return (
-    <div className='fw-font-medium fw-lowercase'>
+    <div className='fw-mt-1 fw-font-normal fw-lowercase'>
       <p>
         Default: <b>0 means unlimited upload.</b>
       </p>
