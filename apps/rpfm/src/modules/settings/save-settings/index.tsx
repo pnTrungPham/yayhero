@@ -21,7 +21,7 @@ function SaveSettings() {
       <Button
         type="primary"
         htmlType="submit"
-        className="bg-[#1677ff]"
+        className="fw-bg-[#1677ff]"
         onClick={handleSave}
       >
         Save Changes
