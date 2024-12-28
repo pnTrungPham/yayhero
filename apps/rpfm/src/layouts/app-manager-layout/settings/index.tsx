@@ -1,16 +1,15 @@
-import { Form } from "antd";
+import { Form } from 'antd';
+import useSettingsQueries from '../../../hooks/queries/useSettingsQueries';
 import {
-  RootPath,
-  FileUrl,
-  MaxUploadFile,
-  Language,
-  HideHtaccess,
   EnableTrash,
+  FileUrl,
+  HideHtaccess,
+  Language,
+  MaxUploadFile,
+  RootPath,
   SaveSettings,
-} from "../../../modules/settings";
-import useSettingsQueries from "../../../hooks/queries/useSettingsQueries";
-import { useWPSourceStore } from "../../../store/wpSourceStore";
-import { useMemo } from "react";
+} from '../../../modules/settings';
+import { useWPSourceStore } from '../../../store/wpSourceStore';
 
 function SettingsTab() {
   useSettingsQueries({ fetch: true });
@@ -24,10 +23,10 @@ function SettingsTab() {
     <Form
       labelCol={{ span: 4 }}
       wrapperCol={{ span: 14 }}
-      layout="horizontal"
-      size="large"
-      className="fw-fw-form-settings fw-bg-[#ffffff] fw-pt-[20px] fw-px-[20px]"
-      labelAlign="left"
+      layout='horizontal'
+      size='large'
+      className='fw-fw-form-settings fw-bg-[#ffffff] fw-px-[20px] fw-pt-[20px]'
+      labelAlign='left'
       labelWrap
       initialValues={settings}
     >
